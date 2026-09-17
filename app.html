@@ -3023,8 +3023,6 @@ function renderTotalEarningsStats(){
   const cashAvailable = cashAll - totalWithdrawn;
   const netAfterWithdrawals = totalAll - totalWithdrawn;
   const avgTicketAllTime = orders.length ? totalAll / orders.length : 0;
-  const streak = calcSellingStreak();
-  const projected = calcMonthProjection();
 
   const statsEl = $('#total-earnings-stats');
   if(!statsEl) return;
@@ -3034,45 +3032,11 @@ function renderTotalEarningsStats(){
     <div class="sales-stat-card"><div class="num" id="stat-cash-available" style="color:var(--brick);">$0.00</div><div class="lbl">Efectivo disponible (tras retiros)</div></div>
     <div class="sales-stat-card"><div class="num" id="stat-net-after-withdrawals">$0.00</div><div class="lbl">Ganancia total (contando retiros)</div></div>
     <div class="sales-stat-card"><div class="num" id="stat-avg-ticket-all">$0.00</div><div class="lbl">Ticket promedio (histórico)</div></div>
-    <div class="sales-stat-card"><div class="num" id="stat-streak">0</div><div class="lbl">${streak === 1 ? 'Día seguido vendiendo' : 'Días seguidos vendiendo'}</div></div>
-    <div class="sales-stat-card"><div class="num" id="stat-projection" style="color:var(--mustard);">$0.00</div><div class="lbl">Proyección de este mes</div></div>
   `;
   animateCountUp($('#stat-total-earnings'), totalAll, v => money(v));
   animateCountUp($('#stat-cash-available'), cashAvailable, v => money(v));
   animateCountUp($('#stat-net-after-withdrawals'), netAfterWithdrawals, v => money(v));
   animateCountUp($('#stat-avg-ticket-all'), avgTicketAllTime, v => money(v));
-  animateCountUp($('#stat-streak'), streak, v => Math.round(v).toString());
-  animateCountUp($('#stat-projection'), projected, v => money(v));
-}
-
-// Cuenta cuántos días seguidos (terminando hoy, o ayer si hoy todavía
-// no se ha vendido nada) hay al menos un pedido registrado.
-function calcSellingStreak(){
-  const daysWithSales = new Set(orders.map(o => (o.timestamp||'').slice(0,10)));
-  let cursor = new Date();
-  if(!daysWithSales.has(cursor.toISOString().slice(0,10))){
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  let streak = 0;
-  while(daysWithSales.has(cursor.toISOString().slice(0,10))){
-    streak++;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  return streak;
-}
-
-// "A este ritmo, vas a cerrar el mes en $X" — usa el promedio diario
-// de lo que va del mes para proyectar el total al día final del mes.
-function calcMonthProjection(){
-  const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-  const dayOfMonth = now.getDate();
-  const monthTotal = orders
-    .filter(o => new Date(o.timestamp) >= startOfMonth)
-    .reduce((s,o)=>s+o.total,0);
-  const avgPerDay = dayOfMonth > 0 ? monthTotal / dayOfMonth : 0;
-  return avgPerDay * daysInMonth;
 }
 
 function animateCountUp(el, endValue, formatFn, duration=700){
