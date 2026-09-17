@@ -254,6 +254,7 @@
     cursor:pointer;
     text-align:left;
     width:100%;
+    white-space:nowrap;
   }
   nav.tabs button .tab-icon{
     width:17px;
@@ -383,28 +384,24 @@
   #product-search-clear:hover{ opacity:1; }
   .category-tabs{
     display:flex;
-    gap:6px;
-    margin:-16px -18px 14px -18px;
-    padding:14px 18px 16px 18px;
-    background:var(--sidebar-bg);
+    gap:8px;
+    margin-bottom:16px;
     flex-wrap:wrap;
-    box-shadow:0 2px 10px rgba(0,0,0,0.15);
   }
   .category-tabs button{
-    background:transparent;
+    background:var(--charcoal-2);
     border:1px solid var(--line);
     padding:8px 16px;
-    border-radius:0;
+    border-radius:var(--radius-sm);
     font-weight:700;
     font-size:13px;
     cursor:pointer;
-    color:var(--on-sidebar);
-    opacity:0.75;
+    color:var(--on-charcoal-2);
     text-transform:uppercase;
     letter-spacing:0.03em;
+    box-shadow:var(--shadow-sm);
   }
   .category-tabs button:hover{
-    opacity:1;
     border-color:var(--mustard);
   }
   .category-tabs button.active{
@@ -1232,9 +1229,9 @@
   .home-empty-note{ color:var(--on-charcoal-2); opacity:0.55; font-size:13px; }
   .sales-stats{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
-    gap:16px;
-    margin-bottom:20px;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:18px;
+    margin-bottom:22px;
   }
   .withdrawal-row{
     margin-bottom:22px;
@@ -1277,7 +1274,7 @@
     background:var(--charcoal-2);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
-    padding:14px 16px;
+    padding:20px 22px;
     box-shadow:var(--shadow-sm);
     transition:transform .15s ease, box-shadow .15s ease;
   }
@@ -1287,7 +1284,7 @@
   }
   .sales-stat-card .num{
     font-family:'Anton',sans-serif;
-    font-size:24px;
+    font-size:32px;
     color:var(--mustard);
   }
   .sales-stat-card .lbl{
@@ -1311,7 +1308,7 @@
     margin:0 0 16px 0;
     font-weight:700;
   }
-  .chart-canvas-box{ height:320px; position:relative; }
+  .chart-canvas-box{ height:420px; position:relative; }
   .chart-empty-state{
     display:none;
     padding:30px 10px;
@@ -1689,11 +1686,6 @@
       <div class="home-section" id="home-top-products-section" style="display:none;">
         <h3><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span> Tus productos más vendidos</h3>
         <div id="home-top-products-list" class="home-chip-list"></div>
-      </div>
-
-      <div class="home-section" id="home-plan-section">
-        <h3><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></span> Lo que tienes activado</h3>
-        <div id="home-plan-list" class="home-chip-list"></div>
       </div>
     </section>
 
@@ -3574,29 +3566,6 @@ function renderHomeView(){
     } else {
       topSection.style.display = 'none';
     }
-  }
-
-  // Resumen de qué funciones tiene activas este negocio (lo que su
-  // plan le permite usar ahora mismo).
-  const planList = $('#home-plan-list');
-  if(planList){
-    const active = [];
-    if(featurePrintingEnabled) active.push('Impresión de tickets');
-    if(featureSalesViewEnabled) active.push('Panel de ventas y análisis');
-    if(featureHistoryEnabled) active.push('Historial');
-    if(featureMenuEnabled) active.push('Gestión de menú');
-    if(featureInventoryEnabled) active.push('Control de inventario');
-    if(featureProductImagesEnabled) active.push('Fotos de producto');
-    if(featureDiscountsEnabled) active.push('Descuentos');
-    if(featureCustomersEnabled) active.push('Gestión de clientes');
-    const paymentMethods = [];
-    if(featurePaymentCash) paymentMethods.push('Efectivo');
-    if(featurePaymentTransfer) paymentMethods.push('Transferencia');
-    if(featurePaymentCard) paymentMethods.push('Tarjeta');
-    if(paymentMethods.length) active.push('Pago: ' + paymentMethods.join(', '));
-    planList.innerHTML = active.length
-      ? active.map(a => `<div class="home-chip on">${escapeHtml(a)}</div>`).join('')
-      : '<div class="home-empty-note">No hay funciones activas por mostrar.</div>';
   }
 }
 
