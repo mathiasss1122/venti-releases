@@ -2854,9 +2854,15 @@ function getThemeColor(varName){
 function renderSalesView(){
   renderSalesStats();
   renderTotalEarningsStats();
-  renderDailySalesChart();
-  renderBestDaysChart();
-  renderTopProductsChart();
+  // Se espera un instante (requestAnimationFrame) para que el navegador
+  // termine de mostrar la pestaña antes de dibujar los gráficos — si se
+  // dibujan en el mismo instante en que la pestaña deja de estar oculta,
+  // a veces Chart.js mide mal el espacio y el gráfico queda invisible.
+  requestAnimationFrame(() => {
+    renderDailySalesChart();
+    renderBestDaysChart();
+    renderTopProductsChart();
+  });
 }
 $('#withdrawal-btn').addEventListener('click', handleWithdrawal);
 
@@ -2987,6 +2993,7 @@ function renderDailySalesChart(){
       }
     }
   });
+  setTimeout(() => dailyChartInstance && dailyChartInstance.resize(), 60);
 }
 
 function renderBestDaysChart(){
@@ -3056,6 +3063,7 @@ function renderBestDaysChart(){
       }
     }
   });
+  setTimeout(() => bestDaysChartInstance && bestDaysChartInstance.resize(), 60);
 }
 
 function showChartEmptyState(card, message){
@@ -3145,6 +3153,7 @@ function renderTopProductsChart(){
       }
     }
   });
+  setTimeout(() => topProductsChartInstance && topProductsChartInstance.resize(), 60);
 }
 
 function escapeHtml(str){
