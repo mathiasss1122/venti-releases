@@ -1177,6 +1177,10 @@
   /* ---- SALES VIEW ---- */
   #sales-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
   #sales-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
+  #analysis-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
+  #analysis-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
+  #customers-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
+  #customers-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   .sales-sub{ color:#8286B0; font-size:13.5px; margin-bottom:18px; }
 
   /* ---- HOME VIEW ---- */
@@ -1293,6 +1297,18 @@
     text-transform:uppercase;
     letter-spacing:0.04em;
     margin-top:2px;
+  }
+  .chart-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(420px, 1fr));
+    gap:22px;
+  }
+  .chart-grid .chart-card{
+    margin-bottom:0;
+  }
+  .chart-grid .chart-canvas-box{
+    height:auto;
+    aspect-ratio:1 / 1;
   }
   .chart-card{
     background:var(--charcoal-2);
@@ -1770,6 +1786,7 @@
       <h2>Análisis</h2>
       <div class="sales-sub">Gráficos para entender mejor tu negocio.</div>
 
+      <div class="chart-grid">
       <div class="chart-card">
         <h3>Ventas de los últimos 7 días</h3>
         <div class="chart-canvas-box" id="daily-sales-chart"></div>
@@ -1793,6 +1810,7 @@
       <div class="chart-card">
         <h3>Productos que más dinero generan</h3>
         <div class="chart-canvas-box" id="top-products-revenue-chart"></div>
+      </div>
       </div>
     </section>
 
@@ -2063,6 +2081,8 @@ let featurePaymentCash = true;
 let featurePaymentTransfer = true;
 let featurePaymentCard = true;
 let featureDiscountsEnabled = true;
+let featureProductEmojiEnabled = false;
+let featureTicketCustomEnabled = false;
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -3359,7 +3379,7 @@ $('#add-item-form').addEventListener('submit', async (e) => {
   }
   if(stock !== null) itemData.stock = stock;
   const emojiVal = form.emoji.value.trim();
-  if(emojiVal) itemData.emoji = emojiVal;
+  if(featureProductEmojiEnabled && emojiVal) itemData.emoji = emojiVal;
   if(featureProductImagesEnabled && pendingProductImageBase64) itemData.image = pendingProductImageBase64;
 
   if(editingItemId){
@@ -4320,6 +4340,18 @@ function tickClock(){
 setInterval(tickClock, 1000 * 30);
 tickClock();
 
+// Recuerda el último correo con el que se inició sesión en esta
+// computadora (nunca la contraseña) — así solo hay que escribir la
+// contraseña la próxima vez, aunque se puede cambiar el correo si se
+// necesita.
+try {
+  const rememberedEmail = localStorage.getItem('venti-last-email');
+  if(rememberedEmail){
+    $('#login-user-field').value = rememberedEmail;
+    $('#login-pass-field').focus();
+  }
+} catch(e){ /* si localStorage no está disponible, no pasa nada */ }
+
 $('#login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = $('#login-user-field').value.trim();
@@ -4337,6 +4369,7 @@ $('#login-form').addEventListener('submit', async (e) => {
   btn.textContent = 'Entrando…';
   try {
     await signInWithEmailAndPassword(auth, email, pass);
+    localStorage.setItem('venti-last-email', email);
     // onAuthStateChanged se encarga de resolver el negocio y ocultar el login
   } catch(err){
     console.error('Error de inicio de sesión', err);
@@ -4559,6 +4592,17 @@ function applyTenantBranding(data){
   const productImageField = $('#product-image-field');
   if(productImageField) productImageField.style.display = featureProductImagesEnabled ? 'inline-flex' : 'none';
 
+  // Función "Emoji de producto": la decides tú, no el negocio, desde tu panel
+  featureProductEmojiEnabled = !!(data && data.productEmojiEnabled === true);
+  const productEmojiInput = $('#product-emoji-input');
+  if(productEmojiInput) productEmojiInput.style.display = featureProductEmojiEnabled ? 'inline-block' : 'none';
+
+  // Función "Personalizar mensaje del ticket": la decides tú, además de
+  // requerir que la impresión esté activa
+  featureTicketCustomEnabled = !!(data && data.ticketCustomEnabled === true);
+  const ticketMsgBoxToggle = $('#ticket-message-box');
+  if(ticketMsgBoxToggle) ticketMsgBoxToggle.style.display = (featurePrintingEnabled && featureTicketCustomEnabled) ? 'flex' : 'none';
+
   // Función "Nombre del cliente obligatorio": puede desactivarse por negocio
   featureCustomerNameEnabled = !data || data.customerNameEnabled !== false;
   const customerNameBox = document.querySelector('.customer-name-box');
@@ -4620,6 +4664,12 @@ function resetBranding(){
   featureProductImagesEnabled = false;
   const productImageField = $('#product-image-field');
   if(productImageField) productImageField.style.display = 'none';
+  featureProductEmojiEnabled = false;
+  const productEmojiInput = $('#product-emoji-input');
+  if(productEmojiInput) productEmojiInput.style.display = 'none';
+  featureTicketCustomEnabled = false;
+  const ticketMsgBoxToggle = $('#ticket-message-box');
+  if(ticketMsgBoxToggle) ticketMsgBoxToggle.style.display = 'none';
 
   featureHistoryEnabled = true;
   featureCustomersEnabled = false;
