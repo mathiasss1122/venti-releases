@@ -1054,9 +1054,29 @@
     font-weight:700;
     font-size:13px;
     cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
   }
   #withdrawal-btn:hover{
     background:var(--brick);
+    color:#FFFFFF;
+  }
+  #export-report-btn{
+    background:none;
+    border:1px solid var(--green);
+    color:var(--green);
+    padding:10px 16px;
+    border-radius:var(--radius-sm);
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+  }
+  #export-report-btn:hover{
+    background:var(--green);
     color:#FFFFFF;
   }
   .sales-stat-card{
@@ -1507,8 +1527,9 @@
 
       <div class="sales-stats" id="total-earnings-stats"></div>
 
-      <div class="withdrawal-row">
+      <div class="withdrawal-row" style="display:flex; gap:10px; flex-wrap:wrap;">
         <button type="button" id="withdrawal-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Retiro de capital</button>
+        <button type="button" id="export-report-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span> Exportar reporte (Excel)</button>
       </div>
 
       <div class="sales-stats" id="sales-stats"></div>
@@ -1524,8 +1545,18 @@
       </div>
 
       <div class="chart-card">
-        <h3>Productos más vendidos</h3>
+        <h3>Tu hora pico de ventas</h3>
+        <div class="chart-canvas-box" id="peak-hour-chart"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Productos más vendidos (cantidad)</h3>
         <div class="chart-canvas-box" id="top-products-chart"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Productos que más dinero generan</h3>
+        <div class="chart-canvas-box" id="top-products-revenue-chart"></div>
       </div>
     </section>
 
@@ -2935,19 +2966,39 @@ function renderSalesView(){
   renderTotalEarningsStats();
   renderDailySalesChart();
   renderBestDaysChart();
+  renderPeakHourChart();
   renderTopProductsChart();
+  renderTopProductsByRevenueChart();
 }
 $('#withdrawal-btn').addEventListener('click', handleWithdrawal);
+$('#export-report-btn').addEventListener('click', exportSalesReportCSV);
 
 function renderSalesStats(){
   const now = Date.now();
   const weekAgo = now - 7*24*60*60*1000;
+  const twoWeeksAgo = now - 14*24*60*60*1000;
   const weekOrders = orders.filter(o => new Date(o.timestamp).getTime() >= weekAgo);
+  const prevWeekOrders = orders.filter(o => {
+    const t = new Date(o.timestamp).getTime();
+    return t >= twoWeeksAgo && t < weekAgo;
+  });
   const weekTotal = weekOrders.reduce((s,o)=>s+o.total,0);
+  const prevWeekTotal = prevWeekOrders.reduce((s,o)=>s+o.total,0);
   const avgTicket = weekOrders.length ? weekTotal/weekOrders.length : 0;
   const cash = weekOrders.filter(o=>o.payment==='Efectivo').reduce((s,o)=>s+o.total,0);
   const transfer = weekOrders.filter(o=>o.payment==='Transferencia').reduce((s,o)=>s+o.total,0);
   const card = weekOrders.filter(o=>o.payment==='Tarjeta').reduce((s,o)=>s+o.total,0);
+
+  let vsLastWeekHtml, vsLastWeekLbl;
+  if(prevWeekTotal > 0){
+    const pct = ((weekTotal - prevWeekTotal) / prevWeekTotal) * 100;
+    const up = pct >= 0;
+    vsLastWeekHtml = `<span style="color:${up ? 'var(--green)' : 'var(--brick)'};">${up ? '▲' : '▼'} ${Math.abs(pct).toFixed(0)}%</span>`;
+    vsLastWeekLbl = 'Comparado con la semana pasada';
+  } else {
+    vsLastWeekHtml = '—';
+    vsLastWeekLbl = 'Sin datos de la semana pasada';
+  }
 
   const statsEl = $('#sales-stats');
   if(!statsEl) return;
@@ -2955,6 +3006,7 @@ function renderSalesStats(){
     <div class="sales-stat-card"><div class="num" id="stat-week-total">$0.00</div><div class="lbl">Vendido (7 días)</div></div>
     <div class="sales-stat-card"><div class="num" id="stat-week-orders">0</div><div class="lbl">Pedidos (7 días)</div></div>
     <div class="sales-stat-card"><div class="num" id="stat-avg-ticket">$0.00</div><div class="lbl">Ticket promedio</div></div>
+    <div class="sales-stat-card"><div class="num" style="font-size:20px;">${vsLastWeekHtml}</div><div class="lbl">${vsLastWeekLbl}</div></div>
     <div class="sales-stat-card"><div class="num" style="font-size:16px;">${money(cash)} / ${money(transfer)} / ${money(card)}</div><div class="lbl">Efectivo / Transferencia / Tarjeta</div></div>
   `;
   animateCountUp($('#stat-week-total'), weekTotal, v => money(v));
@@ -2969,6 +3021,10 @@ function renderTotalEarningsStats(){
   const cardAll = orders.filter(o=>o.payment==='Tarjeta').reduce((s,o)=>s+o.total,0);
   const totalWithdrawn = withdrawals.reduce((s,w)=>s+w.amount,0);
   const cashAvailable = cashAll - totalWithdrawn;
+  const netAfterWithdrawals = totalAll - totalWithdrawn;
+  const avgTicketAllTime = orders.length ? totalAll / orders.length : 0;
+  const streak = calcSellingStreak();
+  const projected = calcMonthProjection();
 
   const statsEl = $('#total-earnings-stats');
   if(!statsEl) return;
@@ -2976,9 +3032,47 @@ function renderTotalEarningsStats(){
     <div class="sales-stat-card"><div class="num" id="stat-total-earnings">$0.00</div><div class="lbl">Ganancia total</div></div>
     <div class="sales-stat-card"><div class="num" style="font-size:16px;">${money(cashAll)} / ${money(transferAll)} / ${money(cardAll)}</div><div class="lbl">Total en Efectivo / Transferencia / Tarjeta</div></div>
     <div class="sales-stat-card"><div class="num" id="stat-cash-available" style="color:var(--brick);">$0.00</div><div class="lbl">Efectivo disponible (tras retiros)</div></div>
+    <div class="sales-stat-card"><div class="num" id="stat-net-after-withdrawals">$0.00</div><div class="lbl">Ganancia total (contando retiros)</div></div>
+    <div class="sales-stat-card"><div class="num" id="stat-avg-ticket-all">$0.00</div><div class="lbl">Ticket promedio (histórico)</div></div>
+    <div class="sales-stat-card"><div class="num" id="stat-streak">0</div><div class="lbl">${streak === 1 ? 'Día seguido vendiendo' : 'Días seguidos vendiendo'}</div></div>
+    <div class="sales-stat-card"><div class="num" id="stat-projection" style="color:var(--mustard);">$0.00</div><div class="lbl">Proyección de este mes</div></div>
   `;
   animateCountUp($('#stat-total-earnings'), totalAll, v => money(v));
   animateCountUp($('#stat-cash-available'), cashAvailable, v => money(v));
+  animateCountUp($('#stat-net-after-withdrawals'), netAfterWithdrawals, v => money(v));
+  animateCountUp($('#stat-avg-ticket-all'), avgTicketAllTime, v => money(v));
+  animateCountUp($('#stat-streak'), streak, v => Math.round(v).toString());
+  animateCountUp($('#stat-projection'), projected, v => money(v));
+}
+
+// Cuenta cuántos días seguidos (terminando hoy, o ayer si hoy todavía
+// no se ha vendido nada) hay al menos un pedido registrado.
+function calcSellingStreak(){
+  const daysWithSales = new Set(orders.map(o => (o.timestamp||'').slice(0,10)));
+  let cursor = new Date();
+  if(!daysWithSales.has(cursor.toISOString().slice(0,10))){
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  let streak = 0;
+  while(daysWithSales.has(cursor.toISOString().slice(0,10))){
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
+// "A este ritmo, vas a cerrar el mes en $X" — usa el promedio diario
+// de lo que va del mes para proyectar el total al día final del mes.
+function calcMonthProjection(){
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const dayOfMonth = now.getDate();
+  const monthTotal = orders
+    .filter(o => new Date(o.timestamp) >= startOfMonth)
+    .reduce((s,o)=>s+o.total,0);
+  const avgPerDay = dayOfMonth > 0 ? monthTotal / dayOfMonth : 0;
+  return avgPerDay * daysInMonth;
 }
 
 function animateCountUp(el, endValue, formatFn, duration=700){
@@ -3083,11 +3177,18 @@ function renderSvgBarChart(containerId, labels, values, opts){
   });
 
   // Línea de tendencia: conecta la punta de cada barra, para ver de un
-  // vistazo si va subiendo o bajando, además de las barras.
+  // vistazo si va subiendo o bajando, además de las barras. La longitud
+  // se calcula a mano (suma de distancias entre puntos) para poder
+  // ocultarla desde el primer instante, sin que se alcance a ver
+  // completa antes de empezar a animarse.
   const linePath = points.map((p,i) => (i===0?'M':'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  let lineLength = 0;
+  for(let i=1; i<points.length; i++){
+    lineLength += Math.hypot(points[i].x - points[i-1].x, points[i].y - points[i-1].y);
+  }
   const dots = points.map(p => `<circle class="svg-line-dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="#FFFFFF" stroke="${accent}" stroke-width="2" opacity="0"/>`).join('');
 
-  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:100%; display:block;">${grid}${bars}<path class="svg-trend-line" d="${linePath}" fill="none" stroke="#FFFFFF" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>${dots}${labelsHtml}</svg>`;
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:100%; display:block;">${grid}${bars}<path class="svg-trend-line" d="${linePath}" fill="none" stroke="#FFFFFF" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" style="stroke-dasharray:${lineLength.toFixed(1)}; stroke-dashoffset:${lineLength.toFixed(1)};"/>${dots}${labelsHtml}</svg>`;
 
   // Se espera a que el navegador pinte el estado inicial antes de poner
   // los valores reales de las barras y de "destrazar" la línea, así las
@@ -3101,10 +3202,7 @@ function renderSvgBarChart(containerId, labels, values, opts){
 
       const pathEl = box.querySelector('.svg-trend-line');
       if(pathEl){
-        const len = pathEl.getTotalLength();
         const lineDelay = n * 0.035 + 0.15;
-        pathEl.style.strokeDasharray = len;
-        pathEl.style.strokeDashoffset = len;
         pathEl.style.transition = `stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1) ${lineDelay}s`;
         requestAnimationFrame(() => { pathEl.style.strokeDashoffset = '0'; });
 
@@ -3162,6 +3260,91 @@ function renderTopProductsChart(){
     formatAxis: v => Math.round(v),
     emptyMessage: 'Aquí vas a ver tus productos más vendidos apenas registres tus primeras ventas.'
   });
+}
+
+function renderTopProductsByRevenueChart(){
+  const revenue = {};
+  orders.forEach(o => (o.items||[]).forEach(it => {
+    revenue[it.name] = (revenue[it.name]||0) + (Number(it.price)||0) * it.qty;
+  }));
+  const sorted = Object.entries(revenue).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  renderSvgBarChart('top-products-revenue-chart', sorted.map(s=>s[0]), sorted.map(s=>s[1]), {
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    highlightMax: true,
+    dimOpacity: 0.45,
+    emptyMessage: 'Aquí vas a ver qué productos generan más dinero, no solo cuáles se venden más.'
+  });
+}
+
+function formatHourLabel(h){
+  const period = h < 12 ? 'AM' : 'PM';
+  let displayH = h % 12;
+  if(displayH === 0) displayH = 12;
+  return displayH + period;
+}
+
+function renderPeakHourChart(){
+  const hourTotals = new Array(24).fill(0);
+  orders.forEach(o => {
+    const h = new Date(o.timestamp).getHours();
+    hourTotals[h] += o.total;
+  });
+  const labels = [], values = [];
+  for(let h = 0; h < 24; h++){
+    if(hourTotals[h] > 0){
+      labels.push(formatHourLabel(h));
+      values.push(hourTotals[h]);
+    }
+  }
+  renderSvgBarChart('peak-hour-chart', labels, values, {
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    highlightMax: true,
+    dimOpacity: 0.4,
+    emptyMessage: 'Con más ventas registradas, aquí vas a ver a qué hora del día vendes más.'
+  });
+}
+
+// Exporta un resumen día por día (pedidos, desglose de pago, total) en
+// un CSV que Excel abre directo — con acento en el nombre y todo.
+function exportSalesReportCSV(){
+  const rows = [['Fecha', 'Pedidos', 'Efectivo', 'Transferencia', 'Tarjeta', 'Total']];
+
+  const sortedClosures = [...closures].sort((a,b) => new Date(a.closedAt) - new Date(b.closedAt));
+  sortedClosures.forEach(c => {
+    const dayOrders = orders.filter(o => o.dayId === c.id);
+    const cash = dayOrders.filter(o=>o.payment==='Efectivo').reduce((s,o)=>s+o.total,0);
+    const transfer = dayOrders.filter(o=>o.payment==='Transferencia').reduce((s,o)=>s+o.total,0);
+    const card = dayOrders.filter(o=>o.payment==='Tarjeta').reduce((s,o)=>s+o.total,0);
+    rows.push([c.label, c.orderCount, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), c.total.toFixed(2)]);
+  });
+
+  const openOrders = orders.filter(o => !o.dayId);
+  if(openOrders.length){
+    const cash = openOrders.filter(o=>o.payment==='Efectivo').reduce((s,o)=>s+o.total,0);
+    const transfer = openOrders.filter(o=>o.payment==='Transferencia').reduce((s,o)=>s+o.total,0);
+    const card = openOrders.filter(o=>o.payment==='Tarjeta').reduce((s,o)=>s+o.total,0);
+    const total = openOrders.reduce((s,o)=>s+o.total,0);
+    rows.push(['Hoy (día sin cerrar)', openOrders.length, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), total.toFixed(2)]);
+  }
+
+  if(rows.length === 1){
+    appAlert('Todavía no hay ventas registradas para exportar.', 'Sin datos');
+    return;
+  }
+
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const todayLabel = new Date().toISOString().slice(0,10);
+  a.download = `reporte-ventas-${todayLabel}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
 function escapeHtml(str){
