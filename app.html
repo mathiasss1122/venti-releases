@@ -27,6 +27,7 @@
     --on-cart-bg: #F4F1E9;
     --on-card-bg: #FFFFFF;
     --on-charcoal-2: #F4F1E9;
+    --on-charcoal: #F4F1E9;
     --radius-sm: 7px;
     --radius-md: 11px;
     --radius-lg: 16px;
@@ -83,7 +84,7 @@
     margin:0;
     font-family:'Inter',sans-serif;
     background:var(--charcoal);
-    color:var(--ink);
+    color:var(--on-charcoal);
     height:100vh;
     overflow:hidden;
     font-variant-numeric: tabular-nums;
@@ -494,7 +495,7 @@
     border-radius:7px;
     border:1px solid #4A453D;
     background:var(--cart-bg-2);
-    color:var(--cream);
+    color:var(--on-cart-bg);
     font-family:'Inter',sans-serif;
     font-size:13.5px;
   }
@@ -591,7 +592,7 @@
     width:50px;
     background:var(--cart-bg-2);
     border:1px solid #4A453D;
-    color:var(--cream);
+    color:var(--on-cart-bg);
     border-radius:5px;
     padding:2px 5px;
     font-size:13px;
@@ -618,7 +619,7 @@
     width:100%;
     background:none;
     border:1px solid var(--line);
-    color:var(--cream);
+    color:var(--on-cart-bg);
     padding:10px;
     border-radius:9px;
     font-family:'Inter',sans-serif;
@@ -715,7 +716,7 @@
   }
   .modal-actions .confirm{ background:var(--green); color:white; }
   .modal-actions .confirm:disabled{ background:#BDBDBD; cursor:not-allowed; }
-  .modal-actions .cancel{ background:var(--cream-2); color:var(--ink); }
+  .modal-actions .cancel{ background:var(--cream-2); color:var(--on-charcoal); }
 
   .cash-box{
     margin:4px 0 18px 0;
@@ -771,7 +772,7 @@
 
   /* ---- HISTORY VIEW ---- */
   #history-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
-  #history-view h2{ font-size:24px; margin-bottom:2px; color:var(--cream); }
+  #history-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   .history-sub{ color:#8286B0; font-size:13.5px; margin-bottom:16px; }
   .order-card{
     background:var(--charcoal-2);
@@ -805,7 +806,7 @@
     align-items:center;
     margin-bottom:6px;
   }
-  .order-card .top .id{ font-weight:800; font-size:14.5px; color:var(--cream); }
+  .order-card .top .id{ font-weight:800; font-size:14.5px; color:var(--on-charcoal-2); }
   .order-card .top .time{ font-size:12.5px; color:#8286B0; }
   .order-card .items{ font-size:13px; color:#B7BAE0; margin-bottom:6px; }
   .order-card .bottom{
@@ -829,7 +830,7 @@
   .order-card .cust-name{
     font-size:13px;
     font-weight:700;
-    color:var(--cream);
+    color:var(--on-charcoal-2);
     margin-bottom:4px;
   }
   .deliver-toggle{
@@ -905,7 +906,7 @@
     align-items:center;
     margin-bottom:10px;
   }
-  .day-open-label{ font-family:'Anton',sans-serif; font-size:17px; color:var(--cream); }
+  .day-open-label{ font-family:'Anton',sans-serif; font-size:17px; color:var(--on-charcoal-2); }
   .day-open-meta{ font-size:12.5px; color:#8286B0; margin-top:2px; }
   #close-day-btn{
     background:var(--mustard);
@@ -949,7 +950,7 @@
   details.day-group summary .lbl{
     font-weight:700;
     font-size:14.5px;
-    color:var(--cream);
+    color:var(--on-charcoal-2);
   }
   details.day-group summary .meta{
     font-size:12px;
@@ -1018,7 +1019,7 @@
   }
   details.month-group > summary .amt{
     font-weight:800;
-    color:var(--cream);
+    color:var(--on-charcoal);
     font-size:17px;
     margin-left:auto;
   }
@@ -1028,12 +1029,12 @@
 
   /* ---- MENU EDITOR VIEW ---- */
   #menu-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
-  #menu-view h2{ font-size:24px; margin-bottom:2px; color:var(--cream); }
+  #menu-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   .menu-sub{ color:#8286B0; font-size:13.5px; margin-bottom:18px; }
 
   /* ---- SALES VIEW ---- */
   #sales-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
-  #sales-view h2{ font-size:24px; margin-bottom:2px; color:var(--cream); }
+  #sales-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   .sales-sub{ color:#8286B0; font-size:13.5px; margin-bottom:18px; }
   .sales-stats{
     display:grid;
@@ -1092,7 +1093,7 @@
   }
   .chart-card h3{
     font-size:14.5px;
-    color:var(--cream);
+    color:var(--on-charcoal-2);
     margin:0 0 16px 0;
     font-weight:700;
   }
@@ -1120,7 +1121,7 @@
     font-family:'Inter',sans-serif;
     font-size:13.5px;
     background:var(--charcoal-2);
-    color:var(--cream);
+    color:var(--on-charcoal-2);
   }
   .add-item-form input[name="name"]{ flex:1; min-width:160px; }
   .add-item-form input[name="desc"]{ flex:1.4; min-width:180px; }
@@ -1129,7 +1130,7 @@
   .add-item-form input[name="stock"]{ width:110px; }
   #cancel-edit-btn{
     background:var(--charcoal-2);
-    color:var(--cream);
+    color:var(--on-charcoal-2);
     border:1px solid var(--line);
     padding:10px 16px;
     border-radius:7px;
@@ -1202,14 +1203,14 @@
     border-radius:7px;
     border:1px solid var(--line);
     background:var(--charcoal-2);
-    color:var(--cream);
+    color:var(--on-charcoal-2);
   }
   .settings-box select{
     padding:8px 10px;
     border-radius:7px;
     border:1px solid var(--line);
     background:var(--charcoal-2);
-    color:var(--cream);
+    color:var(--on-charcoal-2);
     font-family:'Inter',sans-serif;
     font-size:13.5px;
   }
@@ -1391,7 +1392,6 @@
   @page{ margin:0; }
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 </head>
 <body>
 <div id="login-screen">
@@ -1515,17 +1515,17 @@
 
       <div class="chart-card">
         <h3>Ventas de los últimos 7 días</h3>
-        <div class="chart-canvas-box"><canvas id="daily-sales-chart"></canvas></div>
+        <div class="chart-canvas-box" id="daily-sales-chart"></div>
       </div>
 
       <div class="chart-card">
         <h3>Tus mejores días de la semana</h3>
-        <div class="chart-canvas-box"><canvas id="best-days-chart"></canvas></div>
+        <div class="chart-canvas-box" id="best-days-chart"></div>
       </div>
 
       <div class="chart-card">
         <h3>Productos más vendidos</h3>
-        <div class="chart-canvas-box"><canvas id="top-products-chart"></canvas></div>
+        <div class="chart-canvas-box" id="top-products-chart"></div>
       </div>
     </section>
 
@@ -1553,11 +1553,11 @@
         <button type="button" id="show-import-btn" style="background:none; border:none; color:var(--mustard); font-size:12.5px; font-weight:700; cursor:pointer; text-decoration:underline; padding:0;">Importar menú completo (pegar lista)</button>
       </div>
       <div id="import-box" style="display:none; margin-bottom:18px; background:var(--charcoal-2); border:1px solid var(--line); border-radius:10px; padding:14px;">
-        <div style="font-size:12.5px; color:#B7BAE0; margin-bottom:8px;">Pega aquí la lista de productos (formato que te haya dado tu proveedor del sistema) y toca Importar. Esto <strong>reemplaza todo el menú actual</strong>.</div>
-        <textarea id="import-textarea" rows="6" style="width:100%; padding:10px; border-radius:7px; border:1px solid var(--line); background:var(--charcoal); color:var(--cream); font-family:monospace; font-size:12px;" placeholder="Pega aquí el menú completo..."></textarea>
+        <div style="font-size:12.5px; color:#B7BAE0; margin-bottom:8px;">Pega aquí tu lista de productos, uno por línea (ej. <em>Hamburguesa - 5.00</em>), o el formato JSON que te haya dado tu proveedor del sistema. Esto <strong>reemplaza todo el menú actual</strong>.</div>
+        <textarea id="import-textarea" rows="6" style="width:100%; padding:10px; border-radius:7px; border:1px solid var(--line); background:var(--charcoal); color:var(--on-charcoal); font-family:monospace; font-size:12px;" placeholder="Pega aquí el menú completo..."></textarea>
         <div style="display:flex; gap:8px; margin-top:8px;">
           <button type="button" id="import-menu-btn" style="background:var(--green); color:white; border:none; padding:9px 16px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">Importar</button>
-          <button type="button" id="cancel-import-btn" style="background:var(--charcoal); color:var(--cream); border:1px solid var(--line); padding:9px 16px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">Cancelar</button>
+          <button type="button" id="cancel-import-btn" style="background:var(--charcoal); color:var(--on-charcoal); border:1px solid var(--line); padding:9px 16px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">Cancelar</button>
           <span class="status-msg" id="import-status"></span>
         </div>
       </div>
@@ -1567,7 +1567,7 @@
       </table>
       <div class="settings-box">
         <label>Nombre del negocio:</label>
-        <span id="shop-name-readonly" style="font-weight:700; color:var(--cream);"></span>
+        <span id="shop-name-readonly" style="font-weight:700; color:var(--on-charcoal);"></span>
         <span style="font-size:11.5px; color:#8286B0;">(lo cambia el administrador de la plataforma)</span>
       </div>
       <div class="settings-box">
@@ -1598,7 +1598,7 @@
       </div>
       <div class="settings-box" style="flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
-          <div style="font-weight:700; font-size:13.5px; color:var(--cream);">Respaldo en la nube</div>
+          <div style="font-weight:700; font-size:13.5px; color:var(--on-charcoal);">Respaldo en la nube</div>
           <div style="font-size:12px; color:#8286B0; margin-top:2px;" id="sync-indicator"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span> Solo en esta computadora</div>
         </div>
         <button type="button" id="backup-now-btn" style="background:var(--green); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.24"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg></span> Respaldar ahora</button>
@@ -1606,7 +1606,7 @@
       </div>
       <div class="settings-box" style="flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
-          <div style="font-weight:700; font-size:13.5px; color:var(--cream);">Cuenta</div>
+          <div style="font-weight:700; font-size:13.5px; color:var(--on-charcoal);">Cuenta</div>
           <div style="font-size:12px; color:#8286B0; margin-top:2px;">Cambiar el correo/contraseña se hace desde la consola de Firebase. El botón para cerrar sesión está en el menú lateral, abajo del todo.</div>
         </div>
       </div>
@@ -2712,6 +2712,28 @@ $('#cancel-import-btn').addEventListener('click', () => {
   $('#import-textarea').value = '';
   $('#import-status').textContent = '';
 });
+// Intenta interpretar una lista de texto simple, una línea por producto,
+// del tipo "Nombre - 5.00", "Nombre: 5", "Nombre, $5.00" o con tabulador
+// (como al pegar desde Excel). Si no encuentra un precio en la línea, la
+// agrega con precio $0 para que se complete después a mano.
+function parsePlainTextMenu(raw){
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  const items = [];
+  for(const line of lines){
+    const match = line.match(/^(.+?)[\s\-:,\t]+\$?\s*(\d+(?:[.,]\d{1,2})?)\s*$/);
+    if(match){
+      const name = match[1].trim().replace(/[-:,\t]+$/, '').trim();
+      const price = parseFloat(match[2].replace(',', '.'));
+      if(name && !isNaN(price)){
+        items.push({ name, price, category: 'Importado' });
+        continue;
+      }
+    }
+    items.push({ name: line, price: 0, category: 'Importado' });
+  }
+  return items;
+}
+
 $('#import-menu-btn').addEventListener('click', async () => {
   const statusEl = $('#import-status');
   const raw = $('#import-textarea').value.trim();
@@ -2720,12 +2742,13 @@ $('#import-menu-btn').addEventListener('click', async () => {
   let parsed;
   try {
     parsed = JSON.parse(raw);
+    if(!Array.isArray(parsed)) throw new Error('no es una lista');
   } catch(e){
-    statusEl.textContent = 'Ese texto no tiene el formato correcto.';
-    return;
+    // No era JSON — se intenta como lista de texto simple, una línea por producto
+    parsed = parsePlainTextMenu(raw);
   }
   if(!Array.isArray(parsed) || !parsed.length){
-    statusEl.textContent = 'La lista está vacía o no es válida.';
+    statusEl.textContent = 'No se pudo leer ningún producto de ese texto.';
     return;
   }
 
@@ -2898,9 +2921,7 @@ $$('nav.tabs button').forEach(btn=>{
 });
 
 /* ---------- PANEL DE VENTAS ---------- */
-let dailyChartInstance = null;
-let bestDaysChartInstance = null;
-let topProductsChartInstance = null;
+
 
 function getThemeColor(varName){
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#D9A441';
@@ -2909,15 +2930,9 @@ function getThemeColor(varName){
 function renderSalesView(){
   renderSalesStats();
   renderTotalEarningsStats();
-  // Se espera un instante (requestAnimationFrame) para que el navegador
-  // termine de mostrar la pestaña antes de dibujar los gráficos — si se
-  // dibujan en el mismo instante en que la pestaña deja de estar oculta,
-  // a veces Chart.js mide mal el espacio y el gráfico queda invisible.
-  requestAnimationFrame(() => {
-    renderDailySalesChart();
-    renderBestDaysChart();
-    renderTopProductsChart();
-  });
+  renderDailySalesChart();
+  renderBestDaysChart();
+  renderTopProductsChart();
 }
 $('#withdrawal-btn').addEventListener('click', handleWithdrawal);
 
@@ -2976,149 +2991,11 @@ function animateCountUp(el, endValue, formatFn, duration=700){
   requestAnimationFrame(tick);
 }
 
-function renderDailySalesChart(){
-  const canvas = $('#daily-sales-chart');
-  if(!canvas || typeof Chart === 'undefined') return;
-  const box = canvas.closest('.chart-canvas-box');
-  const card = canvas.closest('.chart-card');
-
-  const days = [];
-  for(let i=6;i>=0;i--){
-    const d = new Date();
-    d.setDate(d.getDate()-i);
-    days.push(d);
-  }
-  const labels = days.map(d => d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric'}));
-  const totals = days.map(d => {
-    const dayStr = d.toISOString().slice(0,10);
-    return orders.filter(o => (o.timestamp||'').slice(0,10) === dayStr).reduce((s,o)=>s+o.total,0);
-  });
-
-  if(dailyChartInstance) dailyChartInstance.destroy();
-
-  if(!orders.length){
-    if(box) box.style.display = 'none';
-    showChartEmptyState(card, 'Aquí vas a ver tus ventas de los últimos 7 días apenas registres tu primer pedido.');
-    return;
-  }
-  if(box) box.style.display = 'block';
-  hideChartEmptyState(card);
-
-  const ctx = canvas.getContext('2d');
-  const accent = getThemeColor('--mustard');
-  const textColor = getThemeColor('--on-charcoal-2');
-  const gradient = ctx.createLinearGradient(0, 0, 0, 260);
-  gradient.addColorStop(0, accent);
-  gradient.addColorStop(1, hexToRgba(accent, 0.35));
-
-  dailyChartInstance = new Chart(canvas, {
-    type: 'bar',
-    data: { labels, datasets: [{
-      label:'Ventas',
-      data: totals,
-      backgroundColor: gradient,
-      hoverBackgroundColor: accent,
-      borderRadius: 8,
-      maxBarThickness: 46
-    }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 700, easing: 'easeOutQuart' },
-      plugins: {
-        legend: { display:false },
-        tooltip: {
-          backgroundColor: '#1A1D3D',
-          titleColor: '#FFFFFF',
-          bodyColor: '#D9A441',
-          bodyFont: { weight: '700' },
-          padding: 10,
-          cornerRadius: 8,
-          displayColors: false,
-          callbacks: { label: (ctx) => money(ctx.parsed.y) }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero:true,
-          ticks:{ color: hexToRgba(textColor, 0.75), callback: (v) => '$' + v },
-          grid:{ color: hexToRgba(textColor, 0.08) }
-        },
-        x: { ticks:{ color: hexToRgba(textColor, 0.75) }, grid:{ display:false } }
-      }
-    }
-  });
-  setTimeout(() => dailyChartInstance && dailyChartInstance.resize(), 60);
-}
-
-function renderBestDaysChart(){
-  const canvas = $('#best-days-chart');
-  if(!canvas || typeof Chart === 'undefined') return;
-  const box = canvas.closest('.chart-canvas-box');
-  const card = canvas.closest('.chart-card');
-
-  if(bestDaysChartInstance) bestDaysChartInstance.destroy();
-
-  if(!orders.length){
-    if(box) box.style.display = 'none';
-    showChartEmptyState(card, 'Con más pedidos registrados, aquí vas a ver qué día de la semana vendes más.');
-    return;
-  }
-  if(box) box.style.display = 'block';
-  hideChartEmptyState(card);
-
-  // Lunes a domingo, aunque getDay() de JS empiece en domingo (0)
-  const dayNames = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-  const totalsByDay = [0,0,0,0,0,0,0];
-  orders.forEach(o => {
-    const jsDay = new Date(o.timestamp).getDay(); // 0=domingo..6=sábado
-    const idx = jsDay === 0 ? 6 : jsDay - 1; // 0=lunes..6=domingo
-    totalsByDay[idx] += o.total;
-  });
-  const maxVal = Math.max(...totalsByDay);
-
-  const ctx = canvas.getContext('2d');
-  const accent = getThemeColor('--mustard');
-  const textColor = getThemeColor('--on-charcoal-2');
-  const colors = totalsByDay.map(v => v === maxVal && maxVal > 0 ? accent : hexToRgba(accent, 0.35));
-
-  bestDaysChartInstance = new Chart(canvas, {
-    type: 'bar',
-    data: { labels: dayNames, datasets: [{
-      label:'Ventas',
-      data: totalsByDay,
-      backgroundColor: colors,
-      borderRadius: 8,
-      maxBarThickness: 40
-    }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 700, easing: 'easeOutQuart' },
-      plugins: {
-        legend: { display:false },
-        tooltip: {
-          backgroundColor: '#1A1D3D',
-          titleColor: '#FFFFFF',
-          bodyColor: '#D9A441',
-          bodyFont: { weight: '700' },
-          padding: 10,
-          cornerRadius: 8,
-          displayColors: false,
-          callbacks: { label: (ctx) => money(ctx.parsed.y) }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero:true,
-          ticks:{ color: hexToRgba(textColor, 0.75), callback: (v) => '$' + v },
-          grid:{ color: hexToRgba(textColor, 0.08) }
-        },
-        x: { ticks:{ color: hexToRgba(textColor, 0.75) }, grid:{ display:false } }
-      }
-    }
-  });
-  setTimeout(() => bestDaysChartInstance && bestDaysChartInstance.resize(), 60);
+function hexToRgba(hex, alpha){
+  hex = (hex||'').replace('#','');
+  if(hex.length !== 6) return `rgba(217,164,65,${alpha})`;
+  const r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 function showChartEmptyState(card, message){
@@ -3138,77 +3015,101 @@ function hideChartEmptyState(card){
   if(el) el.style.display = 'none';
 }
 
-function hexToRgba(hex, alpha){
-  hex = (hex||'').replace('#','');
-  if(hex.length !== 6) return `rgba(217,164,65,${alpha})`;
-  const r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
-  return `rgba(${r},${g},${b},${alpha})`;
+// Gráfica de barras dibujada a mano con SVG — no depende de ninguna
+// librería externa ni de internet, así que SIEMPRE funciona, esté o no
+// esté conectada la computadora en ese momento.
+function renderSvgBarChart(containerId, labels, values, opts){
+  opts = opts || {};
+  const box = $('#' + containerId);
+  if(!box) return;
+  const card = box.closest('.chart-card');
+
+  if(!values.length || values.every(v => !v)){
+    box.style.display = 'none';
+    showChartEmptyState(card, opts.emptyMessage || 'Todavía no hay datos suficientes para mostrar aquí.');
+    return;
+  }
+  box.style.display = 'block';
+  hideChartEmptyState(card);
+
+  const accent = getThemeColor('--mustard');
+  const textColor = getThemeColor('--on-charcoal-2');
+  const W = 640, H = 260;
+  const padL = 46, padR = 10, padT = 10, padB = 28;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
+  const maxVal = Math.max(...values, 0.0001);
+  const n = values.length;
+  const slot = chartW / n;
+  const barW = Math.min(slot * 0.55, 46);
+
+  let grid = '';
+  for(let g = 0; g <= 3; g++){
+    const y = padT + chartH - (g/3) * chartH;
+    const val = (maxVal * g / 3);
+    grid += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="${hexToRgba(textColor,0.08)}" stroke-width="1"/>`;
+    grid += `<text x="${padL-8}" y="${y+3}" text-anchor="end" font-size="10" fill="${hexToRgba(textColor,0.55)}">${opts.formatAxis ? opts.formatAxis(val) : Math.round(val)}</text>`;
+  }
+
+  let bars = '', labelsHtml = '';
+  values.forEach((v, i) => {
+    const barH = (v / maxVal) * chartH;
+    const x = padL + i * slot + (slot - barW) / 2;
+    const y = padT + chartH - barH;
+    const isMax = opts.highlightMax && v === maxVal;
+    const color = isMax ? accent : hexToRgba(accent, opts.dimOpacity || 0.5);
+    const valueLabel = opts.formatValue ? opts.formatValue(v) : v;
+    bars += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(barH,0).toFixed(1)}" rx="5" fill="${color}"><title>${escapeHtml(String(labels[i]))}: ${escapeHtml(String(valueLabel))}</title></rect>`;
+    labelsHtml += `<text x="${(x + barW/2).toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="10.5" fill="${hexToRgba(textColor,0.7)}">${escapeHtml(String(labels[i]))}</text>`;
+  });
+
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%; height:100%; display:block;">${grid}${bars}${labelsHtml}</svg>`;
+}
+
+function renderDailySalesChart(){
+  const days = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    days.push(d);
+  }
+  const labels = days.map(d => d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric'}));
+  const totals = days.map(d => {
+    const dayStr = d.toISOString().slice(0,10);
+    return orders.filter(o => (o.timestamp||'').slice(0,10) === dayStr).reduce((s,o)=>s+o.total,0);
+  });
+  renderSvgBarChart('daily-sales-chart', labels, totals, {
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    emptyMessage: 'Aquí vas a ver tus ventas de los últimos 7 días apenas registres tu primer pedido.'
+  });
+}
+
+function renderBestDaysChart(){
+  const dayNames = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  const totalsByDay = [0,0,0,0,0,0,0];
+  orders.forEach(o => {
+    const jsDay = new Date(o.timestamp).getDay(); // 0=domingo..6=sábado
+    const idx = jsDay === 0 ? 6 : jsDay - 1; // 0=lunes..6=domingo
+    totalsByDay[idx] += o.total;
+  });
+  renderSvgBarChart('best-days-chart', dayNames, totalsByDay, {
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    highlightMax: true,
+    dimOpacity: 0.35,
+    emptyMessage: 'Con más pedidos registrados, aquí vas a ver qué día de la semana vendes más.'
+  });
 }
 
 function renderTopProductsChart(){
-  const canvas = $('#top-products-chart');
-  if(!canvas || typeof Chart === 'undefined') return;
-
   const counts = {};
   orders.forEach(o => (o.items||[]).forEach(it => { counts[it.name] = (counts[it.name]||0) + it.qty; }));
   const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
-  if(topProductsChartInstance) topProductsChartInstance.destroy();
-  const box = canvas.closest('.chart-canvas-box');
-  const card = canvas.closest('.chart-card');
-  if(!sorted.length){
-    if(box) box.style.display = 'none';
-    showChartEmptyState(card, 'Aquí vas a ver tus productos más vendidos apenas registres tus primeras ventas.');
-    return;
-  }
-  if(box) box.style.display = 'block';
-  hideChartEmptyState(card);
-
-  const ctx = canvas.getContext('2d');
-  const accent = getThemeColor('--mustard');
-  const textColor = getThemeColor('--on-charcoal-2');
-  const gradient = ctx.createLinearGradient(0, 0, 260, 0);
-  gradient.addColorStop(0, hexToRgba(accent, 0.55));
-  gradient.addColorStop(1, accent);
-
-  topProductsChartInstance = new Chart(canvas, {
-    type: 'bar',
-    data: {
-      labels: sorted.map(s=>s[0]),
-      datasets: [{
-        label:'Unidades vendidas',
-        data: sorted.map(s=>s[1]),
-        backgroundColor: gradient,
-        hoverBackgroundColor: accent,
-        borderRadius: 8,
-        maxBarThickness: 28
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 700, easing: 'easeOutQuart' },
-      plugins: {
-        legend: { display:false },
-        tooltip: {
-          backgroundColor: '#1A1D3D',
-          titleColor: '#FFFFFF',
-          bodyColor: '#D9A441',
-          bodyFont: { weight: '700' },
-          padding: 10,
-          cornerRadius: 8,
-          displayColors: false,
-          callbacks: { label: (ctx) => `${ctx.parsed.x} vendidas` }
-        }
-      },
-      scales: {
-        x: { beginAtZero:true, ticks:{ color: hexToRgba(textColor, 0.75), precision:0 }, grid:{ color: hexToRgba(textColor, 0.08) } },
-        y: { ticks:{ color: hexToRgba(textColor, 0.9), font:{ weight:'600' } }, grid:{ display:false } }
-      }
-    }
+  renderSvgBarChart('top-products-chart', sorted.map(s=>s[0]), sorted.map(s=>s[1]), {
+    formatValue: v => `${v} vendidas`,
+    formatAxis: v => Math.round(v),
+    emptyMessage: 'Aquí vas a ver tus productos más vendidos apenas registres tus primeras ventas.'
   });
-  setTimeout(() => topProductsChartInstance && topProductsChartInstance.resize(), 60);
 }
 
 function escapeHtml(str){
@@ -3711,9 +3612,15 @@ function applyTenantBranding(data){
   document.documentElement.style.setProperty('--mustard-dark', darkenHex(primary, 0.22));
   document.documentElement.style.setProperty('--on-primary', getContrastColor(primary));
   document.documentElement.style.setProperty('--charcoal', secondary);
-  document.documentElement.style.setProperty('--charcoal-2', lightenHex(secondary, 0.06));
+  document.documentElement.style.setProperty('--on-charcoal', getContrastColor(secondary));
+
+  // Color de fondo de las pestañas Menú, Historial y Ventas: si el
+  // negocio no lo eligió directamente, se deriva del color secundario
+  // como antes, para no romper nada de lo ya existente.
+  const contentColor = (data && data.contentColor) || lightenHex(secondary, 0.06);
+  document.documentElement.style.setProperty('--charcoal-2', contentColor);
   document.documentElement.style.setProperty('--cream-2', lightenHex(secondary, 0.04));
-  document.documentElement.style.setProperty('--on-charcoal-2', getContrastColor(lightenHex(secondary, 0.06)));
+  document.documentElement.style.setProperty('--on-charcoal-2', getContrastColor(contentColor));
 
   // Color del menú lateral (donde dice "Principal") y de la barra de
   // categorías, independiente del resto — si el negocio no lo definió,
@@ -3844,6 +3751,7 @@ function resetBranding(){
   document.documentElement.style.removeProperty('--on-cart-bg');
   document.documentElement.style.removeProperty('--on-card-bg');
   document.documentElement.style.removeProperty('--on-charcoal-2');
+  document.documentElement.style.removeProperty('--on-charcoal');
   $('#shop-name').textContent = 'Sistema POS';
   document.title = 'Sistema POS';
   applyLogo(null);
