@@ -30,9 +30,9 @@
     --radius-sm: 7px;
     --radius-md: 11px;
     --radius-lg: 16px;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
-    --shadow-md: 0 6px 20px rgba(0,0,0,0.35);
-    --shadow-lg: 0 16px 44px rgba(0,0,0,0.45);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.18);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.22);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.32);
   }
   *{box-sizing:border-box;}
 
@@ -86,6 +86,7 @@
     color:var(--ink);
     height:100vh;
     overflow:hidden;
+    font-variant-numeric: tabular-nums;
   }
   h1,h2,h3,.display{
     font-family:'Anton',sans-serif;
@@ -165,6 +166,9 @@
     font-size:12px;
     cursor:pointer;
     text-align:left;
+    display:flex;
+    align-items:center;
+    gap:7px;
   }
   .sidebar-logout-btn:hover{
     background:var(--brick);
@@ -226,8 +230,19 @@
     width:100%;
   }
   nav.tabs button .tab-icon{
-    font-size:16px;
+    width:17px;
+    height:17px;
+    flex-shrink:0;
   }
+  nav.tabs button .tab-icon svg{ width:100%; height:100%; }
+  .icon-svg{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    vertical-align:-3px;
+    flex-shrink:0;
+  }
+  .icon-svg svg{ width:100%; height:100%; display:block; }
   nav.tabs button.active{
     background:rgba(217,164,65,0.14);
     color:var(--mustard);
@@ -316,7 +331,7 @@
   .item-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-    gap:12px;
+    gap:16px;
     overflow-y:auto;
     padding-bottom:20px;
     align-content:start;
@@ -325,12 +340,12 @@
     background:var(--card-bg);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
-    padding:14px;
+    padding:16px;
     cursor:pointer;
     text-align:left;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:11px;
     min-height:92px;
     box-shadow:var(--shadow-sm);
     transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
@@ -348,7 +363,7 @@
     box-shadow:none;
     border-color:var(--line);
   }
-  .item-card .emoji{ font-size:22px; }
+  .item-card .emoji{ width:24px; height:24px; color:var(--mustard); opacity:0.85; }
   .item-card .item-photo{
     width:calc(100% + 28px);
     margin:-14px -14px 0 -14px;
@@ -382,14 +397,19 @@
     align-self:flex-start;
   }
   .stock-badge{
-    font-size:10.5px;
+    display:inline-block;
+    align-self:flex-start;
+    font-size:10px;
     font-weight:700;
     color:#7CC79A;
+    background:rgba(124,199,154,0.14);
+    padding:3px 8px;
+    border-radius:20px;
     text-transform:uppercase;
     letter-spacing:0.03em;
   }
-  .stock-badge.low{ color:#E0A93C; }
-  .stock-badge.out{ color:var(--brick); }
+  .stock-badge.low{ color:#E0A93C; background:rgba(224,169,60,0.14); }
+  .stock-badge.out{ color:var(--brick); background:rgba(209,75,58,0.14); }
   .item-card.out-of-stock{
     opacity:0.55;
   }
@@ -775,7 +795,7 @@
     font-size:13.5px;
     box-shadow:var(--shadow-sm);
   }
-  .withdrawal-card .w-icon{ font-size:15px; }
+  .withdrawal-card .w-icon{ width:16px; height:16px; }
   .withdrawal-card .w-label{ flex:1; }
   .withdrawal-card .w-time{ font-weight:400; opacity:0.75; font-size:12px; }
   .withdrawal-card .w-amount{ font-family:'Anton',sans-serif; font-size:15px; }
@@ -854,12 +874,16 @@
     margin-top:10px;
     flex-shrink:0;
     width:38px;
+    height:38px;
     border-radius:6px;
     border:1px solid var(--line);
     background:var(--charcoal);
     color:var(--mustard);
     font-size:14px;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   .print-order-btn:hover{
     background:var(--mustard);
@@ -948,6 +972,9 @@
     color:var(--mustard);
     font-size:14px;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   .print-day-btn:hover{
     background:var(--mustard);
@@ -1011,8 +1038,8 @@
   .sales-stats{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
-    gap:12px;
-    margin-bottom:14px;
+    gap:16px;
+    margin-bottom:20px;
   }
   .withdrawal-row{
     margin-bottom:22px;
@@ -1059,8 +1086,8 @@
     background:var(--charcoal-2);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
-    padding:18px;
-    margin-bottom:20px;
+    padding:22px;
+    margin-bottom:26px;
     box-shadow:var(--shadow-sm);
   }
   .chart-card h3{
@@ -1119,6 +1146,8 @@
     cursor:pointer;
   }
   .menu-table{ width:100%; border-collapse:collapse; }
+  .menu-table tbody tr{ transition:background-color .12s ease; }
+  .menu-table tbody tr:hover{ background:rgba(128,128,128,0.08); }
   .menu-table th{
     text-align:left;
     font-size:12px;
@@ -1404,15 +1433,15 @@
     </div>
     <div class="sidebar-section-label">Principal</div>
     <nav class="tabs">
-      <button data-view="pos-view" class="active"><span class="tab-icon">🛒</span><span>Vender</span></button>
-      <button data-view="history-view"><span class="tab-icon">📋</span><span>Historial</span></button>
-      <button data-view="sales-view"><span class="tab-icon">📊</span><span>Ventas</span></button>
-      <button data-view="menu-view"><span class="tab-icon">📖</span><span>Menú</span></button>
+      <button data-view="pos-view" class="active"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span><span>Vender</span></button>
+      <button data-view="history-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></span><span>Historial</span></button>
+      <button data-view="sales-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg></span><span>Ventas</span></button>
+      <button data-view="menu-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Menú</span></button>
     </nav>
     <div class="sidebar-footer">
       <span class="clock" id="clock"></span>
       <span class="saving-indicator" id="saving-indicator" style="display:none;"><span class="saving-dot"></span>Guardando…</span>
-      <button type="button" id="logout-btn" class="sidebar-logout-btn">🚪 Cerrar sesión</button>
+      <button type="button" id="logout-btn" class="sidebar-logout-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></span> Cerrar sesión</button>
       <div class="sidebar-powered-by">⚡ Funciona con <strong>VENTI</strong></div>
     </div>
   </aside>
@@ -1446,7 +1475,7 @@
           <div class="row total"><span>Total</span><span id="total">$0.00</span></div>
         </div>
         <button class="checkout-btn" id="checkout-btn" disabled>Cobrar</button>
-        <button class="preprint-btn" id="preprint-btn" disabled>🖨 Imprimir ticket</button>
+        <button class="preprint-btn" id="preprint-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir ticket</button>
         <button class="clear-btn" id="clear-btn">Vaciar ticket</button>
       </div>
     </section>
@@ -1462,7 +1491,7 @@
             <div class="day-open-label" id="day-open-label">Día actual</div>
             <div class="day-open-meta" id="day-open-meta"></div>
           </div>
-          <button id="close-day-btn">🔒 Cerrar día</button>
+          <button id="close-day-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Cerrar día</button>
         </div>
         <div id="day-open-orders"></div>
       </div>
@@ -1479,7 +1508,7 @@
       <div class="sales-stats" id="total-earnings-stats"></div>
 
       <div class="withdrawal-row">
-        <button type="button" id="withdrawal-btn">💵 Retiro de capital</button>
+        <button type="button" id="withdrawal-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Retiro de capital</button>
       </div>
 
       <div class="sales-stats" id="sales-stats"></div>
@@ -1543,7 +1572,7 @@
       </div>
       <div class="settings-box">
         <label>Código de encargado (para borrar pedidos y entrar a Menú):</label>
-        <button type="button" id="change-code-btn" style="background:var(--charcoal); color:var(--mustard); border:1px solid var(--mustard); padding:8px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">🔑 Cambiar código</button>
+        <button type="button" id="change-code-btn" style="background:var(--charcoal); color:var(--mustard); border:1px solid var(--mustard); padding:8px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span> Cambiar código</button>
       </div>
       <div class="settings-box" id="printer-select-box" style="display:none;">
         <label>Impresora para tickets:</label>
@@ -1570,10 +1599,10 @@
       <div class="settings-box" style="flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
           <div style="font-weight:700; font-size:13.5px; color:var(--cream);">Respaldo en la nube</div>
-          <div style="font-size:12px; color:#8286B0; margin-top:2px;" id="sync-indicator">💾 Solo en esta computadora</div>
+          <div style="font-size:12px; color:#8286B0; margin-top:2px;" id="sync-indicator"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span> Solo en esta computadora</div>
         </div>
-        <button type="button" id="backup-now-btn" style="background:var(--green); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">☁️ Respaldar ahora</button>
-        <button type="button" id="restore-backup-btn" style="background:var(--brick); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">♻️ Restaurar último respaldo</button>
+        <button type="button" id="backup-now-btn" style="background:var(--green); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.24"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg></span> Respaldar ahora</button>
+        <button type="button" id="restore-backup-btn" style="background:var(--brick); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5"/></svg></span> Restaurar último respaldo</button>
       </div>
       <div class="settings-box" style="flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
@@ -1592,9 +1621,9 @@
       <h3>Confirmar cobro</h3>
       <p>Total a cobrar: <strong id="modal-total">$0.00</strong></p>
       <div class="pay-options">
-        <button data-method="Efectivo" class="pay-btn">💵 Efectivo</button>
-        <button data-method="Transferencia" class="pay-btn">🏦 Transferencia</button>
-        <button data-method="Tarjeta" class="pay-btn">💳 Tarjeta</button>
+        <button data-method="Efectivo" class="pay-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span> Efectivo</button>
+        <button data-method="Transferencia" class="pay-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span> Transferencia</button>
+        <button data-method="Tarjeta" class="pay-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span> Tarjeta</button>
       </div>
       <div class="cash-box" id="cash-box" style="display:none;">
         <label for="cash-received">¿Cuánto te está pagando el cliente?</label>
@@ -1762,6 +1791,31 @@ function applyLogo(emoji, imageBase64){
     if(dialogBadge) dialogBadge.innerHTML = defaultDialogLogoHtml;
   }
 }
+// Íconos de línea (estilo Lucide, trazo simple) — no dependen de internet
+// ni de fuentes de emoji, así se ven igual de nítidos en cualquier equipo.
+const ICONS = {
+  cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+  history: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>',
+  barChart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>',
+  bookOpen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  logOut: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+  printer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>',
+  key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>',
+  uploadCloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.24"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>',
+  cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"/></svg>',
+  rotateCcw: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5"/></svg>',
+  banknote: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>',
+  landmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>',
+  creditCard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>',
+  wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  tag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
+  note: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'
+};
+
 const money = (n) => "$" + Number(n).toFixed(2);
 
 // Almacenamiento local (fuente de verdad): usa el storage de Claude cuando
@@ -1912,12 +1966,13 @@ async function maybeRunDailyBackup(){
 async function updateBackupIndicator(){
   const el = $('#sync-indicator');
   if(!el) return;
-  if(!db || !backupsCol){ el.textContent = '💾 Solo en esta computadora'; return; }
+  const cloudIcon = '<span class="icon-svg">' + ICONS.cloud + '</span>';
+  if(!db || !backupsCol){ el.innerHTML = cloudIcon + ' Solo en esta computadora'; return; }
   try {
     const r = await store.get('last-backup-date', true);
-    el.textContent = r && r.value ? `☁️ Respaldo: ${r.value}` : '☁️ Sin respaldo todavía';
+    el.innerHTML = r && r.value ? `${cloudIcon} Respaldo: ${r.value}` : `${cloudIcon} Sin respaldo todavía`;
   } catch(e){
-    el.textContent = '☁️ Sin respaldo todavía';
+    el.innerHTML = cloudIcon + ' Sin respaldo todavía';
   }
 }
 
@@ -1967,7 +2022,7 @@ function renderCategories(){
   wrap.innerHTML = '';
   cats.forEach(cat=>{
     const btn = document.createElement('button');
-    btn.textContent = (CATEGORY_EMOJI[cat] || '🍽️') + ' ' + cat;
+    btn.innerHTML = '<span class="icon-svg">' + ICONS.tag + '</span> ' + escapeHtml(cat);
     if(cat === activeCategory) btn.classList.add('active');
     btn.onclick = () => { activeCategory = cat; renderCategories(); renderGrid(); };
     wrap.appendChild(btn);
@@ -2004,7 +2059,7 @@ function renderGrid(){
 
     const mediaHtml = (featureProductImagesEnabled && item.image)
       ? `<img class="item-photo" src="${item.image}" alt="">`
-      : `<span class="emoji">${CATEGORY_EMOJI[item.category] || '🍽️'}</span>`;
+      : `<span class="emoji icon-svg">${ICONS.tag}</span>`;
 
     if(item.variants && item.variants.length){
       card.innerHTML = `
@@ -2099,7 +2154,7 @@ function renderCart(){
       const el = document.createElement('div');
       el.className = 'cart-row';
       const noteHtml = row.note
-        ? `<div class="note" data-action="note">📝 ${escapeHtml(row.note)}</div>`
+        ? `<div class="note" data-action="note"><span class="icon-svg">${ICONS.note}</span> ${escapeHtml(row.note)}</div>`
         : `<div class="note add-note" data-action="note">+ Agregar detalle</div>`;
       el.innerHTML = `
         <div class="info">
@@ -2137,7 +2192,7 @@ function renderCart(){
 
   const preprintBtn = $('#preprint-btn');
   preprintBtn.disabled = cart.length === 0 || !hasCustomerName;
-  preprintBtn.textContent = cartPrintedBeforePayment ? '✓ Ticket impreso' : '🖨 Imprimir ticket';
+  preprintBtn.innerHTML = cartPrintedBeforePayment ? '<span class="icon-svg">'+ICONS.check+'</span> Ticket impreso' : '<span class="icon-svg">'+ICONS.printer+'</span> Imprimir ticket';
   preprintBtn.classList.toggle('was-printed', cartPrintedBeforePayment);
 }
 
@@ -2284,10 +2339,10 @@ function orderCardHtml(o){
     ? `<div class="items">Recibido: ${money(o.cashReceived)} · Cambio: ${money(o.change)}</div>`
     : '';
   const nameLine = o.customerName
-    ? `<div class="cust-name">👤 ${escapeHtml(o.customerName)}</div>`
+    ? `<div class="cust-name"><span class="icon-svg">${ICONS.user}</span> ${escapeHtml(o.customerName)}</div>`
     : '';
   const printBtnHtml = featurePrintingEnabled
-    ? `<button class="print-order-btn" data-print-id="${o.id}" title="Imprimir este pedido">🖨</button>`
+    ? `<button class="print-order-btn" data-print-id="${o.id}" title="Imprimir este pedido"><span class="icon-svg">${ICONS.printer}</span></button>`
     : '';
   return `
     <div class="order-card ${o.delivered ? 'delivered' : ''}" data-order-id="${o.id}">
@@ -2304,7 +2359,7 @@ function orderCardHtml(o){
           ${o.delivered ? '✓ Entregado' : 'Marcar como entregado'}
         </button>
         ${printBtnHtml}
-        <button class="delete-order-btn" data-delete-id="${o.id}" title="Eliminar este pedido">🗑</button>
+        <button class="delete-order-btn" data-delete-id="${o.id}" title="Eliminar este pedido"><span class="icon-svg">${ICONS.trash}</span></button>
       </div>
     </div>
   `;
@@ -2315,7 +2370,7 @@ function paymentBreakdown(ordersList){
   const transfer = ordersList.filter(o => o.payment === 'Transferencia').reduce((s,o)=>s+o.total,0);
   const card = ordersList.filter(o => o.payment === 'Tarjeta').reduce((s,o)=>s+o.total,0);
   const other = ordersList.reduce((s,o)=>s+o.total,0) - cash - transfer - card;
-  let parts = [`💵 Efectivo: ${money(cash)}`, `🏦 Transferencia: ${money(transfer)}`, `💳 Tarjeta: ${money(card)}`];
+  let parts = [`<span class="icon-svg">${ICONS.banknote}</span> Efectivo: ${money(cash)}`, `<span class="icon-svg">${ICONS.landmark}</span> Transferencia: ${money(transfer)}`, `<span class="icon-svg">${ICONS.creditCard}</span> Tarjeta: ${money(card)}`];
   if(other > 0.001) parts.push(`Otro: ${money(other)}`);
   return parts.join(' · ');
 }
@@ -2325,7 +2380,7 @@ function withdrawalCardHtml(w){
   const timeStr = d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
   return `
     <div class="withdrawal-card">
-      <span class="w-icon">💵</span>
+      <span class="w-icon icon-svg">${ICONS.wallet}</span>
       <span class="w-label">Retiro de capital</span>
       <span class="w-time">${timeStr}</span>
       <span class="w-amount">-${money(w.amount)}</span>
@@ -2357,7 +2412,7 @@ function renderHistory(){
   $('#day-open-label').textContent = 'Día actual — ' + todayLabel;
   const openTotal = openOrders.reduce((s,o)=>s+o.total,0);
   const openWithdrawnTotal = openWithdrawals.reduce((s,w)=>s+w.amount,0);
-  const withdrawnLine = openWithdrawnTotal > 0 ? `<br>💵 Retirado hoy: ${money(openWithdrawnTotal)}` : '';
+  const withdrawnLine = openWithdrawnTotal > 0 ? `<br><span class="icon-svg">${ICONS.wallet}</span> Retirado hoy: ${money(openWithdrawnTotal)}` : '';
   $('#day-open-meta').innerHTML = openOrders.length
     ? `${openOrders.length} pedido(s) · ${money(openTotal)}<br>${paymentBreakdown(openOrders)}${withdrawnLine}`
     : (openWithdrawnTotal > 0 ? `Sin pedidos todavía${withdrawnLine}` : 'Sin pedidos todavía');
@@ -2399,9 +2454,9 @@ function renderHistory(){
       const dayOrders = orders.filter(o => o.dayId === c.id);
       const dayWithdrawals = withdrawals.filter(w => w.dayId === c.id);
       const dayWithdrawnTotal = dayWithdrawals.reduce((s,w)=>s+w.amount,0);
-      const withdrawnMeta = dayWithdrawnTotal > 0 ? `<div class="meta">💵 Retirado: ${money(dayWithdrawnTotal)}</div>` : '';
+      const withdrawnMeta = dayWithdrawnTotal > 0 ? `<div class="meta"><span class="icon-svg">${ICONS.wallet}</span> Retirado: ${money(dayWithdrawnTotal)}</div>` : '';
       const printDayBtnHtml = featurePrintingEnabled
-        ? `<button class="print-day-btn" data-print-day-id="${c.id}" title="Imprimir resumen del día">🖨</button>`
+        ? `<button class="print-day-btn" data-print-day-id="${c.id}" title="Imprimir resumen del día"><span class="icon-svg">${ICONS.printer}</span></button>`
         : '';
       return `
         <details class="day-group">
@@ -3330,7 +3385,7 @@ function buildDayReportHtmlA4(closure, dayOrders){
 <html><head><meta charset="utf-8"><title>Resumen del día</title>
 <style>
   @page{ size:A4; margin:20mm; }
-  body{ font-family:Arial, sans-serif; color:#1A1A1A; margin:0; }
+  body{ font-family:Arial, sans-serif; color:#1A1A1A; margin:0; font-variant-numeric: tabular-nums; }
   h1{ font-size:30px; margin:0 0 4px 0; }
   h2{ font-size:20px; color:#555; margin:0 0 28px 0; font-weight:500; }
   .row{ display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #DDD; font-size:20px; }
