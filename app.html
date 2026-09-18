@@ -482,13 +482,13 @@
   }
   .item-card .emoji{ width:24px; height:24px; color:var(--mustard); opacity:0.85; }
   .item-card .item-photo{
-    width:calc(100% + 24px);
-    margin:-12px -12px 0 -12px;
+    width:100%;
     aspect-ratio:1 / 1;
-    object-fit:contain;
-    background:var(--card-bg);
-    border-radius:var(--radius-md) var(--radius-md) 0 0;
+    object-fit:cover;
+    background:var(--charcoal-2);
+    border-radius:8px;
     display:block;
+    flex-shrink:0;
   }
   .item-card .name{
     font-weight:800;
@@ -2226,6 +2226,14 @@ let featureInventoryEnabled = false; // nueva: solo activa si el plan la incluye
 let featureProductImagesEnabled = false; // solo plan Pro
 let cartPrintedBeforePayment = false;
 let featureHistoryEnabled = true;
+let featureHomeEnabled = true;
+
+// A dónde mandar a alguien cuando la pestaña en la que está se
+// desactiva: a Inicio si sigue disponible, o si no, a Vender (que
+// nunca se puede apagar).
+function getFallbackViewId(){
+  return featureHomeEnabled ? 'home-view' : 'pos-view';
+}
 let featureCustomersEnabled = true;
 let featureMenuEnabled = true;
 let featureCustomerNameEnabled = true;
@@ -4817,8 +4825,22 @@ function applyTenantBranding(data){
     analysisTabBtn?.classList.remove('active');
     document.getElementById('sales-view')?.classList.remove('active');
     document.getElementById('analysis-view')?.classList.remove('active');
-    document.querySelector('nav.tabs button[data-view="home-view"]')?.classList.add('active');
-    document.getElementById('home-view')?.classList.add('active');
+    const salesFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${salesFallback}"]`)?.classList.add('active');
+    document.getElementById(salesFallback)?.classList.add('active');
+  }
+
+  // Función "Inicio": puede estar desactivada por el negocio/plan. Si se
+  // apaga mientras alguien está ahí (o es la pestaña activa al entrar),
+  // se manda a Vender, que nunca se puede desactivar.
+  featureHomeEnabled = !data || data.homeEnabled !== false;
+  const homeTabBtn = document.querySelector('nav.tabs button[data-view="home-view"]');
+  if(homeTabBtn) homeTabBtn.style.display = featureHomeEnabled ? 'flex' : 'none';
+  if(!featureHomeEnabled && document.getElementById('home-view')?.classList.contains('active')){
+    homeTabBtn?.classList.remove('active');
+    document.getElementById('home-view').classList.remove('active');
+    document.querySelector('nav.tabs button[data-view="pos-view"]')?.classList.add('active');
+    document.getElementById('pos-view')?.classList.add('active');
   }
 
   // Función "Historial": puede estar desactivada por el negocio/plan
@@ -4828,8 +4850,9 @@ function applyTenantBranding(data){
   if(!featureHistoryEnabled && document.getElementById('history-view')?.classList.contains('active')){
     historyTabBtn?.classList.remove('active');
     document.getElementById('history-view').classList.remove('active');
-    document.querySelector('nav.tabs button[data-view="home-view"]')?.classList.add('active');
-    document.getElementById('home-view')?.classList.add('active');
+    const historyFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${historyFallback}"]`)?.classList.add('active');
+    document.getElementById(historyFallback)?.classList.add('active');
   }
 
   // Función "Clientes" (del negocio): puede estar desactivada por plan
@@ -4839,8 +4862,9 @@ function applyTenantBranding(data){
   if(!featureCustomersEnabled && document.getElementById('customers-view')?.classList.contains('active')){
     customersTabBtn?.classList.remove('active');
     document.getElementById('customers-view').classList.remove('active');
-    document.querySelector('nav.tabs button[data-view="home-view"]')?.classList.add('active');
-    document.getElementById('home-view')?.classList.add('active');
+    const customersFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${customersFallback}"]`)?.classList.add('active');
+    document.getElementById(customersFallback)?.classList.add('active');
   }
 
   // Función "Menú" (gestión de productos): puede estar desactivada por
@@ -4852,8 +4876,9 @@ function applyTenantBranding(data){
   if(!featureMenuEnabled && document.getElementById('products-view')?.classList.contains('active')){
     menuTabBtn?.classList.remove('active');
     document.getElementById('products-view').classList.remove('active');
-    document.querySelector('nav.tabs button[data-view="home-view"]')?.classList.add('active');
-    document.getElementById('home-view')?.classList.add('active');
+    const menuFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${menuFallback}"]`)?.classList.add('active');
+    document.getElementById(menuFallback)?.classList.add('active');
   }
 
   // Función "Inventario": es un extra, apagado por defecto salvo que el
@@ -4949,6 +4974,7 @@ function resetBranding(){
   if(ticketMsgBoxToggle) ticketMsgBoxToggle.style.display = 'none';
 
   featureHistoryEnabled = true;
+  featureHomeEnabled = true;
   featureCustomersEnabled = false;
   featureMenuEnabled = true;
   featureCustomerNameEnabled = true;
@@ -4956,6 +4982,7 @@ function resetBranding(){
   featurePaymentTransfer = true;
   featurePaymentCard = true;
   document.querySelector('nav.tabs button[data-view="history-view"]')?.style.setProperty('display', 'flex');
+  document.querySelector('nav.tabs button[data-view="home-view"]')?.style.setProperty('display', 'flex');
   document.querySelector('nav.tabs button[data-view="customers-view"]')?.style.setProperty('display', 'none');
   document.querySelector('nav.tabs button[data-view="products-view"]')?.style.setProperty('display', 'flex');
   document.getElementById('config-tab-btn')?.style.setProperty('display', 'flex');
