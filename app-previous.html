@@ -448,6 +448,7 @@
   .item-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    align-items:start;
     gap:10px;
     overflow-y:auto;
     padding-bottom:20px;
@@ -2987,7 +2988,41 @@ function renderGrid(){
     }
     grid.appendChild(card);
   });
+  equalizeCardRowHeights();
 }
+
+// Empareja la altura de las tarjetas que caen en la misma fila,
+// midiendo su posición real ya dibujada — más confiable que dejarlo
+// en manos del "stretch" automático de CSS Grid, que en la práctica
+// puede desalinear el contenido de una tarjeta con el de la de abajo.
+function equalizeCardRowHeights(){
+  const grid = $('#item-grid');
+  const cards = Array.from(grid.querySelectorAll(':scope > .item-card'));
+  if(cards.length < 2) return;
+
+  // Primero se quita cualquier altura forzada de antes, para medir el
+  // tamaño natural real de cada tarjeta.
+  cards.forEach(c => { c.style.minHeight = ''; });
+
+  const rows = new Map();
+  cards.forEach(c => {
+    const top = c.offsetTop;
+    if(!rows.has(top)) rows.set(top, []);
+    rows.get(top).push(c);
+  });
+
+  rows.forEach(group => {
+    if(group.length < 2) return;
+    const maxH = Math.max(...group.map(c => c.offsetHeight));
+    group.forEach(c => { c.style.minHeight = maxH + 'px'; });
+  });
+}
+
+let equalizeRowsResizeTimeout = null;
+window.addEventListener('resize', () => {
+  clearTimeout(equalizeRowsResizeTimeout);
+  equalizeRowsResizeTimeout = setTimeout(equalizeCardRowHeights, 150);
+});
 
 async function deductStockForCart(cartItems){
   if(!featureInventoryEnabled) return;
