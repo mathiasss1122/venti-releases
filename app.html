@@ -1149,6 +1149,26 @@
     color:var(--on-primary, var(--charcoal));
     border-color:var(--mustard);
   }
+  .delete-day-btn{
+    margin-left:8px;
+    flex-shrink:0;
+    width:34px;
+    height:34px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--charcoal);
+    color:var(--brick);
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .delete-day-btn:hover{
+    background:var(--brick);
+    color:#FFFFFF;
+    border-color:var(--brick);
+  }
   details.day-group .day-orders{
     padding:0 16px 14px 16px;
     display:flex;
@@ -2677,11 +2697,43 @@ async function archiveOldOrdersIfNeeded(oldByMonth){
   }
 }
 
-async function runBackup(manual){
+// Antes de respaldar, se compara contra lo que YA hay guardado en la
+// nube. Si la nube tiene pedidos que esta computadora no tiene (por
+// ejemplo, porque se está revisando la cuenta de un cliente desde
+// otra compu para probar algo, y su caja real ya vendió algo más
+// desde la última vez), respaldar ahora mismo BORRARÍA esos pedidos
+// del respaldo bueno. En ese caso, mejor no respaldar nada.
+async function wouldBackupLoseCloudData(){
+  try {
+    const q = query(backupsCol, orderBy('savedAt', 'desc'), limit(1));
+    const snap = await getDocs(q);
+    if(snap.empty) return false; // no hay nada en la nube todavía, sin riesgo
+    const cloudOrders = snap.docs[0].data().orders || [];
+    if(!cloudOrders.length) return false;
+    const localIds = new Set(orders.map(o => o.id));
+    return cloudOrders.some(o => !localIds.has(o.id));
+  } catch(e){
+    console.error('No se pudo comparar contra el respaldo en la nube', e);
+    return false; // si no se puede verificar por un error de red, se deja pasar
+  }
+}
+
+async function runBackup(manual, force){
   if(!db || !backupsCol){
     if(manual) await appAlert('No hay conexión a la nube ahora mismo. Intenta más tarde.', 'Sin conexión');
     return false;
   }
+
+  if(!force && await wouldBackupLoseCloudData()){
+    if(manual){
+      const forceIt = await appConfirm('El respaldo en la nube tiene pedidos que esta computadora no tiene — parece que se vendió algo más reciente desde otra caja o dispositivo. Si respaldas desde aquí, esos pedidos se perderían del respaldo. ¿Seguro que quieres continuar de todas formas?', 'Podrías perder datos');
+      if(!forceIt) return false;
+    } else {
+      console.log('Respaldo automático omitido: la nube tiene datos más recientes que esta computadora.');
+      return false;
+    }
+  }
+
   showSavingIndicator();
   try {
     const { recent, oldByMonth } = splitOrdersForBackup(orders);
@@ -3466,6 +3518,7 @@ function renderHistory(){
             </div>
             <span class="amt">${money(c.total)}</span>
             ${printDayBtnHtml}
+            <button class="delete-day-btn" data-delete-day-id="${c.id}" title="Borrar este día por completo"><span class="icon-svg">${ICONS.trash}</span></button>
           </summary>
           <div class="day-orders">${historyEntriesHtml(dayOrders, dayWithdrawals)}</div>
         </details>
@@ -3533,6 +3586,36 @@ $('#history-view').addEventListener('click', async (e) => {
     e.stopPropagation();
     const closure = closures.find(c => c.id === printDayBtn.dataset.printDayId);
     if(closure) printDayReport(closure);
+    return;
+  }
+
+  const deleteDayBtn = e.target.closest('.delete-day-btn');
+  if(deleteDayBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const closure = closures.find(c => c.id === deleteDayBtn.dataset.deleteDayId);
+    if(!closure) return;
+
+    const codeOk = await requireManagerCodeForView(`borrar el día "${closure.label}"`);
+    if(!codeOk) return;
+
+    const dayOrders = orders.filter(o => o.dayId === closure.id);
+    const dayWithdrawals = withdrawals.filter(w => w.dayId === closure.id);
+    const finalOk = await appConfirm(
+      `Esto va a borrar POR COMPLETO el día "${closure.label}": ${dayOrders.length} pedido(s) por ${money(closure.total)}${dayWithdrawals.length ? ` y ${dayWithdrawals.length} retiro(s)` : ''}. No se puede deshacer. ¿Continuar?`,
+      'Borrar día completo'
+    );
+    if(!finalOk) return;
+
+    orders = orders.filter(o => o.dayId !== closure.id);
+    withdrawals = withdrawals.filter(w => w.dayId !== closure.id);
+    closures = closures.filter(c => c.id !== closure.id);
+    await saveOrdersData();
+    // Se sube el cambio a la nube de inmediato — ya se confirmó con
+    // código + una segunda confirmación, así que es un cambio a
+    // propósito, no un descuido que haya que proteger.
+    await runBackup(false, true);
+    renderHistory();
     return;
   }
 
