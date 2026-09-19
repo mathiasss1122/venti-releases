@@ -2745,7 +2745,7 @@ async function runBackup(manual, force){
       savedAt: new Date().toISOString()
     };
     await setDoc(doc(backupsCol, todayStr()), snapshot);
-    await store.set(tenantKey('last-backup-date'), todayStr(), true).catch(()=>{});
+    await store.set(tenantKey('last-backup-date'), new Date().toISOString(), true).catch(()=>{});
     updateBackupIndicator();
     hideSavingIndicatorSoon();
     if(manual) await appAlert('Respaldo guardado en la nube ✓', 'Listo');
@@ -2758,17 +2758,6 @@ async function runBackup(manual, force){
   }
 }
 
-async function maybeRunDailyBackup(){
-  if(!db || !backupsCol) { updateBackupIndicator(); return; }
-  let lastDate = null;
-  try {
-    const r = await store.get(tenantKey('last-backup-date'), true);
-    lastDate = r ? r.value : null;
-  } catch(e){ lastDate = null; }
-  if(lastDate !== todayStr()){
-    await runBackup(false);
-  }
-}
 
 async function updateBackupIndicator(){
   const el = $('#sync-indicator');
@@ -2782,23 +2771,24 @@ async function updateBackupIndicator(){
   }
   try {
     const r = await store.get(tenantKey('last-backup-date'), true);
-    const lastDateStr = r && r.value ? r.value : null;
-    el.innerHTML = lastDateStr ? `${cloudIcon} Respaldo: ${lastDateStr}` : `${cloudIcon} Sin respaldo todavía`;
+    const lastTimestamp = r && r.value ? r.value : null;
+    el.innerHTML = lastTimestamp
+      ? `${cloudIcon} Respaldo: ${new Date(lastTimestamp).toLocaleString('es-MX', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}`
+      : `${cloudIcon} Sin respaldo todavía`;
 
     // Aviso prominente (no solo el textito chiquito) si el respaldo
-    // lleva 3 días o más atrasado, o si nunca se ha hecho ninguno y ya
-    // hay pedidos que valdría la pena proteger.
+    // lleva 12 horas o más atrasado, o si nunca se ha hecho ninguno y
+    // ya hay pedidos que valdría la pena proteger.
     if(warningBanner){
-      let daysSince = null;
-      if(lastDateStr){
-        const last = new Date(lastDateStr + 'T00:00:00');
-        daysSince = Math.floor((Date.now() - last.getTime()) / (24*60*60*1000));
+      let hoursSince = null;
+      if(lastTimestamp){
+        hoursSince = (Date.now() - new Date(lastTimestamp).getTime()) / (60*60*1000);
       }
-      const shouldWarn = (daysSince !== null && daysSince >= 3) || (!lastDateStr && orders.length > 3);
+      const shouldWarn = (hoursSince !== null && hoursSince >= 12) || (!lastTimestamp && orders.length > 3);
       if(shouldWarn){
-        const msg = daysSince !== null
-          ? `Llevas ${daysSince} días sin respaldar — ve a Menú y toca "Respaldar ahora".`
-          : 'Todavía no has hecho ningún respaldo — ve a Menú y toca "Respaldar ahora".';
+        const msg = hoursSince !== null
+          ? `Llevas ${Math.floor(hoursSince)} hora(s) sin respaldar — ve a Configuración y toca "Respaldar ahora".`
+          : 'Todavía no has hecho ningún respaldo — ve a Configuración y toca "Respaldar ahora".';
         warningBanner.innerHTML = `<span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span> ${msg}`;
         warningBanner.style.display = 'flex';
       } else {
@@ -5557,7 +5547,6 @@ if(auth){
       await loadTenantData();
       $('#login-screen').style.display = 'none';
       updateBackupIndicator();
-      maybeRunDailyBackup();
     } else {
       $('#login-screen').style.display = 'flex';
       await signOut(auth);
