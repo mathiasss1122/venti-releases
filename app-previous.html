@@ -4935,6 +4935,16 @@ function buildTicketText(o){
 }
 
 function buildPreviewTicketText(){
+  if(tenantData && Array.isArray(tenantData.ticketBlocks) && tenantData.ticketBlocks.length){
+    const mockOrder = {
+      orderNumber: nextOrderNumberForToday(),
+      customerName: $('#customer-name').value.trim(),
+      timestamp: new Date().toISOString(),
+      items: cart,
+      total: getCartTotals().total
+    };
+    return renderCustomTicketBlocks(tenantData.ticketBlocks, mockOrder);
+  }
   const w = charsForWidth();
   const line = '-'.repeat(w);
   let out = '';
@@ -4972,16 +4982,20 @@ function buildTicketLogoHtml(){
 
 function buildTicketPrintBody(text){
   const logoHtml = buildTicketLogoHtml();
-  const match = text.match(/§BIG§([\s\S]*?)§\/BIG§/);
-  if(!match){
-    return logoHtml + `<pre>${escapeHtml(text)}</pre>`;
+  const parts = [];
+  let lastIndex = 0;
+  const regex = /§BIG§([\s\S]*?)§\/BIG§/g;
+  let match;
+  while((match = regex.exec(text)) !== null){
+    const before = text.slice(lastIndex, match.index).replace(/^\n/, '').replace(/\n$/, '');
+    if(before) parts.push(`<pre>${escapeHtml(before)}</pre>`);
+    parts.push(`<div style="font-family:'Courier New',monospace; font-weight:800; font-size:26px; letter-spacing:0.03em; text-align:center; margin:3px 0;">${escapeHtml(match[1])}</div>`);
+    lastIndex = regex.lastIndex;
   }
-  const before = text.slice(0, match.index).replace(/\n$/, '');
-  const bigContent = match[1];
-  const after = text.slice(match.index + match[0].length).replace(/^\n/, '');
-  return logoHtml + `<pre>${escapeHtml(before)}</pre>`
-    + `<div style="font-family:'Courier New',monospace; font-weight:800; font-size:26px; letter-spacing:0.03em; text-align:center; margin:3px 0;">${escapeHtml(bigContent)}</div>`
-    + `<pre>${escapeHtml(after)}</pre>`;
+  const rest = text.slice(lastIndex).replace(/^\n/, '');
+  if(rest) parts.push(`<pre>${escapeHtml(rest)}</pre>`);
+  if(!parts.length) parts.push(`<pre>${escapeHtml(text)}</pre>`);
+  return logoHtml + parts.join('');
 }
 
 async function printText(text){
