@@ -1121,6 +1121,18 @@
     background:var(--charcoal);
     color:#B7BAE0;
   }
+  .order-card .delivery-tag{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:12px;
+    background:rgba(59,156,143,0.18);
+    color:#3B9C8F;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .order-card .delivery-tag .icon-svg{ width:11px; height:11px; }
   .order-card .total{ font-weight:800; color:var(--brick); font-size:15px; }
   .order-card.delivered{
     background:rgba(61,107,79,0.20);
@@ -2073,7 +2085,7 @@
         </div>
         <button type="button" id="add-discount-btn" class="discount-link-btn">+ Aplicar descuento</button>
         <button class="checkout-btn" id="checkout-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Cobrar</button>
-        <button class="delivery-send-btn" id="delivery-send-btn" disabled style="display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Enviar a domicilio (cobrar después)</button>
+        <button class="delivery-send-btn" id="delivery-send-btn" disabled style="display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Envío domicilio</button>
         <button class="preprint-btn" id="preprint-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir ticket</button>
         <button class="clear-btn" id="clear-btn">Vaciar ticket</button>
       </div>
@@ -3631,7 +3643,10 @@ function orderCardHtml(o){
       <div class="items">${escapeHtml(itemsStr)}</div>
       ${cashLine}
       <div class="bottom">
-        <span class="pay-tag">${o.payment || '—'}</span>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="pay-tag">${o.payment || '—'}</span>
+          ${o.viaDelivery ? '<span class="delivery-tag"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Domicilio</span>' : ''}
+        </div>
         <span class="total">${money(o.total)}</span>
       </div>
       <div class="order-actions">
@@ -4673,7 +4688,9 @@ $('#delivery-form').addEventListener('submit', async (e) => {
   renderCart();
   renderDeliveryList();
   $('#delivery-modal').classList.remove('active');
-  await appAlert(`Pedido de "${name}" enviado a domicilio. Cuando te paguen, márcalo como pagado desde la pestaña Domicilio.`, 'Enviado ✓');
+  if(featurePrintingEnabled){
+    await printText(buildDeliveryTicketText(newDelivery));
+  }
 });
 
 $('#delivery-list').addEventListener('click', async (e) => {
@@ -4700,6 +4717,7 @@ $('#delivery-list').addEventListener('click', async (e) => {
       payment: method,
       customerName: delivery.customerName,
       delivered: true,
+      viaDelivery: true,
       dayId: null
     };
     orders.unshift(order);
@@ -5199,6 +5217,36 @@ function buildTicketText(o){
     out += line + '\n';
     out += center(settings.ticketFooterMsg, w) + '\n';
   }
+  out += line + '\n\n\n';
+  return out;
+}
+
+// Ticket especial para un pedido de domicilio recién creado — lleva
+// los datos de entrega (teléfono, dirección, notas) para que quien
+// reparte sepa a dónde ir, y deja claro que todavía no está cobrado.
+function buildDeliveryTicketText(delivery){
+  const w = charsForWidth();
+  const line = '-'.repeat(w);
+  let out = '';
+  out += center(settings.shopName || 'iNVIDiA', w) + '\n';
+  out += center('PEDIDO A DOMICILIO', w) + '\n';
+  out += line + '\n';
+  out += wrapText(`Cliente: ${delivery.customerName}`, w) + '\n';
+  if(delivery.customerPhone) out += wrapText(`Tel: ${delivery.customerPhone}`, w) + '\n';
+  if(delivery.customerAddress) out += wrapText(`Dirección: ${delivery.customerAddress}`, w) + '\n';
+  const d = new Date(delivery.createdAt);
+  out += `${d.toLocaleDateString('es-MX')}   ${d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'})}\n`;
+  out += line + '\n';
+  delivery.items.forEach(it=>{
+    out += wrapText(`${it.qty}x ${it.name}`, w) + '\n';
+    if(it.note) out += wrapText(`  * ${it.note}`, w) + '\n';
+  });
+  if(delivery.notes){
+    out += line + '\n';
+    out += wrapText(`Nota: ${delivery.notes}`, w) + '\n';
+  }
+  out += line + '\n';
+  out += center('*** SIN COBRAR ***', w) + '\n';
   out += line + '\n\n\n';
   return out;
 }
