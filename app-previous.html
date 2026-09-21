@@ -764,6 +764,31 @@
     color:#8A8377;
     cursor:not-allowed;
   }
+  .delivery-send-btn{
+    margin-top:8px;
+    width:100%;
+    background:none;
+    border:1px solid #3B9C8F;
+    color:#3B9C8F;
+    padding:11px;
+    border-radius:var(--radius-sm);
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .delivery-send-btn:hover:not(:disabled){
+    background:#3B9C8F;
+    color:#FFFFFF;
+  }
+  .delivery-send-btn:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+  }
+  .delivery-send-btn .icon-svg{ width:17px; height:17px; }
   .preprint-btn{
     margin-top:8px;
     width:100%;
@@ -1001,6 +1026,53 @@
   #history-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
   #history-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   .history-sub{ color:#8286B0; font-size:13.5px; margin-bottom:16px; }
+
+  /* ---- DELIVERY VIEW ---- */
+  #delivery-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
+  #delivery-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
+  .delivery-card{
+    background:var(--charcoal-2);
+    border:1px solid #3B9C8F;
+    border-radius:var(--radius-md);
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.07), 0 6px 16px rgba(0,0,0,0.13);
+  }
+  .delivery-card .top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .delivery-card .name{ font-weight:800; font-size:15px; color:var(--on-charcoal-2); }
+  .delivery-card .time{ font-size:11.5px; color:#8286B0; margin-top:2px; }
+  .delivery-card .total{ font-family:'Anton',sans-serif; font-size:19px; color:var(--mustard); white-space:nowrap; }
+  .delivery-card .contact{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.85; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+  .delivery-card .items{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.75; margin:8px 0; line-height:1.5; }
+  .delivery-card .notes{ font-size:12px; color:var(--on-charcoal-2); opacity:0.65; font-style:italic; margin-bottom:8px; }
+  .delivery-card .actions{ display:flex; gap:8px; margin-top:10px; }
+  .delivery-card .btn-paid{
+    flex:1;
+    background:#3B9C8F;
+    color:#FFFFFF;
+    border:none;
+    padding:9px;
+    border-radius:7px;
+    font-weight:700;
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .delivery-card .btn-cancel{
+    background:none;
+    border:1px solid var(--brick);
+    color:var(--brick);
+    padding:9px 14px;
+    border-radius:7px;
+    font-weight:700;
+    font-size:12.5px;
+    cursor:pointer;
+  }
   .order-card{
     background:var(--charcoal-2);
     border:1px solid var(--line);
@@ -1914,6 +1986,7 @@
       <button data-view="home-view" class="active"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Inicio</span></button>
       <button data-view="pos-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span><span>Vender</span></button>
       <button data-view="history-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></span><span>Historial</span></button>
+      <button data-view="delivery-view" id="delivery-tab-btn" style="display:none;"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span><span>Domicilio</span></button>
     </nav>
     <div class="sidebar-section-label">Secundario</div>
     <nav class="tabs">
@@ -2000,6 +2073,7 @@
         </div>
         <button type="button" id="add-discount-btn" class="discount-link-btn">+ Aplicar descuento</button>
         <button class="checkout-btn" id="checkout-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span> Cobrar</button>
+        <button class="delivery-send-btn" id="delivery-send-btn" disabled style="display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Enviar a domicilio (cobrar después)</button>
         <button class="preprint-btn" id="preprint-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir ticket</button>
         <button class="clear-btn" id="clear-btn">Vaciar ticket</button>
       </div>
@@ -2023,6 +2097,14 @@
 
       <h3 class="closed-days-title">Días cerrados</h3>
       <div id="history-list"></div>
+    </section>
+
+    <!-- DELIVERY VIEW -->
+    <section id="delivery-view" class="view">
+      <h2>Domicilio</h2>
+      <div class="sales-sub">Pedidos enviados que todavía no se han cobrado.</div>
+      <div id="delivery-empty-state" class="no-orders" style="display:none;">No hay ningún pedido de domicilio pendiente ahora mismo.</div>
+      <div id="delivery-list"></div>
     </section>
 
     <!-- SALES VIEW -->
@@ -2295,6 +2377,28 @@
   </div>
 </div>
 
+<!-- Datos del cliente para un pedido a domicilio -->
+<div class="modal-backdrop" id="delivery-modal">
+  <div class="modal" style="max-width:360px;">
+    <h3 style="margin-top:0;">Enviar a domicilio</h3>
+    <p style="font-size:12.5px; color:var(--ink); opacity:0.75; margin-top:-8px;">Este pedido se descuenta del inventario ahora, pero no se cuenta como vendido hasta que lo marques como pagado.</p>
+    <form id="delivery-form">
+      <label for="delivery-name">Nombre del cliente</label>
+      <input type="text" id="delivery-name" required>
+      <label for="delivery-phone">Teléfono</label>
+      <input type="text" id="delivery-phone">
+      <label for="delivery-address">Dirección</label>
+      <input type="text" id="delivery-address">
+      <label for="delivery-notes">Notas (opcional)</label>
+      <input type="text" id="delivery-notes" placeholder="Ej. sin cebolla, cambio de $200...">
+      <div class="modal-actions" style="margin-top:14px; display:flex; gap:10px;">
+        <button type="button" class="cancel" id="delivery-modal-cancel" style="flex:1;">Cancelar</button>
+        <button type="submit" class="confirm" style="flex:1; background:#3B9C8F;">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Diálogo propio de la app: reemplaza confirm()/prompt()/alert() del navegador -->
 <div class="modal-backdrop" id="app-dialog">
   <div class="modal">
@@ -2396,6 +2500,7 @@ let menuItems = [];
 let orders = [];
 let withdrawals = []; // retiros de capital: { id, amount, note, timestamp, dayId }
 let customers = []; // clientes del negocio: { id, name, phone, notes }
+let deliveryOrders = []; // pedidos a domicilio sin cobrar todavía: { id, items, customerName, customerPhone, customerAddress, notes, createdAt }
 let closures = [];
 let settings = { ...DEFAULT_SETTINGS };
 let cart = []; // {id, name, price, qty}
@@ -2418,6 +2523,7 @@ function getFallbackViewId(){
   return featureHomeEnabled ? 'home-view' : 'pos-view';
 }
 let featureCustomersEnabled = true;
+let featureDeliveryEnabled = false;
 let featureMenuEnabled = true;
 let featureCustomerNameEnabled = true;
 let featurePaymentCash = true;
@@ -2605,6 +2711,10 @@ async function loadTenantData(){
     const c = await store.get(tenantKey('customers-list'), true);
     customers = c && c.value ? JSON.parse(c.value) : [];
   } catch(e){ customers = []; }
+  try {
+    const dl = await store.get(tenantKey('delivery-orders'), true);
+    deliveryOrders = dl && dl.value ? JSON.parse(dl.value) : [];
+  } catch(e){ deliveryOrders = []; }
 
   // Quien ya usaba la app ANTES de este cambio tiene sus datos
   // guardados con las claves viejas (sin separar por negocio). Antes
@@ -2714,6 +2824,10 @@ async function saveMenu(){
 async function saveCustomers(){
   try { await store.set(tenantKey('customers-list'), JSON.stringify(customers), true); }
   catch(e){ console.error('Error guardando clientes', e); }
+}
+async function saveDeliveryOrders(){
+  try { await store.set(tenantKey('delivery-orders'), JSON.stringify(deliveryOrders), true); }
+  catch(e){ console.error('Error guardando pedidos de domicilio', e); }
 }
 async function saveOrdersData(){
   try { await store.set(tenantKey('orders-log'), JSON.stringify({ orders, closures, withdrawals }), true); }
@@ -2963,6 +3077,7 @@ function renderAll(){
   renderMenuEditor();
   renderHomeView();
   renderCustomers();
+  renderDeliveryList();
 }
 
 /* ---------- POS ---------- */
@@ -3187,6 +3302,25 @@ async function deductStockForCart(cartItems){
   }
 }
 
+// Inversa de deductStockForCart — se usa cuando se cancela un pedido
+// de domicilio que ya se había descontado del inventario.
+async function restoreStockForCart(cartItems){
+  if(!featureInventoryEnabled) return;
+  let changed = false;
+  cartItems.forEach(line => {
+    const baseId = line.id.split('__')[0];
+    const menuItem = menuItems.find(i => i.id === baseId);
+    if(menuItem && menuItem.stock !== null && menuItem.stock !== undefined){
+      menuItem.stock = menuItem.stock + line.qty;
+      changed = true;
+    }
+  });
+  if(changed){
+    await saveMenu();
+    renderGrid();
+  }
+}
+
 function addToCart(item, variant){
   const lineId = variant ? item.id + '__' + variant.label : item.id;
   const lineName = variant ? `${item.name} (${variant.label})` : item.name;
@@ -3280,6 +3414,8 @@ function renderCart(){
   }
   const hasCustomerName = !featureCustomerNameEnabled || $('#customer-name').value.trim().length > 0;
   $('#checkout-btn').disabled = cart.length === 0 || !hasCustomerName;
+  const deliverySendBtnEl = $('#delivery-send-btn');
+  if(deliverySendBtnEl) deliverySendBtnEl.disabled = cart.length === 0;
 
   const preprintBtn = $('#preprint-btn');
   preprintBtn.disabled = cart.length === 0 || !hasCustomerName;
@@ -4457,6 +4593,139 @@ $('#chart-selector').addEventListener('click', (e) => {
   if(renderFn) renderFn();
 });
 
+/* ---------- DOMICILIO ---------- */
+function renderDeliveryList(){
+  const list = $('#delivery-list');
+  const emptyState = $('#delivery-empty-state');
+  if(!list) return;
+  if(!deliveryOrders.length){
+    list.innerHTML = '';
+    if(emptyState) emptyState.style.display = 'block';
+    return;
+  }
+  if(emptyState) emptyState.style.display = 'none';
+
+  const paymentOptions = [];
+  if(featurePaymentCash) paymentOptions.push('Efectivo');
+  if(featurePaymentTransfer) paymentOptions.push('Transferencia');
+  if(featurePaymentCard) paymentOptions.push('Tarjeta');
+
+  list.innerHTML = deliveryOrders.map(d => {
+    const total = d.items.reduce((s,it)=>s + it.price*it.qty, 0);
+    const itemsText = d.items.map(it => `${it.qty}x ${it.name}`).join(', ');
+    const payBtns = paymentOptions.map(m =>
+      `<button class="btn-paid" data-mark-paid-id="${d.id}" data-method="${m}">${escapeHtml(m)}</button>`
+    ).join('');
+    const contactLine = [d.customerPhone, d.customerAddress].filter(Boolean).map(escapeHtml).join(' · ');
+    return `
+      <div class="delivery-card">
+        <div class="top">
+          <div>
+            <div class="name">${escapeHtml(d.customerName)}</div>
+            <div class="time">${new Date(d.createdAt).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
+          <div class="total">${money(total)}</div>
+        </div>
+        ${contactLine ? `<div class="contact">${contactLine}</div>` : ''}
+        <div class="items">${escapeHtml(itemsText)}</div>
+        ${d.notes ? `<div class="notes">${escapeHtml(d.notes)}</div>` : ''}
+        <div class="actions">
+          ${payBtns}
+          <button class="btn-cancel" data-cancel-delivery-id="${d.id}">Cancelar</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+$('#delivery-send-btn').addEventListener('click', () => {
+  if(!cart.length) return;
+  $('#delivery-name').value = $('#customer-name') ? $('#customer-name').value.trim() : '';
+  $('#delivery-phone').value = '';
+  $('#delivery-address').value = '';
+  $('#delivery-notes').value = '';
+  $('#delivery-modal').classList.add('active');
+  setTimeout(() => $('#delivery-name').focus(), 50);
+});
+$('#delivery-modal-cancel').addEventListener('click', () => {
+  $('#delivery-modal').classList.remove('active');
+});
+$('#delivery-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = $('#delivery-name').value.trim();
+  if(!name || !cart.length) return;
+
+  const newDelivery = {
+    id: 'D' + Date.now(),
+    items: cart.map(c => ({ name:c.name, qty:c.qty, price:c.price, note:c.note || '' })),
+    customerName: name,
+    customerPhone: $('#delivery-phone').value.trim(),
+    customerAddress: $('#delivery-address').value.trim(),
+    notes: $('#delivery-notes').value.trim(),
+    createdAt: new Date().toISOString()
+  };
+  await deductStockForCart(cart);
+  deliveryOrders.unshift(newDelivery);
+  await saveDeliveryOrders();
+  cart = [];
+  cartDiscount = null;
+  $('#customer-name').value = '';
+  renderCart();
+  renderDeliveryList();
+  $('#delivery-modal').classList.remove('active');
+  await appAlert(`Pedido de "${name}" enviado a domicilio. Cuando te paguen, márcalo como pagado desde la pestaña Domicilio.`, 'Enviado ✓');
+});
+
+$('#delivery-list').addEventListener('click', async (e) => {
+  const payBtn = e.target.closest('button[data-mark-paid-id]');
+  if(payBtn){
+    const id = payBtn.dataset.markPaidId;
+    const method = payBtn.dataset.method;
+    const delivery = deliveryOrders.find(d => d.id === id);
+    if(!delivery) return;
+    const subtotal = delivery.items.reduce((s,it)=>s + it.price*it.qty, 0);
+    const taxRate = Number($('#tax-rate').value) || 0;
+    const taxAmount = subtotal * (taxRate/100);
+    const total = subtotal + taxAmount;
+
+    const ok = await appConfirm(`¿Confirmar que "${delivery.customerName}" pagó ${money(total)} en ${method}?`, 'Confirmar pago');
+    if(!ok) return;
+
+    const order = {
+      id: 'P' + Date.now().toString().slice(-6),
+      orderNumber: nextOrderNumberForToday(),
+      timestamp: new Date().toISOString(),
+      items: delivery.items,
+      subtotal, taxRate, taxAmount, total,
+      payment: method,
+      customerName: delivery.customerName,
+      delivered: true,
+      dayId: null
+    };
+    orders.unshift(order);
+    await saveOrdersData();
+    deliveryOrders = deliveryOrders.filter(d => d.id !== id);
+    await saveDeliveryOrders();
+    renderDeliveryList();
+    renderHistory();
+    renderHomeView();
+    return;
+  }
+
+  const cancelBtn = e.target.closest('button[data-cancel-delivery-id]');
+  if(cancelBtn){
+    const id = cancelBtn.dataset.cancelDeliveryId;
+    const delivery = deliveryOrders.find(d => d.id === id);
+    if(!delivery) return;
+    const ok = await appConfirm(`¿Cancelar el pedido de "${delivery.customerName}"? Los productos vuelven al inventario.`, 'Cancelar pedido');
+    if(!ok) return;
+    await restoreStockForCart(delivery.items);
+    deliveryOrders = deliveryOrders.filter(d => d.id !== id);
+    await saveDeliveryOrders();
+    renderDeliveryList();
+  }
+});
+
 $('#withdrawal-btn').addEventListener('click', handleWithdrawal);
 $('#export-report-btn').addEventListener('click', exportSalesReportCSV);
 
@@ -4989,7 +5258,7 @@ function buildTicketPrintBody(text){
   while((match = regex.exec(text)) !== null){
     const before = text.slice(lastIndex, match.index).replace(/^\n/, '').replace(/\n$/, '');
     if(before) parts.push(`<pre>${escapeHtml(before)}</pre>`);
-    parts.push(`<div style="font-family:'Courier New',monospace; font-weight:800; font-size:26px; letter-spacing:0.03em; text-align:center; margin:3px 0;">${escapeHtml(match[1])}</div>`);
+    parts.push(`<div style="font-family:'Courier New',monospace; font-weight:800; font-size:26px; letter-spacing:0.03em; text-align:center; margin:3px 0; max-width:100%; overflow-wrap:break-word; word-break:break-word;">${escapeHtml(match[1])}</div>`);
     lastIndex = regex.lastIndex;
   }
   const rest = text.slice(lastIndex).replace(/^\n/, '');
@@ -4999,15 +5268,24 @@ function buildTicketPrintBody(text){
 }
 
 async function printText(text){
+  const widthMm = parseInt(settings.printWidth, 10) || 80;
   // App de escritorio (Electron): imprime directo, sin diálogo, en la
   // impresora guardada en Ajustes.
   if(window.electronAPI){
     const html = `
       <html><head><meta charset="utf-8"><style>
-        body{ margin:0; padding:2mm; }
-        pre{ font-family:'Courier New', monospace; font-size:12px; line-height:1.35; white-space:pre-wrap; margin:0; }
+        @page{ margin:0; }
+        html, body{ width:${widthMm}mm; }
+        body{ margin:0; padding:2mm; box-sizing:border-box; overflow-x:hidden; }
+        pre{ font-family:'Courier New', monospace; font-size:12px; line-height:1.35; white-space:pre-wrap; word-break:break-word; margin:0; max-width:100%; }
+        img{ max-width:100%; }
       </style></head><body>${buildTicketPrintBody(text)}</body></html>`;
-    const result = await window.electronAPI.printTicket(html, settings.printerName || null);
+    // Electron necesita el tamaño de página en micrones, no en "mm"
+    // como texto — si no se le dice nada, usa el tamaño por defecto
+    // de la impresora (a veces A4), y ahí es cuando el logo o el
+    // texto grande se calculan sin límite real y se salen del ticket.
+    const pageSize = { width: widthMm * 1000, height: 297000 };
+    const result = await window.electronAPI.printTicket(html, settings.printerName || null, pageSize);
     if(!result || !result.success){
       await appAlert('No se pudo imprimir. Revisa que la impresora esté encendida, conectada y elegida en Ajustes (pestaña Menú).', 'Error al imprimir');
     }
@@ -5025,7 +5303,7 @@ async function printText(text){
     pageStyle.id = 'print-page-style';
     document.head.appendChild(pageStyle);
   }
-  pageStyle.textContent = `@media print { #print-ticket{ width:${settings.printWidth || '80mm'}; } @page{ size:${settings.printWidth || '80mm'} auto; margin:0; } }`;
+  pageStyle.textContent = `@media print { #print-ticket{ width:${widthMm}mm; overflow-x:hidden; } #print-ticket img{ max-width:100%; } @page{ size:${widthMm}mm auto; margin:0; } }`;
 
   window.print();
 }
@@ -5544,6 +5822,21 @@ function applyTenantBranding(data){
     document.getElementById(customersFallback)?.classList.add('active');
   }
 
+  // Función "Domicilio": puede estar desactivada por plan. Controla
+  // tanto la pestaña como el botón de "Enviar a domicilio" del carrito.
+  featureDeliveryEnabled = !!(data && data.deliveryEnabled === true);
+  const deliveryTabBtn = document.getElementById('delivery-tab-btn');
+  if(deliveryTabBtn) deliveryTabBtn.style.display = featureDeliveryEnabled ? 'flex' : 'none';
+  const deliverySendBtn = $('#delivery-send-btn');
+  if(deliverySendBtn) deliverySendBtn.style.display = featureDeliveryEnabled ? 'flex' : 'none';
+  if(!featureDeliveryEnabled && document.getElementById('delivery-view')?.classList.contains('active')){
+    deliveryTabBtn?.classList.remove('active');
+    document.getElementById('delivery-view').classList.remove('active');
+    const deliveryFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${deliveryFallback}"]`)?.classList.add('active');
+    document.getElementById(deliveryFallback)?.classList.add('active');
+  }
+
   // Función "Menú" (gestión de productos): puede estar desactivada por
   // el negocio/plan. Configuración (ajustes generales) siempre queda
   // disponible, sin importar este interruptor.
@@ -5653,6 +5946,7 @@ function resetBranding(){
   featureHistoryEnabled = true;
   featureHomeEnabled = true;
   featureCustomersEnabled = false;
+  featureDeliveryEnabled = false;
   featureMenuEnabled = true;
   featureCustomerNameEnabled = true;
   featurePaymentCash = true;
@@ -5661,6 +5955,8 @@ function resetBranding(){
   document.querySelector('nav.tabs button[data-view="history-view"]')?.style.setProperty('display', 'flex');
   document.querySelector('nav.tabs button[data-view="home-view"]')?.style.setProperty('display', 'flex');
   document.querySelector('nav.tabs button[data-view="customers-view"]')?.style.setProperty('display', 'none');
+  document.getElementById('delivery-tab-btn')?.style.setProperty('display', 'none');
+  $('#delivery-send-btn')?.style.setProperty('display', 'none');
   document.querySelector('nav.tabs button[data-view="products-view"]')?.style.setProperty('display', 'flex');
   document.getElementById('config-tab-btn')?.style.setProperty('display', 'flex');
   document.querySelector('.customer-name-box')?.style.setProperty('display', 'block');
