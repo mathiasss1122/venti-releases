@@ -2435,16 +2435,21 @@ const $$ = (sel) => document.querySelectorAll(sel);
 const defaultHeaderLogoHtml = document.getElementById('header-logo-badge')?.innerHTML || '';
 const defaultDialogLogoHtml = document.getElementById('dialog-logo-badge')?.innerHTML || '';
 
-function applyLogo(emoji, imageBase64){
+let logoScalePercent = 100;
+
+function applyLogo(emoji, imageBase64, scalePercent){
+  logoScalePercent = scalePercent && scalePercent > 0 ? scalePercent : 100;
+  const headerSize = Math.round(46 * (logoScalePercent / 100));
+  const dialogSize = Math.round(26 * (logoScalePercent / 100));
   const headerBadge = $('#header-logo-badge');
   const dialogBadge = $('#dialog-logo-badge');
   if(imageBase64){
-    if(headerBadge) headerBadge.innerHTML = `<img src="${imageBase64}" style="width:46px; height:46px; border-radius:10px; object-fit:cover; display:block;">`;
-    if(dialogBadge) dialogBadge.innerHTML = `<img src="${imageBase64}" style="width:26px; height:26px; border-radius:7px; object-fit:cover; display:block;">`;
+    if(headerBadge) headerBadge.innerHTML = `<img src="${imageBase64}" style="width:${headerSize}px; height:${headerSize}px; border-radius:10px; object-fit:cover; display:block;">`;
+    if(dialogBadge) dialogBadge.innerHTML = `<img src="${imageBase64}" style="width:${dialogSize}px; height:${dialogSize}px; border-radius:7px; object-fit:cover; display:block;">`;
   } else if(emoji && emoji.trim()){
     const safeEmoji = escapeHtml(emoji.trim());
-    if(headerBadge) headerBadge.innerHTML = `<span style="font-size:38px; line-height:1;">${safeEmoji}</span>`;
-    if(dialogBadge) dialogBadge.innerHTML = `<span style="font-size:22px; line-height:1;">${safeEmoji}</span>`;
+    if(headerBadge) headerBadge.innerHTML = `<span style="font-size:${Math.round(38 * (logoScalePercent / 100))}px; line-height:1;">${safeEmoji}</span>`;
+    if(dialogBadge) dialogBadge.innerHTML = `<span style="font-size:${Math.round(22 * (logoScalePercent / 100))}px; line-height:1;">${safeEmoji}</span>`;
   } else {
     if(headerBadge) headerBadge.innerHTML = defaultHeaderLogoHtml;
     if(dialogBadge) dialogBadge.innerHTML = defaultDialogLogoHtml;
@@ -4954,12 +4959,15 @@ function buildPreviewTicketText(){
 // negrita, centrada — el resto del ticket sigue en letra normal tipo
 // máquina de escribir.
 function buildTicketLogoHtml(){
-  const logo = tenantData && tenantData.logoImageBase64;
+  const logo = tenantData && tenantData.ticketLogoImageBase64;
   if(!logo) return '';
   // filter en blanco y negro: las impresoras térmicas solo imprimen
   // un color, así que se convierte a escala de grises con más
   // contraste antes de imprimir, para que no salga borroso.
-  return `<div style="text-align:center; margin-bottom:4px;"><img src="${logo}" style="max-width:55%; max-height:70px; filter:grayscale(1) contrast(1.5); -webkit-filter:grayscale(1) contrast(1.5);"></div>`;
+  const scale = (tenantData && tenantData.ticketLogoScale ? tenantData.ticketLogoScale : 100) / 100;
+  const maxWidthPct = Math.min(90, Math.round(55 * scale));
+  const maxHeightPx = Math.round(70 * scale);
+  return `<div style="text-align:center; margin-bottom:4px;"><img src="${logo}" style="max-width:${maxWidthPct}%; max-height:${maxHeightPx}px; filter:grayscale(1) contrast(1.5); -webkit-filter:grayscale(1) contrast(1.5);"></div>`;
 }
 
 function buildTicketPrintBody(text){
@@ -5456,7 +5464,7 @@ function applyTenantBranding(data){
   document.title = bizName + ' · Sistema POS';
   settings.shopName = bizName;
 
-  applyLogo(brandData && brandData.logoEmoji, brandData && brandData.logoImageBase64);
+  applyLogo(brandData && brandData.logoEmoji, brandData && brandData.logoImageBase64, brandData && brandData.logoScale);
 
   // Función "Impresión de tickets": puede estar desactivada por negocio
   featurePrintingEnabled = !data || data.printingEnabled !== false;
