@@ -594,7 +594,8 @@
     letter-spacing:0.04em;
   }
   .empty-cat{
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.6;
     font-size:14px;
     padding:20px 4px;
   }
@@ -656,7 +657,8 @@
     gap:10px;
   }
   .cart-empty{
-    color:#8A8377;
+    color:var(--on-cart-bg);
+    opacity:0.6;
     font-size:14px;
     text-align:center;
     margin-top:40px;
@@ -825,7 +827,8 @@
   .clear-btn{
     background:none;
     border:none;
-    color:#8A8377;
+    color:var(--on-cart-bg);
+    opacity:0.65;
     font-size:12.5px;
     cursor:pointer;
     margin-top:8px;
@@ -1025,7 +1028,7 @@
   /* ---- HISTORY VIEW ---- */
   #history-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
   #history-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
-  .history-sub{ color:#8286B0; font-size:13.5px; margin-bottom:16px; }
+  .history-sub{ color:var(--on-charcoal-2); opacity:0.62; font-size:13.5px; margin-bottom:16px; }
 
   /* ---- DELIVERY VIEW ---- */
   #delivery-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
@@ -1046,7 +1049,7 @@
     margin-bottom:8px;
   }
   .delivery-card .name{ font-weight:800; font-size:15px; color:var(--on-charcoal-2); }
-  .delivery-card .time{ font-size:11.5px; color:#8286B0; margin-top:2px; }
+  .delivery-card .time{ font-size:11.5px; color:var(--on-charcoal-2); opacity:0.62; margin-top:2px; }
   .delivery-card .total{ font-family:'Anton',sans-serif; font-size:19px; color:var(--mustard); white-space:nowrap; }
   .delivery-card .contact{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.85; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
   .delivery-card .items{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.75; margin:8px 0; line-height:1.5; }
@@ -1106,8 +1109,8 @@
     margin-bottom:6px;
   }
   .order-card .top .id{ font-weight:800; font-size:14.5px; color:var(--on-charcoal-2); }
-  .order-card .top .time{ font-size:12.5px; color:#8286B0; }
-  .order-card .items{ font-size:13px; color:#B7BAE0; margin-bottom:6px; }
+  .order-card .top .time{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.62; }
+  .order-card .items{ font-size:13px; color:var(--on-charcoal-2); opacity:0.75; margin-bottom:6px; }
   .order-card .bottom{
     display:flex;
     justify-content:space-between;
@@ -1119,7 +1122,8 @@
     padding:3px 9px;
     border-radius:12px;
     background:var(--charcoal);
-    color:#B7BAE0;
+    color:var(--on-charcoal);
+    opacity:0.75;
   }
   .order-card .delivery-tag{
     font-size:11px;
@@ -1151,7 +1155,8 @@
     border-radius:6px;
     border:1px solid var(--line);
     background:var(--charcoal);
-    color:#B7BAE0;
+    color:var(--on-charcoal);
+    opacity:0.85;
     font-weight:700;
     font-size:12.5px;
     cursor:pointer;
@@ -1202,7 +1207,7 @@
     color:var(--on-primary, var(--charcoal));
     border-color:var(--mustard);
   }
-  .no-orders{ color:#8286B0; margin-top:30px; text-align:center; }
+  .no-orders{ color:var(--on-charcoal-2); opacity:0.62; margin-top:30px; text-align:center; }
 
   .day-open-box{
     background:var(--charcoal-2);
@@ -1218,7 +1223,7 @@
     margin-bottom:10px;
   }
   .day-open-label{ font-family:'Anton',sans-serif; font-size:17px; color:var(--on-charcoal-2); }
-  .day-open-meta{ font-size:12.5px; color:#8286B0; margin-top:2px; }
+  .day-open-meta{ font-size:12.5px; color:var(--on-charcoal-2); opacity:0.62; margin-top:2px; }
   #close-day-btn{
     background:var(--mustard);
     color:var(--on-primary, var(--cream));
@@ -1231,14 +1236,16 @@
   }
   #close-day-btn:disabled{
     background:var(--line);
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.55;
     cursor:not-allowed;
   }
   .closed-days-title{
     font-size:14px;
     text-transform:uppercase;
     letter-spacing:0.06em;
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.62;
     margin:0 0 10px 0;
   }
   details.day-group{
@@ -1265,7 +1272,8 @@
   }
   details.day-group summary .meta{
     font-size:12px;
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.62;
     margin-top:2px;
   }
   details.day-group summary .amt{
@@ -1345,7 +1353,8 @@
   }
   details.month-group > summary .meta{
     font-size:12px;
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.62;
     margin-top:2px;
   }
   details.month-group > summary .amt{
@@ -1361,7 +1370,7 @@
   /* ---- MENU EDITOR VIEW ---- */
   #menu-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
   #menu-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
-  .menu-sub{ color:#8286B0; font-size:13.5px; margin-bottom:18px; }
+  .menu-sub{ color:var(--on-charcoal-2); opacity:0.62; font-size:13.5px; margin-bottom:18px; }
   .config-subheading{ color:var(--on-charcoal); font-size:15px; margin:0 0 12px 0; }
   .cat-icon-row{
     background:var(--charcoal-2);
@@ -1423,13 +1432,13 @@
     text-align:center;
   }
   .stock-input.low{ border-color:var(--brick); color:var(--brick); font-weight:700; }
-  .stock-no-control{ color:#8286B0; font-size:12px; }
+  .stock-no-control{ color:var(--on-charcoal-2); opacity:0.5; font-size:12px; }
   .stock-saved-flash{ color:var(--green); font-size:11px; margin-left:8px; opacity:0; transition:opacity .3s ease; }
   .stock-saved-flash.show{ opacity:1; }
   #customers-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
   #products-view{ padding:20px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
   #products-view h2{ font-size:24px; margin-bottom:2px; color:var(--on-charcoal); }
-  .sales-sub{ color:#8286B0; font-size:13.5px; margin-bottom:18px; }
+  .sales-sub{ color:var(--on-charcoal-2); opacity:0.62; font-size:13.5px; margin-bottom:18px; }
 
   /* ---- HOME VIEW ---- */
   #home-view{ padding:24px 28px; overflow-y:auto; flex-direction:column; color:var(--on-charcoal-2); }
@@ -1442,6 +1451,49 @@
   .home-section{
     margin-top:8px;
     margin-bottom:26px;
+  }
+  .home-insight-card{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    background:linear-gradient(135deg, rgba(217,164,65,0.14), rgba(217,164,65,0.05));
+    border:1px solid rgba(217,164,65,0.35);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-top:18px;
+    margin-bottom:8px;
+  }
+  .home-insight-icon{
+    width:36px;
+    height:36px;
+    flex-shrink:0;
+    border-radius:10px;
+    background:rgba(217,164,65,0.2);
+    color:var(--mustard);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .home-insight-icon .icon-svg{ width:19px; height:19px; }
+  .home-insight-title{
+    font-weight:800;
+    font-size:14px;
+    color:var(--on-charcoal-2);
+    margin-bottom:3px;
+  }
+  .home-insight-text{
+    font-size:12.5px;
+    color:var(--on-charcoal-2);
+    opacity:0.8;
+    line-height:1.5;
+  }
+  .home-mini-chart-box{
+    height:160px;
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:10px 6px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.07), 0 6px 16px rgba(0,0,0,0.13);
   }
   .home-section h3{
     display:flex;
@@ -1542,7 +1594,8 @@
   }
   .sales-stat-card .lbl{
     font-size:11.5px;
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.6;
     text-transform:uppercase;
     letter-spacing:0.06em;
     font-weight:700;
@@ -1676,7 +1729,8 @@
     font-size:12px;
     text-transform:uppercase;
     letter-spacing:0.06em;
-    color:#8286B0;
+    color:var(--on-charcoal-2);
+    opacity:0.6;
     padding:8px 10px;
     border-bottom:1px solid var(--line);
   }
@@ -1744,7 +1798,7 @@
   .status-msg:not(:empty){
     animation:fadeIn .2s ease;
   }
-  .loading{ padding:40px; text-align:center; color:#8A8377; }
+  .loading{ padding:40px; text-align:center; color:var(--on-charcoal-2); opacity:0.55; }
 
   /* ---- LOGIN SCREEN ---- */
   #login-screen{
@@ -2048,6 +2102,19 @@
 
       <div class="sales-stats" id="home-quick-stats"></div>
 
+      <div class="home-insight-card" id="home-insight-card" style="display:none;">
+        <div class="home-insight-icon"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.8.8 1.23 1.36 1.41 2.5"/></svg></span></div>
+        <div>
+          <div class="home-insight-title" id="home-insight-title"></div>
+          <div class="home-insight-text" id="home-insight-text"></div>
+        </div>
+      </div>
+
+      <div class="home-section" id="home-mini-chart-section" style="display:none;">
+        <h3><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></span> Ventas de los últimos 7 días</h3>
+        <div id="home-mini-chart" class="home-mini-chart-box"></div>
+      </div>
+
       <div class="home-section" id="home-low-stock-section" style="display:none;">
         <h3><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span> Productos por agotarse</h3>
         <div id="home-low-stock-list" class="home-chip-list"></div>
@@ -2230,7 +2297,7 @@
       <div class="settings-box">
         <label>Nombre del negocio:</label>
         <span id="shop-name-readonly" style="font-weight:700; color:var(--on-charcoal);"></span>
-        <span style="font-size:11.5px; color:#8286B0;">(lo cambia el administrador de la plataforma)</span>
+        <span style="font-size:11.5px; color:var(--on-charcoal-2); opacity:0.6;">(lo cambia el administrador de la plataforma)</span>
       </div>
       <div class="settings-box">
         <label>Código de encargado (para borrar pedidos y entrar a Menú):</label>
@@ -2267,7 +2334,7 @@
       <div class="settings-box" style="flex-wrap:wrap;">
         <div style="flex:1; min-width:200px;">
           <div style="font-weight:700; font-size:13.5px; color:var(--on-charcoal);">Respaldo en la nube</div>
-          <div style="font-size:12px; color:#8286B0; margin-top:2px;" id="sync-indicator"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span> Solo en esta computadora</div>
+          <div style="font-size:12px; color:var(--on-charcoal-2); opacity:0.62; margin-top:2px;" id="sync-indicator"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span> Solo en esta computadora</div>
         </div>
         <button type="button" id="backup-now-btn" style="background:var(--green); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.24"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg></span> Respaldar ahora</button>
         <button type="button" id="restore-backup-btn" style="background:var(--brick); color:white; border:none; padding:9px 14px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5"/></svg></span> Restaurar último respaldo</button>
@@ -2300,7 +2367,7 @@
         <button type="button" id="show-import-btn" style="background:none; border:none; color:var(--mustard); font-size:12.5px; font-weight:700; cursor:pointer; text-decoration:underline; padding:0;">Importar menú completo (pegar lista)</button>
       </div>
       <div id="import-box" style="display:none; margin-bottom:18px; background:var(--charcoal-2); border:1px solid var(--line); border-radius:10px; padding:14px;">
-        <div style="font-size:12.5px; color:#B7BAE0; margin-bottom:8px;">Pega aquí tu lista de productos, uno por línea (ej. <em>Hamburguesa - 5.00</em>), o el formato JSON que te haya dado tu proveedor del sistema. Si tu lista trae encabezados de categoría (ej. una línea que diga "Bebidas" seguida de sus productos), los usamos automáticamente; si no, acomodamos cada producto en una categoría según su nombre. Esto <strong>reemplaza todo el menú actual</strong>.</div>
+        <div style="font-size:12.5px; color:var(--on-charcoal-2); opacity:0.78; margin-bottom:8px;">Pega aquí tu lista de productos, uno por línea (ej. <em>Hamburguesa - 5.00</em>), o el formato JSON que te haya dado tu proveedor del sistema. Si tu lista trae encabezados de categoría (ej. una línea que diga "Bebidas" seguida de sus productos), los usamos automáticamente; si no, acomodamos cada producto en una categoría según su nombre. Esto <strong>reemplaza todo el menú actual</strong>.</div>
         <textarea id="import-textarea" rows="6" style="width:100%; padding:10px; border-radius:7px; border:1px solid var(--line); background:var(--charcoal); color:var(--on-charcoal); font-family:monospace; font-size:12px;" placeholder="Pega aquí el menú completo..."></textarea>
         <div style="display:flex; gap:8px; margin-top:8px;">
           <button type="button" id="import-menu-btn" style="background:var(--green); color:white; border:none; padding:9px 16px; border-radius:7px; font-weight:700; font-size:12.5px; cursor:pointer;">Importar</button>
@@ -3946,7 +4013,7 @@ function renderCategoryIconManager(cats){
   const container = $('#category-icon-manager');
   if(!container) return;
   if(!cats.length){
-    container.innerHTML = '<div style="font-size:12px; color:#8286B0;">Agrega productos primero para poder elegirles ícono a sus categorías.</div>';
+    container.innerHTML = '<div style="font-size:12px; color:var(--on-charcoal-2); opacity:0.6;">Agrega productos primero para poder elegirles ícono a sus categorías.</div>';
     return;
   }
   container.innerHTML = cats.map(cat => {
@@ -4107,7 +4174,8 @@ function renderMenuEditor(){
     if(productLimit > 0){
       const atLimit = menuItems.length >= productLimit;
       limitMsg.textContent = `Productos: ${menuItems.length} / ${productLimit}` + (atLimit ? ' — llegaste al límite de tu plan.' : '');
-      limitMsg.style.color = atLimit ? 'var(--brick)' : '#8286B0';
+      limitMsg.style.color = atLimit ? 'var(--brick)' : 'var(--on-charcoal-2)';
+      if(!atLimit) limitMsg.style.opacity = '0.6'; else limitMsg.style.opacity = '1';
     } else {
       limitMsg.textContent = '';
     }
@@ -4121,7 +4189,7 @@ function renderMenuEditor(){
       ? item.variants.map(v => `${v.label} ${money(v.price)}`).join(' · ')
       : money(item.price);
     const stockStr = (item.stock === null || item.stock === undefined)
-      ? '<span style="color:#8286B0;">Sin control</span>'
+      ? '<span style="color:var(--on-charcoal-2); opacity:0.5;">Sin control</span>'
       : (item.stock <= 0
           ? '<span style="color:var(--brick); font-weight:700;">Agotado</span>'
           : (item.stock < 5
@@ -4131,7 +4199,7 @@ function renderMenuEditor(){
       ? `<img src="${item.image}" style="width:32px; height:32px; border-radius:6px; object-fit:cover; vertical-align:middle; margin-right:8px;">`
       : '';
     tr.innerHTML = `
-      <td>${thumbHtml}${escapeHtml(item.name)}${item.desc ? `<div style="font-size:11.5px; color:#8286B0; margin-top:2px;">${escapeHtml(item.desc)}</div>` : ''}</td>
+      <td>${thumbHtml}${escapeHtml(item.name)}${item.desc ? `<div style="font-size:11.5px; color:var(--on-charcoal-2); opacity:0.62; margin-top:2px;">${escapeHtml(item.desc)}</div>` : ''}</td>
       <td>${escapeHtml(item.category)}</td>
       <td class="price">${priceStr}</td>
       <td style="display:${featureInventoryEnabled ? 'table-cell' : 'none'};">${stockStr}</td>
@@ -4597,6 +4665,41 @@ $('#onboarding-next').addEventListener('click', () => {
 });
 $('#onboarding-skip').addEventListener('click', () => { closeOnboarding(); });
 
+// Analiza el historial y devuelve una recomendación simple si hay un
+// patrón claro (por ahora: el día de la semana más flojo). Devuelve
+// null si todavía no hay suficientes datos para un consejo confiable
+// — mejor no decir nada que arriesgarse a sugerir algo con pocos datos.
+function generateSalesInsight(){
+  if(orders.length < 14) return null;
+
+  const dayNames = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const totalsByDay = [0,0,0,0,0,0,0];
+  const daysSeen = [new Set(),new Set(),new Set(),new Set(),new Set(),new Set(),new Set()];
+  orders.forEach(o => {
+    const d = new Date(o.timestamp);
+    const dow = d.getDay();
+    totalsByDay[dow] += o.total;
+    daysSeen[dow].add((o.timestamp||'').slice(0,10));
+  });
+  const avgByDay = totalsByDay.map((t,i) => daysSeen[i].size ? t / daysSeen[i].size : 0);
+
+  // Solo se toman en cuenta los días de la semana de los que ya se
+  // tienen al menos 2 fechas distintas — para no comparar un martes
+  // que solo se ha visto una vez contra los demás.
+  const valid = avgByDay.map((v,i) => ({v, i})).filter(x => daysSeen[x.i].size >= 2);
+  if(valid.length < 3) return null;
+
+  const overallAvg = valid.reduce((s,x)=>s+x.v,0) / valid.length;
+  const weakest = valid.reduce((min, x) => x.v < min.v ? x : min, valid[0]);
+  if(overallAvg <= 0 || weakest.v >= overallAvg * 0.85) return null; // sin una diferencia clara, no forzar un consejo
+
+  const pctLower = Math.round((1 - weakest.v / overallAvg) * 100);
+  return {
+    title: `Los ${dayNames[weakest.i]} son tu día más flojo`,
+    text: `Vendes en promedio ${pctLower}% menos que en un día normal. Podría ayudarte una promoción o un combo especial ese día para levantar las ventas.`
+  };
+}
+
 function renderHomeView(){
   const hour = new Date().getHours();
   let greeting = 'Buenas noches';
@@ -4620,6 +4723,45 @@ function renderHomeView(){
     `;
     animateCountUp($('#home-stat-today-total'), todayTotal, v => money(v));
     animateCountUp($('#home-stat-today-orders'), todayOrders.length, v => Math.round(v).toString());
+  }
+
+  // Idea de venta según patrones detectados en el historial
+  const insightCard = $('#home-insight-card');
+  if(insightCard){
+    const insight = featureSalesViewEnabled ? generateSalesInsight() : null;
+    if(insight){
+      insightCard.style.display = 'flex';
+      $('#home-insight-title').textContent = insight.title;
+      $('#home-insight-text').textContent = insight.text;
+    } else {
+      insightCard.style.display = 'none';
+    }
+  }
+
+  // Gráfico chico de ventas — el mismo dato que el de Análisis, en
+  // una caja más chica
+  const miniChartSection = $('#home-mini-chart-section');
+  if(miniChartSection){
+    if(featureSalesViewEnabled && orders.length){
+      miniChartSection.style.display = 'block';
+      const days = [];
+      for(let i=6;i>=0;i--){
+        const d = new Date();
+        d.setDate(d.getDate()-i);
+        days.push(d);
+      }
+      const labels = days.map(d => d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric'}));
+      const totals = days.map(d => {
+        const dayStr = d.toISOString().slice(0,10);
+        return orders.filter(o => (o.timestamp||'').slice(0,10) === dayStr).reduce((s,o)=>s+o.total,0);
+      });
+      renderSvgBarChart('home-mini-chart', labels, totals, {
+        formatValue: v => money(v),
+        formatAxis: v => '$' + Math.round(v)
+      });
+    } else {
+      miniChartSection.style.display = 'none';
+    }
   }
 
   // Productos por agotarse — solo si el negocio tiene inventario activo
