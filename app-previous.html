@@ -2626,6 +2626,7 @@ let productSearchQuery = '';
 let selectedPayMethod = null;
 let featurePrintingEnabled = true;
 let featureSalesViewEnabled = true;
+let featureAnalysisEnabled = true;
 let featureInventoryEnabled = false; // nueva: solo activa si el plan la incluye
 let featureProductImagesEnabled = false; // solo plan Pro
 let cartPrintedBeforePayment = false;
@@ -6087,20 +6088,28 @@ function applyTenantBranding(data){
   const paperWidthBox = $('#print-width-input')?.closest('.settings-box');
   if(paperWidthBox) paperWidthBox.style.display = featurePrintingEnabled ? 'flex' : 'none';
 
-  // Función "Panel de ventas": puede estar desactivada por plan
+  // Funciones "Ventas" y "Análisis": se activan por separado, cada
+  // una con su propio interruptor
   featureSalesViewEnabled = !data || data.salesViewEnabled !== false;
   const salesTabBtn = document.querySelector('nav.tabs button[data-view="sales-view"]');
   if(salesTabBtn) salesTabBtn.style.display = featureSalesViewEnabled ? 'flex' : 'none';
-  const analysisTabBtn = document.querySelector('nav.tabs button[data-view="analysis-view"]');
-  if(analysisTabBtn) analysisTabBtn.style.display = featureSalesViewEnabled ? 'flex' : 'none';
-  if(!featureSalesViewEnabled && (document.getElementById('sales-view')?.classList.contains('active') || document.getElementById('analysis-view')?.classList.contains('active'))){
+  if(!featureSalesViewEnabled && document.getElementById('sales-view')?.classList.contains('active')){
     salesTabBtn?.classList.remove('active');
-    analysisTabBtn?.classList.remove('active');
     document.getElementById('sales-view')?.classList.remove('active');
-    document.getElementById('analysis-view')?.classList.remove('active');
     const salesFallback = getFallbackViewId();
     document.querySelector(`nav.tabs button[data-view="${salesFallback}"]`)?.classList.add('active');
     document.getElementById(salesFallback)?.classList.add('active');
+  }
+
+  featureAnalysisEnabled = !data || data.analysisEnabled !== false;
+  const analysisTabBtn = document.querySelector('nav.tabs button[data-view="analysis-view"]');
+  if(analysisTabBtn) analysisTabBtn.style.display = featureAnalysisEnabled ? 'flex' : 'none';
+  if(!featureAnalysisEnabled && document.getElementById('analysis-view')?.classList.contains('active')){
+    analysisTabBtn?.classList.remove('active');
+    document.getElementById('analysis-view')?.classList.remove('active');
+    const analysisFallback = getFallbackViewId();
+    document.querySelector(`nav.tabs button[data-view="${analysisFallback}"]`)?.classList.add('active');
+    document.getElementById(analysisFallback)?.classList.add('active');
   }
 
   // Función "Inicio": puede estar desactivada por el negocio/plan. Si se
