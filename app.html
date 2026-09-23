@@ -2807,7 +2807,7 @@ function fixLegacyClosureDates(){
     if(lastOrderTime <= 0) return;
     const labelDate = new Date(lastOrderTime);
     c.label = labelDate.toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-    c.dayDate = labelDate.toISOString();
+    c.dayDate = localDateStr(labelDate);
     changed = true;
   });
   return changed;
@@ -2981,14 +2981,28 @@ async function saveSettings(){
 }
 
 /* ---------- RESPALDO DIARIO EN LA NUBE ---------- */
+// Convierte una fecha (o el momento actual) a su texto YYYY-MM-DD
+// según la hora LOCAL de la computadora — nunca UTC. Esto importa
+// mucho: con UTC, un pedido de las 8pm en México ya cae en el día
+// SIGUIENTE en términos de fecha, lo que hacía que ventas de la noche
+// se contaran como del día de mañana (números de pedido que no
+// arrancan en 1, "vendido hoy" mal calculado, etc.).
+function localDateStr(dateInput){
+  const d = dateInput ? new Date(dateInput) : new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function todayStr(){
-  return new Date().toISOString().slice(0,10); // YYYY-MM-DD
+  return localDateStr(); // YYYY-MM-DD, hora local
 }
 
 /* ---------- NÚMERO DE PEDIDO (se reinicia cada día calendario) ---------- */
 function nextOrderNumberForToday(){
   const today = todayStr();
-  const todaysOrders = orders.filter(o => (o.timestamp || '').slice(0,10) === today);
+  const todaysOrders = orders.filter(o => localDateStr(o.timestamp) === today);
   const maxNum = todaysOrders.reduce((max,o) => Math.max(max, o.orderNumber || 0), 0);
   return maxNum + 1;
 }
@@ -3948,7 +3962,7 @@ $('#close-day-btn').onclick = async () => {
   openOrders.forEach(o => { o.dayId = closureId; });
   const openWithdrawals = withdrawals.filter(w => !w.dayId);
   openWithdrawals.forEach(w => { w.dayId = closureId; });
-  closures.unshift({ id: closureId, label, dayDate: labelDate.toISOString(), closedAt: now.toISOString(), orderCount: openOrders.length, total });
+  closures.unshift({ id: closureId, label, dayDate: localDateStr(labelDate), closedAt: now.toISOString(), orderCount: openOrders.length, total });
 
   await saveOrdersData();
   renderHistory();
@@ -4725,7 +4739,7 @@ function generateSalesInsight(){
     const d = new Date(o.timestamp);
     const dow = d.getDay();
     totalsByDay[dow] += o.total;
-    daysSeen[dow].add((o.timestamp||'').slice(0,10));
+    daysSeen[dow].add(localDateStr(o.timestamp));
   });
   const avgByDay = totalsByDay.map((t,i) => daysSeen[i].size ? t / daysSeen[i].size : 0);
 
@@ -4757,8 +4771,8 @@ function renderHomeView(){
   if(greetEl) greetEl.textContent = `${greeting}, ${shopName} 👋`;
   if(dateEl) dateEl.textContent = new Date().toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
-  const todayDateStr = new Date().toISOString().slice(0,10);
-  const todayOrders = orders.filter(o => (o.timestamp||'').slice(0,10) === todayDateStr);
+  const todayDateStr = todayStr();
+  const todayOrders = orders.filter(o => localDateStr(o.timestamp) === todayDateStr);
   const todayTotal = todayOrders.reduce((s,o)=>s+o.total,0);
 
   const statsEl = $('#home-quick-stats');
@@ -4774,7 +4788,7 @@ function renderHomeView(){
   // Idea de venta según patrones detectados en el historial
   const insightCard = $('#home-insight-card');
   if(insightCard){
-    const insight = featureSalesViewEnabled ? generateSalesInsight() : null;
+    const insight = featureAnalysisEnabled ? generateSalesInsight() : null;
     if(insight){
       insightCard.style.display = 'flex';
       $('#home-insight-title').textContent = insight.title;
@@ -4788,7 +4802,7 @@ function renderHomeView(){
   // una caja más chica
   const miniChartSection = $('#home-mini-chart-section');
   if(miniChartSection){
-    if(featureSalesViewEnabled && orders.length){
+    if(featureAnalysisEnabled && orders.length){
       miniChartSection.style.display = 'block';
       const days = [];
       for(let i=6;i>=0;i--){
@@ -4798,8 +4812,8 @@ function renderHomeView(){
       }
       const labels = days.map(d => d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric'}));
       const totals = days.map(d => {
-        const dayStr = d.toISOString().slice(0,10);
-        return orders.filter(o => (o.timestamp||'').slice(0,10) === dayStr).reduce((s,o)=>s+o.total,0);
+        const dayStr = localDateStr(d);
+        return orders.filter(o => localDateStr(o.timestamp) === dayStr).reduce((s,o)=>s+o.total,0);
       });
       renderSvgBarChart('home-mini-chart', labels, totals, {
         formatValue: v => money(v),
@@ -5287,8 +5301,8 @@ function renderDailySalesChart(){
   }
   const labels = days.map(d => d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric'}));
   const totals = days.map(d => {
-    const dayStr = d.toISOString().slice(0,10);
-    return orders.filter(o => (o.timestamp||'').slice(0,10) === dayStr).reduce((s,o)=>s+o.total,0);
+    const dayStr = localDateStr(d);
+    return orders.filter(o => localDateStr(o.timestamp) === dayStr).reduce((s,o)=>s+o.total,0);
   });
   renderSvgBarChart('daily-sales-chart', labels, totals, {
     formatValue: v => money(v),
@@ -5402,7 +5416,7 @@ function exportSalesReportCSV(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  const todayLabel = new Date().toISOString().slice(0,10);
+  const todayLabel = localDateStr();
   a.download = `reporte-ventas-${todayLabel}.csv`;
   document.body.appendChild(a);
   a.click();
