@@ -2789,8 +2789,33 @@ const store = {
   }
 };
 
+// Corrige, una sola vez, la fecha de los días que se cerraron ANTES
+// de este cambio (cuando la fecha se ponía según el momento de
+// cerrar, no según los pedidos de verdad). Se recalcula usando la
+// fecha real del último pedido de cada día — el dato ya estaba
+// guardado en cada pedido, así que no se pierde nada al corregirlo.
+function fixLegacyClosureDates(){
+  let changed = false;
+  closures.forEach(c => {
+    if(c.dayDate) return; // este día ya tiene la fecha correcta guardada
+    const dayOrders = orders.filter(o => o.dayId === c.id);
+    if(!dayOrders.length) return; // sin pedidos para recalcular, se deja tal cual
+    const lastOrderTime = dayOrders.reduce((latest, o) => {
+      const t = new Date(o.timestamp).getTime();
+      return (!isNaN(t) && t > latest) ? t : latest;
+    }, 0);
+    if(lastOrderTime <= 0) return;
+    const labelDate = new Date(lastOrderTime);
+    c.label = labelDate.toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    c.dayDate = labelDate.toISOString();
+    changed = true;
+  });
+  return changed;
+}
+
 function afterFirstLoadCheck(){
   if(!menuItems.length) saveMenu();
+  if(fixLegacyClosureDates()) saveOrdersData();
   // activeCategory se queda en null (General, todos los productos) por
   // defecto — ya no se fuerza a la primera categoría.
   renderAll();
@@ -3830,10 +3855,15 @@ function renderHistory(){
   }
   list.innerHTML = '';
 
-  // Agrupar closures por mes (más reciente primero)
+  // Agrupar closures por mes (más reciente primero). Se agrupa según
+  // la fecha real de los pedidos (dayDate) y no la fecha en que se
+  // cerró el día (closedAt) — así un día cerrado al día siguiente no
+  // se cuela en el mes equivocado. Los días cerrados antes de este
+  // cambio no tienen dayDate todavía, así que usan closedAt como
+  // respaldo.
   const monthGroups = {}; // "2026-09" -> [closures...]
   closures.forEach(c => {
-    const key = (c.closedAt || '').slice(0,7);
+    const key = (c.dayDate || c.closedAt || '').slice(0,7);
     if(!monthGroups[key]) monthGroups[key] = [];
     monthGroups[key].push(c);
   });
@@ -3901,13 +3931,24 @@ $('#close-day-btn').onclick = async () => {
 
   const now = new Date();
   const closureId = 'day_' + Date.now();
-  const label = now.toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  // La etiqueta del día se pone según el ÚLTIMO PEDIDO de este lote,
+  // no según el momento en que se cierra — así, si el negocio vendió
+  // todo el martes pero cierra el día hasta el miércoles en la
+  // mañana, el historial dice "martes" (que es cuando de verdad
+  // vendieron), no "miércoles".
+  const lastOrderTime = openOrders.reduce((latest, o) => {
+    const t = new Date(o.timestamp).getTime();
+    return (!isNaN(t) && t > latest) ? t : latest;
+  }, 0);
+  const labelDate = lastOrderTime > 0 ? new Date(lastOrderTime) : now;
+  const label = labelDate.toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
   const total = openOrders.reduce((s,o)=>s+o.total,0);
 
   openOrders.forEach(o => { o.dayId = closureId; });
   const openWithdrawals = withdrawals.filter(w => !w.dayId);
   openWithdrawals.forEach(w => { w.dayId = closureId; });
-  closures.unshift({ id: closureId, label, closedAt: now.toISOString(), orderCount: openOrders.length, total });
+  closures.unshift({ id: closureId, label, dayDate: labelDate.toISOString(), closedAt: now.toISOString(), orderCount: openOrders.length, total });
 
   await saveOrdersData();
   renderHistory();
