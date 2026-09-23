@@ -683,7 +683,8 @@
   }
   .cart-row .info .p{
     font-size:12px;
-    color:#B8B0A2;
+    color:var(--on-cart-bg);
+    opacity:0.65;
   }
   .cart-row .info .note{
     font-size:11.5px;
@@ -692,7 +693,8 @@
     cursor:pointer;
   }
   .cart-row .info .note.add-note{
-    color:#7A7568;
+    color:var(--on-cart-bg);
+    opacity:0.55;
     text-decoration:underline;
   }
   .qty-control{
@@ -727,7 +729,8 @@
     display:flex;
     justify-content:space-between;
     margin-bottom:6px;
-    color:#D8D2C4;
+    color:var(--on-cart-bg);
+    opacity:0.8;
   }
   .cart-totals .row.total{
     color:var(--mustard);
@@ -1098,10 +1101,11 @@
     font-size:13.5px;
     box-shadow:var(--shadow-sm);
   }
-  .withdrawal-card .w-icon{ width:16px; height:16px; }
+  .withdrawal-card .w-icon{ width:16px; height:16px; flex-shrink:0; margin-top:2px; }
   .withdrawal-card .w-label{ flex:1; }
-  .withdrawal-card .w-time{ font-weight:400; opacity:0.75; font-size:12px; }
-  .withdrawal-card .w-amount{ font-family:'Anton',sans-serif; font-size:15px; }
+  .withdrawal-card .w-note{ font-weight:400; font-size:12px; opacity:0.85; margin-top:2px; }
+  .withdrawal-card .w-time{ font-weight:400; opacity:0.75; font-size:12px; align-self:flex-start; }
+  .withdrawal-card .w-amount{ font-family:'Anton',sans-serif; font-size:15px; align-self:flex-start; }
   .order-card .top{
     display:flex;
     justify-content:space-between;
@@ -3777,7 +3781,7 @@ function withdrawalCardHtml(w){
   return `
     <div class="withdrawal-card">
       <span class="w-icon icon-svg">${ICONS.wallet}</span>
-      <span class="w-label">Retiro de capital</span>
+      <span class="w-label">Retiro de capital${w.note ? `<div class="w-note">${escapeHtml(w.note)}</div>` : ''}</span>
       <span class="w-time">${timeStr}</span>
       <span class="w-amount">-${money(w.amount)}</span>
     </div>
@@ -5373,7 +5377,11 @@ function escapeHtml(str){
 /* ---------- IMPRESIÓN DE TICKETS ---------- */
 function charsForWidth(widthSetting){
   const w = widthSetting || settings.printWidth;
-  return (w === '58mm') ? 32 : 42;
+  // Con el margen de 2mm a cada lado que se le agregó al papel, el
+  // ancho real de escritura es un poco menor al ancho total del rollo
+  // — estos números ya lo toman en cuenta, para que ninguna línea (ni
+  // la de guiones) se pase y salte a la siguiente.
+  return (w === '58mm') ? 29 : 39;
 }
 function center(text, width){
   text = text.slice(0, width);
@@ -5859,17 +5867,20 @@ async function handleWithdrawal(){
     return;
   }
 
+  const noteStr = await appPrompt('¿Para qué es este retiro? (opcional, ej. "Carne molida")', 'Descripción del retiro');
+  const note = noteStr === null ? '' : noteStr.trim();
+
   withdrawals.unshift({
     id: 'w' + Date.now(),
     amount,
-    note: '',
+    note,
     timestamp: new Date().toISOString(),
     dayId: null
   });
   await saveOrdersData();
   renderHistory();
   renderSalesView();
-  await appAlert(`Retiro de ${money(amount)} registrado ✓`, 'Listo');
+  await appAlert(`Retiro de ${money(amount)}${note ? ` — ${note}` : ''} registrado ✓`, 'Listo');
 }
 
 
