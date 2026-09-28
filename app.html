@@ -617,6 +617,11 @@
     font-size:20px;
     margin:0 0 4px 0;
   }
+  /* Todo el texto del ticket en negro (los botones se dejan fuera,
+     porque ya tienen su propio color de contraste según su fondo). */
+  .cart-pane :not(button):not(button *){
+    color:#1A1A1A !important;
+  }
   .cart-sub{
     font-size:12.5px;
     color:var(--on-cart-bg);
@@ -1025,8 +1030,28 @@
   }
   .withdrawal-card .w-icon{ width:16px; height:16px; }
   .withdrawal-card .w-label{ flex:1; }
+  .withdrawal-card .w-note{ font-weight:400; opacity:0.8; font-size:11.5px; margin-top:2px; }
   .withdrawal-card .w-time{ font-weight:400; opacity:0.75; font-size:12px; }
   .withdrawal-card .w-amount{ font-family:'Anton',sans-serif; font-size:15px; }
+  .delete-withdrawal-btn{
+    flex-shrink:0;
+    width:28px;
+    height:28px;
+    border-radius:6px;
+    border:1px solid var(--brick);
+    background:none;
+    color:var(--brick);
+    font-size:13px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .delete-withdrawal-btn .icon-svg{ width:14px; height:14px; }
+  .delete-withdrawal-btn:hover{
+    background:var(--brick);
+    color:white;
+  }
   .order-card .top{
     display:flex;
     justify-content:space-between;
@@ -3611,12 +3636,14 @@ function paymentBreakdown(ordersList, withdrawnTotal){
 function withdrawalCardHtml(w){
   const d = new Date(w.timestamp);
   const timeStr = d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  const noteHtml = w.note ? `<div class="w-note">${escapeHtml(w.note)}</div>` : '';
   return `
     <div class="withdrawal-card">
       <span class="w-icon icon-svg">${ICONS.wallet}</span>
-      <span class="w-label">Retiro de capital</span>
+      <div class="w-label">Retiro de capital${noteHtml}</div>
       <span class="w-time">${timeStr}</span>
       <span class="w-amount">-${money(w.amount)}</span>
+      <button class="delete-withdrawal-btn" data-delete-withdrawal-id="${w.id}" title="Eliminar este retiro"><span class="icon-svg">${ICONS.trash}</span></button>
     </div>
   `;
 }
@@ -3645,7 +3672,7 @@ function renderHistory(){
   $('#day-open-label').textContent = 'Día actual — ' + todayLabel;
   const openTotal = openOrders.reduce((s,o)=>s+o.total,0);
   const openWithdrawnTotal = openWithdrawals.reduce((s,w)=>s+w.amount,0);
-  const withdrawnLine = openWithdrawnTotal > 0 ? `<br><span class="icon-svg">${ICONS.wallet}</span> Retirado hoy: ${money(openWithdrawnTotal)} (ya restado del efectivo de arriba)` : '';
+  const withdrawnLine = openWithdrawnTotal > 0 ? `<br><span class="icon-svg">${ICONS.wallet}</span> Retirado hoy: ${money(openWithdrawnTotal)}` : '';
   $('#day-open-meta').innerHTML = openOrders.length
     ? `${openOrders.length} pedido(s) · ${money(openTotal)}<br>${paymentBreakdown(openOrders, openWithdrawnTotal)}${withdrawnLine}`
     : (openWithdrawnTotal > 0 ? `Sin pedidos todavía${withdrawnLine}` : 'Sin pedidos todavía');
@@ -3687,7 +3714,7 @@ function renderHistory(){
       const dayOrders = orders.filter(o => o.dayId === c.id);
       const dayWithdrawals = withdrawals.filter(w => w.dayId === c.id);
       const dayWithdrawnTotal = dayWithdrawals.reduce((s,w)=>s+w.amount,0);
-      const withdrawnMeta = dayWithdrawnTotal > 0 ? `<div class="meta"><span class="icon-svg">${ICONS.wallet}</span> Retirado: ${money(dayWithdrawnTotal)} (ya restado del efectivo de arriba)</div>` : '';
+      const withdrawnMeta = dayWithdrawnTotal > 0 ? `<div class="meta"><span class="icon-svg">${ICONS.wallet}</span> Retirado: ${money(dayWithdrawnTotal)}</div>` : '';
       const printDayBtnHtml = featurePrintingEnabled
         ? `<button class="print-day-btn" data-print-day-id="${c.id}" title="Imprimir resumen del día"><span class="icon-svg">${ICONS.printer}</span></button>`
         : '';
@@ -3770,6 +3797,27 @@ $('#history-view').addEventListener('click', async (e) => {
     e.stopPropagation();
     const closure = closures.find(c => c.id === printDayBtn.dataset.printDayId);
     if(closure) printDayReport(closure);
+    return;
+  }
+
+  const deleteWithdrawalBtn = e.target.closest('.delete-withdrawal-btn');
+  if(deleteWithdrawalBtn){
+    e.preventDefault();
+    e.stopPropagation();
+    const withdrawalId = deleteWithdrawalBtn.dataset.deleteWithdrawalId;
+    const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+    if(!withdrawal) return;
+
+    const ok = await requireManagerCode('Ingresa el código de encargado para eliminar este retiro de capital:', 'Eliminar retiro');
+    if(!ok) return;
+
+    const finalOk = await appConfirm(`¿Eliminar el retiro de ${money(withdrawal.amount)}? No se puede deshacer.`, 'Eliminar retiro');
+    if(!finalOk) return;
+
+    withdrawals = withdrawals.filter(w => w.id !== withdrawalId);
+    await saveOrdersData();
+    renderHistory();
+    renderSalesView();
     return;
   }
 
@@ -5385,17 +5433,22 @@ async function handleWithdrawal(){
     return;
   }
 
+  // La descripción es opcional: si cancela este cuadro, el retiro se
+  // registra igual, solo que sin nota.
+  const noteStr = await appPrompt('¿Para qué es este retiro? (opcional)', 'Descripción del retiro');
+  const note = noteStr ? noteStr.trim() : '';
+
   withdrawals.unshift({
     id: 'w' + Date.now(),
     amount,
-    note: '',
+    note,
     timestamp: new Date().toISOString(),
     dayId: null
   });
   await saveOrdersData();
   renderHistory();
   renderSalesView();
-  await appAlert(`Retiro de ${money(amount)} registrado ✓`, 'Listo');
+  await appAlert(`Retiro de ${money(amount)}${note ? ` (${note})` : ''} registrado ✓`, 'Listo');
 }
 
 
