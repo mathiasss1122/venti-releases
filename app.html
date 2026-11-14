@@ -4657,6 +4657,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 .sa-order-foot .pay-tag{ display:inline-flex; align-items:center; gap:6px; }
 .sa-order-foot .pay-tag svg{ width:16px; height:16px; }
 #ticket-message-box input.field{ width:100%; max-width:560px; flex:none; margin-bottom:8px; }
+#app-dialog-message{ white-space:pre-line; overflow-wrap:anywhere; }
 /* ---------- Reducir movimiento (opción de Windows) ---------- */
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{
@@ -7766,6 +7767,32 @@ function ventiNotify(title, body, warn){
       else if(Notification.permission === 'default') Notification.requestPermission();
     }
   } catch(e){}
+}
+
+/* ---------- Mensajes que te manda VENTI (desde el panel de administrador) ---------- */
+var ventiMsgUnsub = null, ventiMsgQueue = [], ventiMsgShowing = false, ventiMsgSeen = new Set();
+function ventiStartMessages(){
+  if(ventiMsgUnsub){ ventiMsgUnsub(); ventiMsgUnsub = null; }
+  if(!db || !tenantId || ventiStaffMode) return;
+  const tid = tenantId;
+  ventiMsgUnsub = onSnapshot(collection(db, 'tenants', tid, 'messages'), (snap) => {
+    if(tid !== tenantId) return;
+    const pending = [];
+    snap.forEach(d => { const m = d.data(); if(!m.read && !ventiMsgSeen.has(d.id)){ ventiMsgSeen.add(d.id); pending.push({ id: d.id, ...m }); } });
+    pending.sort((x, y) => ((x.createdAt && x.createdAt.toMillis ? x.createdAt.toMillis() : 0) - (y.createdAt && y.createdAt.toMillis ? y.createdAt.toMillis() : 0)));
+    ventiMsgQueue.push(...pending);
+    ventiShowNextMessage();
+  }, (err) => console.warn('No se pudieron leer los mensajes (revisa las reglas)', err));
+}
+async function ventiShowNextMessage(){
+  if(ventiMsgShowing || !ventiMsgQueue.length) return;
+  ventiMsgShowing = true;
+  const m = ventiMsgQueue.shift();
+  const when = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate().toLocaleString('es-MX', { day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' }) : '';
+  await appAlert(m.text + (when ? '\n\n— ' + when : ''), 'Mensaje de VENTI');
+  try { await updateDoc(doc(db, 'tenants', tenantId, 'messages', m.id), { read: true, readAt: new Date().toISOString() }); } catch(e){ console.warn('No se pudo marcar como leído', e); }
+  ventiMsgShowing = false;
+  ventiShowNextMessage();
 }
 
 /* ---------- Pestaña Trabajadores (dueño) ---------- */
@@ -11148,6 +11175,7 @@ if(auth){
       showSkeletonGrid();
       await loadTenantData();
       if(featureStaffEnabled){ ventiLoadStaff(); ventiStartLiveSync(); }
+      ventiStartMessages();
       $('#login-screen').style.display = 'none';
       updateBackupIndicator();
       checkAndShowOnboarding();
