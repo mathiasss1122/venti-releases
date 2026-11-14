@@ -4656,6 +4656,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 #login-screen.is-staff-login .login-box form{ text-align:left; }
 .sa-order-foot .pay-tag{ display:inline-flex; align-items:center; gap:6px; }
 .sa-order-foot .pay-tag svg{ width:16px; height:16px; }
+#ticket-message-box input.field{ width:100%; max-width:560px; flex:none; margin-bottom:8px; }
 /* ---------- Reducir movimiento (opción de Windows) ---------- */
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{
@@ -7566,7 +7567,7 @@ const VENTI_LOG_ICONS = {
   'delivery-cancel':'<rect width="16" height="10" x="1" y="6" rx="2"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/>',
   'delivered':'<path d="M5 12.5l4.5 4.5L19 7.5"/>'
 };
-const VENTI_LOG_RISK = { 'order-delete':1, 'day-delete':1, 'withdraw-delete':1, 'code-fail':1, 'discount':1, 'tax':1, 'price':1 };
+const VENTI_LOG_RISK = { 'order-delete':1, 'day-delete':1, 'withdraw-delete':1, 'code-fail':1, 'discount':1, 'tax':1, 'price':1, 'staff-mismatch':1, 'delivery-cancel':1 };
 function renderActivityLog(){
   const view = $('#menu-view');
   if(!view) return;
@@ -7694,8 +7695,21 @@ function ventiExpectedTotal(items){
 }
 async function ventiHandleLiveChange(id, data){
   const local = orders.find(o => o.id === id);
+  // El nombre del trabajador se toma de TU lista (por su correo verificado), no de lo que mande el celular
+  const ventiStaffNameFor = (email, fallback) => { const s = ventiStaffList.find(x => x.email === String(email || '').toLowerCase()); return (s && s.name) || fallback || email || 'Un trabajador'; };
   // 1) Un trabajador cobró un pedido nuevo desde su celular
   if(!local && data.source === 'staff'){
+    data = { ...data, staffName: ventiStaffNameFor(data.staffEmail, data.staffName) };
+    const its = Array.isArray(data.items) ? data.items : [];
+    const itemsSum = its.reduce((s, i) => s + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
+    const invalid = !(Number(data.total) > 0) || !its.length || its.length > 100
+      || its.some(i => !(Number(i.qty) > 0) || !(Number(i.qty) <= 999) || Number(i.price) < 0 || !Number.isFinite(Number(i.price)));
+    if(invalid){
+      ventiLog('staff-mismatch', `Se RECHAZÓ un cobro inválido de ${data.staffName} (total ${money(Number(data.total) || 0)}, ${its.length} producto(s)). No se sumó a las ventas.`, Number(data.total) || 0);
+      ventiNotify('Cobro rechazado', `${data.staffName} envió un cobro con montos inválidos. No se registró.`, true);
+      try { await deleteDoc(doc(ventiLiveCol(), id)); } catch(e){}
+      return;
+    }
     const order = {
       id, orderNumber: nextOrderNumberForToday(), timestamp: data.timestamp || new Date().toISOString(),
       items: data.items || [], subtotal: data.total, taxRate: 0, taxAmount: 0, total: data.total,
@@ -7709,7 +7723,13 @@ async function ventiHandleLiveChange(id, data){
     await deductStockForCart(order.items.map(i => ({ id: (menuItems.find(m => m.name === String(i.name).replace(/\s*\((.+)\)\s*$/, '')) || {}).id || '', qty: i.qty })));
     ventiLog('staff-charge', `${data.staffName || 'Un trabajador'} cobró el pedido ${formatOrderNumber(order.orderNumber)}${order.customerName ? ' de ' + order.customerName : ''} (${order.payment})`, order.total);
     const expected = ventiExpectedTotal(order.items);
-    if(expected !== null && Math.abs(expected - order.total) > 0.009){
+    if(Math.abs(itemsSum - order.total) > 0.009){
+      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName} dice ${money(order.total)} pero sus productos suman ${money(itemsSum)}`, order.total - itemsSum);
+      ventiNotify('Revisa un cobro', `${data.staffName} cobró ${money(order.total)} y los productos suman ${money(itemsSum)}.`, true);
+    } else if(expected === null){
+      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName} tiene productos que no están en tu menú`, order.total);
+      ventiNotify('Revisa un cobro', `${data.staffName} cobró productos que no están en tu menú (${money(order.total)}).`, true);
+    } else if(Math.abs(expected - order.total) > 0.009){
       ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName || 'un trabajador'} se cobró en ${money(order.total)} pero según el menú debía ser ${money(expected)}`, order.total - expected);
       ventiNotify('Revisa un cobro', `${data.staffName || 'Un trabajador'} cobró ${money(order.total)}; según el menú eran ${money(expected)}.`, true);
     } else {
@@ -7721,6 +7741,7 @@ async function ventiHandleLiveChange(id, data){
   }
   // 2) Un trabajador marcó "entregado"
   if(local && data.delivered && !local.delivered && data.deliveredByEmail){
+    data = { ...data, deliveredBy: ventiStaffNameFor(data.deliveredByEmail, data.deliveredBy) };
     local.delivered = true;
     local.deliveredBy = data.deliveredBy;
     local.deliveredByEmail = data.deliveredByEmail;
@@ -7942,6 +7963,13 @@ function ventiEnterStaffMode(){
   app.querySelector('.sa-tabs').onclick = (e) => { const b = e.target.closest('[data-sa-tab]'); if(!b) return; ventiStaffTab = b.dataset.saTab; app.querySelectorAll('[data-sa-tab]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); ventiRenderStaff(); };
   app.querySelector('#sa-main').addEventListener('click', ventiStaffClick);
   const tid = ventiStaffMode.tenantId;
+  try {
+    const savedBrand = JSON.parse(localStorage.getItem('venti-staff-brand:' + tid) || 'null');
+    if(savedBrand && savedBrand.primaryColor){
+      applyTenantBranding({ plan:'pro', primaryColor: savedBrand.primaryColor, themeMode: savedBrand.themeMode, businessName: savedBrand.businessName });
+      $('#sa-shop').textContent = savedBrand.businessName || 'VENTI';
+    }
+  } catch(e){}
   if(!db){ ventiRenderStaff(); return; } // (modo prueba sin nube)
   ventiStaffUnsubs.push(onSnapshot(collection(db, 'tenants', tid, 'liveOrders'), (snap) => {
     ventiStaffOrders = [];
@@ -7954,6 +7982,7 @@ function ventiEnterStaffMode(){
     ventiStaffInfo = d.exists() ? d.data() : {};
     $('#sa-shop').textContent = ventiStaffInfo.businessName || 'VENTI';
     if(ventiStaffInfo.primaryColor){
+      try { localStorage.setItem('venti-staff-brand:' + tid, JSON.stringify({ primaryColor: ventiStaffInfo.primaryColor, themeMode: ventiStaffInfo.themeMode || 'dark', businessName: ventiStaffInfo.businessName || '' })); } catch(e){}
       applyTenantBranding({ plan:'pro', primaryColor: ventiStaffInfo.primaryColor, themeMode: ventiStaffInfo.themeMode, businessName: ventiStaffInfo.businessName });
     }
   }, () => {}));
@@ -9684,7 +9713,8 @@ function renderSvgBarChart(containerId, labels, values, opts){
   const ink = tok('--card-ink', '#F4F1E9');
   const muted = tok('--card-muted', '#9FA8CC');
   const line = tok('--card-line', '#2C2F5C');
-  const accent = tok('--card-accent', '#D9A441');
+  const brand = tok('--mustard', '');
+  const accent = (ventiHexToRgb(brand) && ventiHexToRgb(surface) && ventiContrast(brand, surface) >= 1.9) ? brand : tok('--card-accent', '#D9A441');
   const dim = ventiMix(surface, accent, 0.38);
 
   const rect = box.getBoundingClientRect();
@@ -10853,6 +10883,12 @@ function applyTenantBranding(data){
   renderCart();
 
   renderHistory();
+  ventiRedrawCharts();
+}
+// Vuelve a dibujar los gráficos con el color actual del local
+function ventiRedrawCharts(){
+  [renderHomeView, renderDailySalesChart, renderBestDaysChart, renderTopProductsChart, renderTopProductsByRevenueChart, renderPeakHourChart]
+    .forEach(fn => { try { if(typeof fn === 'function') fn(); } catch(e){} });
 }
 
 /* ---------- SISTEMA DE DISEÑO: colores derivados ----------
@@ -10929,7 +10965,9 @@ function ventiPaletteFromColor(primary, mode){
     if(h<60) rgb=[c,x,0]; else if(h<120) rgb=[x,c,0]; else if(h<180) rgb=[0,c,x]; else if(h<240) rgb=[0,x,c]; else if(h<300) rgb=[x,0,c]; else rgb=[c,0,x];
     return "#" + rgb.map(v => Math.round((v+m)*255).toString(16).padStart(2,"0")).join(""); };
   if(mode === "light"){
-    return { app:hsl(ns*0.7,0.962), content:hsl(ns*0.7,0.945), sidebar:hsl(ns*0.5,0.99), cart:hsl(ns*0.35,0.995), card:"#FFFFFF", raised:hsl(ns*0.7,0.925) };
+    // modo claro suave: fondos con un toque del color de la marca (nada de blanco puro)
+    const ls = Math.max(ns, 0.05) * 1.15;
+    return { app:hsl(ls,0.915), content:hsl(ls,0.932), sidebar:hsl(ls*0.9,0.952), cart:hsl(ls*0.8,0.962), card:hsl(ls*0.7,0.978), raised:hsl(ls,0.9) };
   }
   return { app:hsl(ns,0.085), content:hsl(ns,0.115), sidebar:hsl(ns,0.065), cart:hsl(ns,0.105), card:hsl(ns,0.145), raised:hsl(ns,0.16) };
 }
