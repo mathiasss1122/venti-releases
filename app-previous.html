@@ -3080,6 +3080,18 @@ nav.tabs button.active,
 .kpi-delta svg{ width:12px; height:12px; }
 .kpi-delta.up{ color:var(--ok); }
 .kpi-delta.down{ color:var(--danger); }
+/* Comparación por día / semana / mes (Ventas) */
+.cmp-panel{ margin-bottom:16px; }
+.cmp-panel .panel-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.activity-filter.cmp-tabs{ grid-template-columns:repeat(3, auto); margin:0; }
+.cmp-list{ display:flex; flex-direction:column; }
+.cmp-row{ display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:14px; padding:11px 2px; border-top:1px solid var(--card-line); }
+.cmp-row:first-child{ border-top:0; }
+.cmp-name{ font-size:14px; font-weight:600; color:var(--card-ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cmp-name small{ display:block; font-size:12px; font-weight:500; color:var(--card-muted); }
+.cmp-total{ font-size:16px; font-weight:700; color:var(--card-ink); font-variant-numeric:tabular-nums; text-align:right; }
+.cmp-row .kpi-delta{ align-self:center; min-width:96px; justify-content:center; }
+.cmp-row.is-current .cmp-name{ color:var(--card-accent); }
 .home-grid{
   display:grid;
   grid-template-columns:minmax(0, 1.7fr) minmax(280px, 1fr);
@@ -4410,7 +4422,7 @@ button.hd-month-head{
 .hd-stat-cash span svg{ color:#34D399; }
 .hd-stat-transfer span svg{ color:#60A5FA; }
 .hd-stat-card span svg{ color:#C084FC; }
-.hd-stat-orders span svg, .hd-stat-withdraw span svg{ color:var(--card-muted); }
+.hd-stat-orders span svg, .hd-stat-withdraw span svg, .hd-stat-net span svg, .hd-stat-channel span svg{ color:var(--card-muted); }
 .hd-stat-sold span svg{ color:var(--card-accent); }
 :root[data-theme="light"] .hd-stat-cash span svg{ color:#15803D; }
 :root[data-theme="light"] .hd-stat-transfer span svg{ color:#1D4ED8; }
@@ -4526,6 +4538,30 @@ button.hd-month-head{
 .activity-filter{ display:inline-grid; grid-template-columns:1fr 1fr; gap:3px; padding:3px; margin-bottom:12px; border-radius:10px; background:var(--card-raised); border:1px solid var(--card-line); }
 .activity-filter button{ height:30px; padding:0 12px; border:0; border-radius:7px; background:transparent; color:var(--card-muted); font-size:12.5px; font-weight:600; cursor:pointer; }
 .activity-filter button[aria-pressed="true"]{ background:var(--card-bg); color:var(--card-ink); box-shadow:0 0 0 1px var(--card-line); }
+/* Domicilio: pestañas por canal y selector de canal en la ventana de envío */
+.activity-filter.delivery-tabs{ grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:auto; justify-content:start; max-width:100%; overflow-x:auto; margin:4px 0 16px; }
+.activity-filter.delivery-tabs button{ height:34px; padding:0 16px; font-size:13px; white-space:nowrap; }
+/* Stock: pestañas Productos / Insumos, alta de insumo y receta */
+.activity-filter.stock-tabs{ margin:0 0 14px; }
+.activity-filter.stock-tabs button{ height:36px; padding:0 18px; font-size:13.5px; }
+.ins-add{ display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.2fr) auto; gap:8px; margin-bottom:12px; padding:12px; border-radius:14px; background:var(--card-bg); border:1px dashed var(--card-line); }
+.ins-add input, .ins-add select{ height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--card-line); background:var(--card-raised); color:var(--card-ink); font-family:var(--font-ui); font-size:14px; min-width:0; }
+.ins-del{ width:36px; height:36px; border-radius:10px; border:1px solid var(--card-line); background:transparent; color:var(--card-muted); display:grid; place-items:center; cursor:pointer; flex:none; }
+.ins-del:hover{ background:var(--danger-tint); color:var(--danger); border-color:transparent; }
+.ins-del .icon-svg{ width:15px; height:15px; }
+.stock-row:has(.ins-del){ grid-template-columns:minmax(0, 1fr) auto auto auto; }
+.stock-row:has(.stock-recipe-note){ grid-template-columns:minmax(0, 1fr) auto; }
+.stock-recipe-note{ margin-left:auto; font-size:13px; color:var(--card-muted); }
+.stock-recipe-note b{ color:var(--card-ink); }
+.rcp-block{ margin:12px 0; }
+.rcp-block h4{ margin:0 0 8px; font-size:13.5px; color:var(--modal-ink); }
+.rcp-row{ display:grid; grid-template-columns:minmax(0,1fr) 90px 36px; gap:8px; margin-bottom:6px; }
+.rcp-row select, .rcp-row input{ height:38px; padding:0 10px; border-radius:9px; border:1.5px solid var(--modal-line); background:var(--modal-field); color:var(--modal-ink); font-family:var(--font-ui); font-size:14px; min-width:0; }
+.rcp-del{ height:38px; border-radius:9px; border:1.5px solid var(--modal-line); background:var(--modal-field); color:var(--modal-danger); font-size:18px; cursor:pointer; }
+.rcp-hint, .rcp-empty{ font-size:12.5px; color:var(--modal-muted); line-height:1.45; }
+.delivery-channel-pick{ display:grid; grid-template-columns:repeat(auto-fit, minmax(70px, 1fr)); gap:6px; margin:6px 0 12px; }
+.delivery-channel-pick button{ height:40px; border-radius:10px; border:1.5px solid var(--modal-line); background:var(--modal-field); color:var(--modal-ink); font-size:13px; font-weight:650; cursor:pointer; }
+.delivery-channel-pick button[aria-pressed="true"]{ background:var(--mustard); color:var(--on-primary); border-color:transparent; }
 .activity-list{ max-height:420px; overflow-y:auto; display:flex; flex-direction:column; }
 .act-row{ display:flex; align-items:center; gap:12px; padding:10px 2px; border-top:1px solid var(--card-line); }
 .act-row:first-child{ border-top:0; }
@@ -4577,6 +4613,45 @@ input.switch-ui:checked::before{ transform:translateX(16px); }
 
 /* ---------- Modo trabajador (celular) ---------- */
 body.staff-mode .app{ display:none !important; }
+/* ---------- Dueño en el celular: la misma app, solo para ver ---------- */
+#owner-bar{ display:none; }
+body.owner-app #owner-bar{ display:flex; align-items:center; gap:6px; padding:10px 12px 10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); background:var(--sidebar-bg); color:var(--sidebar-ink); border-bottom:1px solid var(--sidebar-line); flex-shrink:0; }
+#owner-bar .ob-text{ flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+#owner-bar strong{ font-size:15px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#owner-bar span{ font-size:11.5px; color:var(--sidebar-muted); }
+#owner-bar button{ width:40px; height:40px; border:0; border-radius:12px; background:transparent; color:var(--sidebar-muted); display:grid; place-items:center; cursor:pointer; }
+#owner-bar button svg{ width:20px; height:20px; }
+#owner-bell[aria-pressed="true"]{ color:var(--mustard); }
+/* Lo que no aplica al dueño: cobrar, configurar y cambiar datos */
+body.owner-app nav.tabs button[data-view="pos-view"],
+body.owner-app #staff-tab-btn, body.owner-app .sidebar-footer, body.owner-app .sidebar-brand,
+body.owner-app #home-new-sale-btn, body.owner-app #close-day-btn, body.owner-app #withdrawal-btn,
+body.owner-app #backup-warning-banner, body.owner-app #add-customer-form,
+body.owner-app .btn-paid, body.owner-app .btn-cancel, body.owner-app .delete-order-btn, body.owner-app .delete-day-btn,
+body.owner-app .delete-withdrawal-btn, body.owner-app .print-order-btn, body.owner-app .print-day-btn,
+body.owner-app .edit-item-btn, body.owner-app .recipe-item-btn, body.owner-app .del, body.owner-app .ins-del,
+body.owner-app .stock-stepper button, body.owner-app .stock-add, body.owner-app #stock-view .page-eyebrow-date, body.owner-app .ins-add, body.owner-app #show-import-btn,
+body.owner-app #add-item-form, body.owner-app #import-box, body.owner-app #category-icon-manager, body.owner-app #products-view h3.config-subheading:first-of-type, body.owner-app #products-view .menu-sub{ display:none !important; }
+body.owner-app .deliver-toggle, body.owner-app .stock-input, body.owner-app .ins-input{ pointer-events:none; }
+body.owner-app .stock-stepper{ border:0; background:transparent; }
+body.owner-app .stock-input, body.owner-app .ins-input{ border:0 !important; background:transparent !important; box-shadow:none !important; font-weight:700; text-align:right; }
+@media (max-width: 820px){
+  body.owner-app{ height:100dvh; }
+  body.owner-app .app{ flex-direction:column; height:100dvh; }
+  body.owner-app .main-content{ order:1; flex:1; min-height:0; }
+  body.owner-app .sidebar{ order:2; width:auto; flex-direction:row; justify-content:space-around; align-items:center; border-right:0; border-top:1px solid var(--sidebar-line); padding:4px 4px calc(4px + env(safe-area-inset-bottom)); }
+  body.owner-app .sidebar nav.tabs{ display:contents; }
+  body.owner-app .sidebar nav.tabs button{ width:42px; height:42px; margin:0; }
+  body.owner-app .sidebar nav.tabs button > span:not(.tab-icon){ display:none; }
+  body.owner-app .view:not(#pos-view){ padding:18px 16px 32px; }
+  body.owner-app #menu-table{ display:block; overflow-x:auto; }
+  body.owner-app .kpi-value{ font-size:clamp(19px, 6.4vw, 26px) !important; }
+  body.owner-app .kpi-tile{ padding:14px; min-width:0; }
+  body.owner-app .stock-row{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  body.owner-app .stock-row .stock-info{ flex:1; min-width:0; }
+  body.owner-app .stock-row .stock-recipe-note{ flex-basis:100%; }
+}
+
 #staff-app{ position:fixed; inset:0; z-index:150; display:flex; flex-direction:column; background:var(--charcoal); color:var(--app-ink); font-family:var(--font-ui); }
 .sa-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; background:var(--sidebar-bg); border-bottom:1px solid var(--sidebar-line); }
 .sa-head strong{ display:block; font-size:16px; color:var(--sidebar-ink); }
@@ -4622,6 +4697,35 @@ body.staff-mode .app{ display:none !important; }
 .view:not(#pos-view) input[type="email"], .view:not(#pos-view) input[type="password"]{ height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--card-line); background:var(--card-raised); color:var(--card-ink); font-family:var(--font-ui); font-size:13.5px; }
 
 #staff-app .sa-main{ display:block !important; overflow-y:auto !important; }
+/* Modo dueño en el celular */
+.owner-mode .sa-tabs button{ font-size:13.5px; }
+.ow-note{ margin:0 2px 12px; font-size:12.5px; color:var(--app-muted); }
+.ow-note.warn{ padding:10px 12px; border-radius:12px; background:var(--danger-tint); color:var(--danger); font-weight:600; }
+.ow-kpis{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.ow-kpi{ display:flex; flex-direction:column; gap:4px; padding:12px; border-radius:14px; background:var(--card-bg); border:1px solid var(--card-line); color:var(--card-ink); min-width:0; }
+.ow-kpi span{ font-size:12.5px; color:var(--card-muted); }
+.ow-kpi strong{ font-size:21px; font-weight:750; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+.ow-kpi em{ font-style:normal; font-size:11.5px; color:var(--card-muted); }
+.ow-kpi.hero{ grid-column:1 / -1; background:var(--mustard); border-color:transparent; }
+.ow-kpi.hero span, .ow-kpi.hero strong{ color:var(--on-primary); }
+.ow-kpi.hero strong{ font-size:30px; }
+.ow-kpi.hero .kpi-delta{ background:rgba(127,127,127,0.22); color:var(--on-primary); }
+.ow-h{ margin:16px 4px 8px; font-size:13px; color:var(--app-muted); font-weight:650; }
+.ow-card{ padding:4px 14px; margin-bottom:10px; border-radius:16px; background:var(--card-bg); border:1px solid var(--card-line); color:var(--card-ink); }
+.ow-line{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 0; border-top:1px solid var(--card-line); font-size:14.5px; }
+.ow-line:first-child{ border-top:0; }
+.ow-line span{ min-width:0; }
+.ow-line small{ display:block; font-size:12px; color:var(--card-muted); }
+.ow-line b{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+.ow-line b.low{ color:var(--card-accent); }
+.ow-line b.out{ color:var(--danger); }
+.ow-cmp{ grid-template-columns:repeat(3, 1fr); }
+.ow-day{ cursor:pointer; }
+.ow-day .ow-day-more{ display:none; }
+.ow-day.open .ow-day-more{ display:block; }
+.ow-day .ow-day-more:empty{ display:none; }
+.owner-mode .cmp-row{ grid-template-columns:minmax(0,1fr) auto; }
+.owner-mode .cmp-row .kpi-delta{ grid-column:1 / -1; justify-self:start; min-width:0; }
 
 #staff-app .sa-main:has(.sa-cart.open){ padding-bottom:360px; }
 
@@ -4727,7 +4831,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <button data-view="analysis-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span>Análisis</span></button>
       <button data-view="customers-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>Clientes</span></button>
       <button data-view="staff-view" id="staff-tab-btn" style="display:none;"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span><span>Trabajadores</span><span class="icon-svg" style="width:12px; height:12px; margin-left:auto; opacity:0.6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></button>
-      <button data-view="products-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span>Menú</span><span class="icon-svg" style="width:12px; height:12px; margin-left:auto; opacity:0.6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></button>
+      <button data-view="products-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/></svg></span><span>Productos</span><span class="icon-svg" style="width:12px; height:12px; margin-left:auto; opacity:0.6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></button>
       <button data-view="stock-view" id="stock-tab-btn" style="display:none;"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.9 7.55a1.8 1.8 0 0 0-.85-.95L13.1 2.6a2 2 0 0 0-2.2 0L4 6.6a1.8 1.8 0 0 0-.9 1.55v7.7a1.8 1.8 0 0 0 .9 1.55l6.9 4a2 2 0 0 0 2.2 0l6.9-4a1.8 1.8 0 0 0 .9-1.55z"/><path d="M3.3 7.5 12 12.5l8.7-5"/><path d="M12 22V12.5"/></svg></span><span>Stock</span><span class="icon-svg" style="width:12px; height:12px; margin-left:auto; opacity:0.6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></button>
     </nav>
     <div class="sidebar-footer">
@@ -4825,12 +4929,12 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <input type="text" id="customer-name" placeholder="Ej: Juan, Mesa 3, para llevar..." required>
         </div>
         <div class="order-type" id="order-type" role="group" aria-label="Tipo de pedido">
-          <button type="button" data-type="aqui" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg><span>Para aquí</span></button>
+          <button type="button" data-type="aqui" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg><span>Para aquí</span></button>
           <button type="button" data-type="llevar" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Para llevar</span></button>
           <button type="button" data-type="domicilio" aria-pressed="false" id="order-type-delivery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg><span>Domicilio</span></button>
         </div>
         <div class="cart-items" id="cart-items">
-          <div class="cart-empty">Toca un producto del menú para agregarlo</div>
+          <div class="cart-empty">Toca un producto para agregarlo</div>
         </div>
         <div class="cart-totals">
           <div class="row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
@@ -4884,6 +4988,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
     <section id="delivery-view" class="view">
       <h2>Domicilio</h2>
       <div class="sales-sub">Pedidos enviados que todavía no se han cobrado.</div>
+      <div class="activity-filter delivery-tabs" id="delivery-tabs" role="group" aria-label="Canal de domicilio"></div>
       <div id="delivery-empty-state" class="no-orders" style="display:none;">No hay ningún pedido de domicilio pendiente ahora mismo.</div>
       <div id="delivery-list"></div>
     </section>
@@ -4905,11 +5010,25 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 
       <div class="kpi-grid" id="sales-stats"></div>
 
+      <section class="panel cmp-panel" id="sales-compare-panel">
+        <div class="panel-head"><h3>¿Subieron o bajaron tus ventas?</h3>
+          <div class="activity-filter cmp-tabs" id="sales-compare-tabs" role="group" aria-label="Comparar por">
+            <button type="button" data-cmp="day" aria-pressed="false">Día</button><button type="button" data-cmp="week" aria-pressed="false">Semana</button><button type="button" data-cmp="month" aria-pressed="true">Mes</button>
+          </div>
+        </div>
+        <div id="sales-compare-list" class="cmp-list"></div>
+      </section>
+
       <div class="sales-grid">
         <section class="panel">
           <div class="panel-head"><h3>Formas de pago</h3><span class="panel-meta">Últimos 7 días</span></div>
           <div id="sales-pay-breakdown" class="rank-list"></div>
           <div class="panel-note" id="sales-pay-note"></div>
+        </section>
+        <section class="panel" id="sales-channel-panel" style="display:none;">
+          <div class="panel-head"><h3>Ventas por canal</h3><span class="panel-meta">Últimos 7 días</span></div>
+          <div id="sales-channel-breakdown" class="rank-list"></div>
+          <div class="panel-note">En el local = para aquí y para llevar. Los domicilios se separan por WhatsApp, Uber Eats y PedidosYa.</div>
         </section>
         <section class="panel">
           <div class="panel-head"><h3>Histórico del negocio</h3><span class="panel-meta">Desde el primer pedido</span></div>
@@ -4926,6 +5045,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <h2>Análisis</h2>
         </div>
       </header>
+      <div class="kpi-grid" id="analysis-compare"></div>
       <div class="kpi-grid" id="analysis-kpis"></div>
 
       <div class="chart-selector" id="chart-selector">
@@ -4934,6 +5054,8 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         <button type="button" class="chart-selector-btn" data-target="peak-hour-panel"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span> Hora pico</button>
         <button type="button" class="chart-selector-btn" data-target="top-products-panel"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Más vendidos</button>
         <button type="button" class="chart-selector-btn" data-target="top-products-revenue-panel"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span> Más dinero</button>
+        <button type="button" class="chart-selector-btn" data-target="monthly-panel"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></svg></span> Por mes</button>
+        <button type="button" class="chart-selector-btn" data-target="channels-panel" id="channels-chart-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Por canal</button>
       </div>
 
       <div class="chart-card chart-card-full analysis-board">
@@ -4957,6 +5079,14 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <h3><span class="chart-icon-badge"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span></span>Productos que más dinero generan</h3>
           <div class="chart-canvas-box chart-canvas-box-full" id="top-products-revenue-chart"></div>
         </div>
+        <div class="chart-panel" id="monthly-panel">
+          <h3><span class="chart-icon-badge"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></svg></span></span>Ventas de cada mes</h3>
+          <div class="chart-canvas-box chart-canvas-box-full" id="monthly-chart"></div>
+        </div>
+        <div class="chart-panel" id="channels-panel">
+          <h3><span class="chart-icon-badge"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span></span>Ventas por canal: local, WhatsApp, Uber Eats y PedidosYa</h3>
+          <div class="chart-canvas-box chart-canvas-box-full" id="channels-chart"></div>
+        </div>
       </div>
     </section>
 
@@ -4969,6 +5099,10 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         </div>
         <div class="stock-head-stats" id="stock-head-stats"></div>
       </header>
+      <div class="activity-filter stock-tabs" id="stock-tabs" role="group" aria-label="Qué ver">
+        <button type="button" data-stock-tab="productos" aria-pressed="true">Productos</button>
+        <button type="button" data-stock-tab="insumos" aria-pressed="false">Insumos</button>
+      </div>
       <div class="stock-toolbar">
         <label class="stock-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="text" id="stock-search" placeholder="Buscar producto…" autocomplete="off"></label>
         <select id="stock-category-filter"><option value="__all__">Todas las categorías</option></select>
@@ -5032,7 +5166,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         <span class="settings-hint">(lo cambia el administrador de la plataforma)</span>
       </div>
       <div class="settings-box">
-        <label>Código de encargado (para borrar pedidos y entrar a Menú):</label>
+        <label>Código de encargado (para borrar pedidos y entrar a Productos):</label>
         <button type="button" id="change-code-btn" class="btn btn-secondary"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span> Cambiar código</button>
       </div>
       <div class="settings-box" id="printer-select-box" style="display:none;">
@@ -5076,7 +5210,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
     <!-- (el registro de actividad se agrega al final de Configuración por JS) -->
     <!-- PRODUCTS (MENÚ) VIEW -->
     <section id="products-view" class="view">
-      <h2>Menú</h2>
+      <h2>Productos</h2>
       <div class="menu-sub">Agrega, edita y revisa los precios de tus productos.</div>
       <div class="status-msg" id="product-limit-msg" style="display:block; margin-bottom:10px;"></div>
       <form class="add-item-form" id="add-item-form">
@@ -5097,12 +5231,12 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         <span class="status-msg" id="menu-status"></span>
       </form>
       <div style="margin:-6px 0 16px 0;">
-        <button type="button" id="show-import-btn" class="btn-link">Importar menú (Excel, CSV o lista)</button>
+        <button type="button" id="show-import-btn" class="btn-link">Importar productos (Excel, CSV o lista)</button>
       </div>
       <div id="import-box" class="panel import-box" style="display:none;">
         <div class="imp-head">
           <div>
-            <h3>Importar menú</h3>
+            <h3>Importar productos</h3>
             <p>Desde Excel (.xlsx) o CSV. Las fotos que pegues dentro del Excel, en la fila de cada producto, también se importan.</p>
           </div>
           <button type="button" id="imp-template-btn" class="btn btn-secondary btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Descargar plantilla</button>
@@ -5243,7 +5377,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       </div>
       <div class="onboarding-slide" data-slide="3">
         <div class="onboarding-icon"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></div>
-        <h2>Ventas, Análisis, Clientes y Menú</h2>
+        <h2>Ventas, Análisis, Clientes y Productos</h2>
         <p>Estas cuatro te piden tu código de encargado, porque tienen información sensible: cuánto vendes, tus gráficos, tus clientes, y tus productos. ¡Ya estás listo para empezar!</p>
       </div>
     </div>
@@ -5261,11 +5395,25 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 </div>
 
 <!-- Datos del cliente para un pedido a domicilio -->
+<div class="modal-backdrop" id="recipe-modal">
+  <div class="modal" style="max-width:520px;">
+    <h3 style="margin-top:0;" id="recipe-title">Receta</h3>
+    <p style="font-size:12.5px; color:var(--modal-muted); margin-top:-8px;">Elige qué insumos se descuentan del stock cada vez que se vende este producto.</p>
+    <div id="recipe-body"></div>
+    <div class="modal-actions" style="margin-top:14px; display:flex; gap:10px;">
+      <button type="button" class="cancel" id="recipe-cancel" style="flex:1;">Cancelar</button>
+      <button type="button" class="confirm" id="recipe-save" style="flex:1;">Guardar receta</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="delivery-modal">
   <div class="modal" style="max-width:360px;">
     <h3 style="margin-top:0;">Enviar a domicilio</h3>
     <p style="font-size:12.5px; color:var(--ink); opacity:0.75; margin-top:-8px;">Este pedido se descuenta del inventario ahora, pero no se cuenta como vendido hasta que lo marques como pagado.</p>
     <form id="delivery-form">
+      <label id="delivery-channel-label">¿Por dónde llegó el pedido?</label>
+      <div class="delivery-channel-pick" id="delivery-channel" role="group" aria-label="Canal del pedido"></div>
       <label for="delivery-name">Nombre del cliente</label>
       <input type="text" id="delivery-name" required>
       <label for="delivery-phone">Teléfono</label>
@@ -5522,7 +5670,7 @@ const CATEGORY_ICONS = {
   smartphone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',
   home: ICONS.home,
   car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>',
-  utensils: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>'
+  utensils: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg>'
 };
 
 const money = (n) => "$" + Number(n).toFixed(2);
@@ -5563,8 +5711,9 @@ function hideSavingIndicatorSoon(){
 // Cualquier lugar del código que llame a store.set(...) va a prender
 // el indicador de "Guardando…" del encabezado automáticamente.
 const store = {
-  get: (...args) => rawStore.get(...args),
+  get: (...args) => (typeof ventiOwnerMode !== 'undefined' && ventiOwnerMode) ? Promise.resolve(null) : rawStore.get(...args),
   async set(...args){
+    if(typeof ventiOwnerMode !== 'undefined' && ventiOwnerMode) return null; // celular del dueño: solo para ver
     showSavingIndicator();
     try {
       const result = await rawStore.set(...args);
@@ -5664,6 +5813,10 @@ async function loadTenantData(){
     const dl = await store.get(tenantKey('delivery-orders'), true);
     deliveryOrders = dl && dl.value ? JSON.parse(dl.value) : [];
   } catch(e){ deliveryOrders = []; }
+  try {
+    const ins = await store.get(tenantKey('insumos'), true);
+    insumos = ins && ins.value ? JSON.parse(ins.value) : [];
+  } catch(e){ insumos = []; }
 
   // Quien ya usaba la app ANTES de este cambio tiene sus datos
   // guardados con las claves viejas (sin separar por negocio). Antes
@@ -5757,6 +5910,7 @@ async function tryAutoRestoreOnFirstUse(){
     settings = { ...DEFAULT_SETTINGS, ...(data.settings || {}) };
     if(Array.isArray(data.customers)) customers = data.customers;
     if(Array.isArray(data.deliveryOrders)) deliveryOrders = data.deliveryOrders;
+    if(Array.isArray(data.insumos)){ insumos = data.insumos; await saveInsumos(); }
     if(Array.isArray(data.activityLog)){
       const seen = new Set(activityLog.map(a => a.id));
       activityLog = activityLog.concat(data.activityLog.filter(a => !seen.has(a.id))).sort((x, y) => (y.ts || '').localeCompare(x.ts || ''));
@@ -5786,10 +5940,12 @@ async function saveCustomers(){
 async function saveDeliveryOrders(){
   try { await store.set(tenantKey('delivery-orders'), JSON.stringify(deliveryOrders), true); }
   catch(e){ console.error('Error guardando pedidos de domicilio', e); }
+  ventiPublishResumen();
 }
 async function saveOrdersData(){
   try { await store.set(tenantKey('orders-log'), JSON.stringify({ orders, closures, withdrawals }), true); }
   catch(e){ console.error('Error guardando pedidos', e); }
+  ventiPublishResumen();
 }
 async function saveSettings(){
   try { await store.set(tenantKey('pos-settings'), JSON.stringify(settings), true); }
@@ -5867,7 +6023,7 @@ function splitOrdersForBackup(allOrders){
 // respaldo diario de hoy como red de seguridad, y se reintenta
 // archivar mañana.
 async function archiveOldOrdersIfNeeded(oldByMonth){
-  if(!db || !tenantId) return;
+  if(ventiOwnerMode || !db || !tenantId) return;
   for(const monthKey of Object.keys(oldByMonth)){
     try {
       const archiveRef = doc(db, 'tenants', tenantId, 'archives', monthKey);
@@ -5951,6 +6107,7 @@ async function loadMenuFromBackup(data){
 
 let backupInProgress = false;
 async function runBackup(manual, force){
+  if(ventiOwnerMode) return false;
   if(!db || !backupsCol){
     if(manual) await appAlert('No hay conexión a la nube ahora mismo. Intenta más tarde.', 'Sin conexión');
     return false;
@@ -5969,7 +6126,7 @@ async function runBackup(manual, force){
 // Se revisa al iniciar sesión, cada 30 minutos y al cerrar el día.
 const BACKUP_EVERY_HOURS = 4;
 async function maybeAutoBackup(){
-  if(!db || !backupsCol || !tenantId) return;
+  if(ventiOwnerMode || !db || !backupsCol || !tenantId) return;
   if(typeof navigator !== 'undefined' && navigator.onLine === false) return;
   try {
     let last = null;
@@ -6018,6 +6175,7 @@ async function runBackupInner(manual, force){
       orders: recent, closures, withdrawals, settings,
       customers: customers || [],
       deliveryOrders: deliveryOrders || [],
+      insumos: insumos || [],
       activityLog: activityLog.slice(0, 400),
       savedAt: new Date().toISOString()
     };
@@ -6079,7 +6237,7 @@ async function updateBackupIndicator(){
 
 async function restoreLatestBackup(){
   if(!db || !backupsCol){ await appAlert('No hay conexión a la nube.', 'Sin conexión'); return; }
-  const ok = await appConfirm('Esto va a REEMPLAZAR el menú, pedidos e historial de esta computadora con el último respaldo guardado en la nube. ¿Continuar?', 'Restaurar respaldo');
+  const ok = await appConfirm('Esto va a REEMPLAZAR los productos, pedidos e historial de esta computadora con el último respaldo guardado en la nube. ¿Continuar?', 'Restaurar respaldo');
   if(!ok) return;
   try {
     const q = query(backupsCol, orderBy('savedAt', 'desc'), limit(1));
@@ -6096,6 +6254,7 @@ async function restoreLatestBackup(){
     // se dejan los que ya hay en esta computadora, en vez de borrarlos.
     if(Array.isArray(data.customers)) customers = data.customers;
     if(Array.isArray(data.deliveryOrders)) deliveryOrders = data.deliveryOrders;
+    if(Array.isArray(data.insumos)){ insumos = data.insumos; await saveInsumos(); }
 
     // El respaldo diario solo trae lo reciente — los pedidos viejos
     // (90+ días) viven archivados en documentos aparte, uno por mes.
@@ -6252,7 +6411,7 @@ function renderGrid(){
   const grid = $('#item-grid');
   grid.innerHTML = '';
   if(!menuItems.length){
-    grid.innerHTML = '<div class="empty-cat">Todavía no agregas productos. Ve a la pestaña "Menú" para crear el primero.</div>';
+    grid.innerHTML = '<div class="empty-cat">Todavía no agregas productos. Ve a la pestaña "Productos" para crear el primero.</div>';
     return;
   }
   let items;
@@ -6275,16 +6434,17 @@ function renderGrid(){
     card.className = 'item-card';
     card.dataset.itemId = item.id;
     const descHtml = item.desc ? `<span class="desc">${escapeHtml(item.desc)}</span>` : '';
-    const hasStock = featureInventoryEnabled && item.stock !== null && item.stock !== undefined;
-    const outOfStock = hasStock && item.stock <= 0;
-    const lowStock = hasStock && !outOfStock && item.stock < 5;
+    const disponibles = ventiItemAvailability(item);
+    const hasStock = featureInventoryEnabled && disponibles !== null;
+    const outOfStock = hasStock && disponibles <= 0;
+    const lowStock = hasStock && !outOfStock && disponibles < 5;
     let stockHtml = '';
     if(hasStock){
       const stockClass = outOfStock ? 'out' : (lowStock ? 'low' : '');
       const warningIcon = (outOfStock || lowStock)
         ? '<span class="icon-svg" style="width:11px; height:11px; vertical-align:-1.5px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span> '
         : '';
-      stockHtml = `<span class="stock-badge ${stockClass}">${warningIcon}${outOfStock ? 'Agotado' : item.stock + ' disponibles'}</span>`;
+      stockHtml = `<span class="stock-badge ${stockClass}">${warningIcon}${outOfStock ? 'Agotado' : disponibles + ' disponibles'}</span>`;
     }
 
     if(outOfStock){
@@ -6319,8 +6479,10 @@ function renderGrid(){
         const btn = document.createElement('button');
         btn.className = 'variant-btn';
         btn.innerHTML = `<span class="vlabel">${escapeHtml(v.label)}</span>${money(v.price)}`;
-        if(outOfStock){
+        const dispVar = ventiRecipeFor(item, v.label) ? ventiAvailability(item, v.label) : null;
+        if(outOfStock || (dispVar !== null && dispVar <= 0)){
           btn.disabled = true;
+          if(!outOfStock) btn.title = 'Falta un insumo para esta opción';
         } else {
           btn.onclick = () => addToCart(item, v);
         }
@@ -6405,43 +6567,360 @@ window.addEventListener('resize', () => {
   equalizeRowsResizeTimeout = setTimeout(equalizeCardRowHeights, 150);
 });
 
+/* ---------- INSUMOS Y RECETAS ----------
+   Insumos = el inventario de verdad (pan, carne, queso, gaseosa…), cada uno
+   con su medida (unidades, g, kg, ml, L), cantidad y mínimo para avisar.
+   Receta = qué insumos usa un producto y cuánto. Si el producto tiene
+   opciones (Unidad / Combo), cada opción tiene su propia receta.
+   - Producto CON receta: al venderlo se descuentan sus insumos, y queda
+     "Agotado" si algún insumo no alcanza para hacer uno más.
+   - Producto SIN receta: funciona igual que siempre (su propio stock). */
+var insumos = []; // { id, name, unit, stock, min }
+const VENTI_UNITS = [
+  { id: 'u', label: 'Unidades', short: 'u' },
+  { id: 'g', label: 'Gramos', short: 'g' },
+  { id: 'kg', label: 'Kilos', short: 'kg' },
+  { id: 'ml', label: 'Mililitros', short: 'ml' },
+  { id: 'l', label: 'Litros', short: 'L' },
+];
+function ventiUnitShort(u){ const x = VENTI_UNITS.find(v => v.id === u); return x ? x.short : 'u'; }
+function ventiRound3(n){ return Math.round((Number(n) || 0) * 1000) / 1000; }
+function ventiFmtQty(n, unit){
+  const v = ventiRound3(n);
+  const txt = Number.isInteger(v) ? String(v) : String(v).replace('.', ',');
+  return unit ? `${txt} ${ventiUnitShort(unit)}` : txt;
+}
+async function saveInsumos(){
+  try { await store.set(tenantKey('insumos'), JSON.stringify(insumos), true); }
+  catch(e){ console.error('Error guardando insumos', e); }
+  if(typeof ventiPublishLive === 'function') ventiPublishLive();
+}
+// Receta de un producto (o de una de sus opciones). null = no tiene receta.
+function ventiRecipeFor(item, variantLabel){
+  if(!featureInventoryEnabled || !item) return null;
+  const v = (variantLabel && Array.isArray(item.variants)) ? item.variants.find(x => x.label === variantLabel) : null;
+  const raw = v ? v.recipe : item.recipe;
+  if(!Array.isArray(raw)) return null;
+  const r = raw.filter(x => x && Number(x.qty) > 0 && insumos.some(i => i.id === x.insumoId));
+  return r.length ? r : null;
+}
+function ventiHasRecipe(item){
+  return !!(ventiRecipeFor(item) || (Array.isArray(item.variants) && item.variants.some(v => ventiRecipeFor(item, v.label))));
+}
+// Cuántas se pueden hacer con lo que hay (descontando lo que ya usa el ticket)
+function ventiCanMake(recipe, used){
+  let min = Infinity;
+  recipe.forEach(r => {
+    const ins = insumos.find(i => i.id === r.insumoId);
+    const libre = (ins ? Number(ins.stock) || 0 : 0) - ((used && used[r.insumoId]) || 0);
+    min = Math.min(min, Math.floor(ventiRound3(libre / Number(r.qty))));
+  });
+  return min === Infinity ? 0 : Math.max(0, min);
+}
+// Disponibles de un producto u opción: número, o null si no lleva control
+function ventiAvailability(item, variantLabel){
+  if(!featureInventoryEnabled) return null;
+  const recipe = ventiRecipeFor(item, variantLabel);
+  if(recipe) return ventiCanMake(recipe);
+  return (item.stock === null || item.stock === undefined) ? null : item.stock;
+}
+// Para la tarjeta: con opciones, se toma la que más alcanza
+function ventiItemAvailability(item){
+  if(!featureInventoryEnabled) return null;
+  if(Array.isArray(item.variants) && item.variants.length && ventiHasRecipe(item)){
+    let best = null;
+    for(const v of item.variants){
+      const a = ventiAvailability(item, v.label);
+      if(a === null) return null;
+      best = best === null ? a : Math.max(best, a);
+    }
+    return best;
+  }
+  return ventiAvailability(item);
+}
+// Insumos que ya usa el ticket actual
+function ventiCartInsumoUse(){
+  const used = {};
+  cart.forEach(line => {
+    const [baseId, vlabel] = String(line.id).split('__');
+    const item = menuItems.find(i => i.id === baseId);
+    const recipe = ventiRecipeFor(item, vlabel || null);
+    if(recipe) recipe.forEach(r => { used[r.insumoId] = ventiRound3((used[r.insumoId] || 0) + Number(r.qty) * line.qty); });
+  });
+  return used;
+}
+function ventiInsumoState(ins){
+  const s = Number(ins.stock) || 0;
+  if(s <= 0) return { cls: 'out', label: 'Agotado' };
+  if(Number(ins.min) > 0 && s <= Number(ins.min)) return { cls: 'low', label: 'Poco stock' };
+  return { cls: 'ok', label: 'Disponible' };
+}
+// Lista para los avisos de poco stock: productos con stock propio + insumos
+function ventiLowStockList(){
+  if(!featureInventoryEnabled) return [];
+  const list = [];
+  menuItems.forEach(i => {
+    if(ventiHasRecipe(i) || i.stock === null || i.stock === undefined) return;
+    if(i.stock < 5) list.push({ name: i.name, stock: i.stock, text: i.stock + ' quedan' });
+  });
+  insumos.forEach(ins => {
+    const st = ventiInsumoState(ins);
+    if(st.cls !== 'ok') list.push({ name: ins.name, stock: Number(ins.stock) || 0, text: ventiFmtQty(ins.stock, ins.unit) + ' quedan' });
+  });
+  return list.sort((a, b) => a.stock - b.stock);
+}
+
+/* ----- Receta: ventana para elegir qué insumos usa un producto ----- */
+var ventiRecipeItemId = null;
+function ventiRecipeRowHtml(r){
+  const opts = insumos.map(i => `<option value="${escapeHtml(i.id)}"${r && r.insumoId === i.id ? ' selected' : ''}>${escapeHtml(i.name)} (${ventiUnitShort(i.unit)})</option>`).join('');
+  return `<div class="rcp-row">
+    <select class="rcp-ins">${opts}</select>
+    <input type="number" class="rcp-qty" min="0" step="any" value="${r ? r.qty : 1}" aria-label="Cantidad">
+    <button type="button" class="rcp-del" aria-label="Quitar">×</button>
+  </div>`;
+}
+function ventiOpenRecipe(item){
+  ventiRecipeItemId = item.id;
+  $('#recipe-title').textContent = 'Receta de ' + item.name;
+  const body = $('#recipe-body');
+  if(!insumos.length){
+    body.innerHTML = '<p class="rcp-empty">Primero crea tus insumos (pan, carne, queso…) en <b>Stock → Insumos</b>. Después vuelves aquí y eliges cuáles usa este producto.</p>';
+  } else {
+    const blocks = (Array.isArray(item.variants) && item.variants.length)
+      ? item.variants.map(v => ({ key: v.label, title: v.label, recipe: v.recipe || [] }))
+      : [{ key: '', title: 'Cada vez que se vende 1, se descuenta:', recipe: item.recipe || [] }];
+    body.innerHTML = blocks.map(b => `<div class="rcp-block" data-variant="${escapeHtml(b.key)}">
+        <h4>${b.key ? 'Opción ' + escapeHtml(b.title) + ': cada vez que se vende 1, se descuenta' : escapeHtml(b.title)}</h4>
+        <div class="rcp-rows">${(b.recipe.length ? b.recipe : []).map(ventiRecipeRowHtml).join('')}</div>
+        <button type="button" class="btn-link rcp-add">+ Agregar insumo</button>
+      </div>`).join('') + '<p class="rcp-hint">Deja una opción sin insumos si no quieres descontar nada al venderla. Si un insumo no alcanza, el producto sale como Agotado.</p>';
+  }
+  $('#recipe-modal').classList.add('active');
+}
+$('#recipe-body')?.addEventListener('click', (e) => {
+  const add = e.target.closest('.rcp-add');
+  if(add){ add.previousElementSibling.insertAdjacentHTML('beforeend', ventiRecipeRowHtml(null)); return; }
+  const del = e.target.closest('.rcp-del');
+  if(del) del.closest('.rcp-row').remove();
+});
+$('#recipe-cancel')?.addEventListener('click', () => { $('#recipe-modal').classList.remove('active'); ventiRecipeItemId = null; });
+$('#recipe-save')?.addEventListener('click', async () => {
+  const item = menuItems.find(i => i.id === ventiRecipeItemId);
+  if(!item){ $('#recipe-modal').classList.remove('active'); return; }
+  const leer = (block) => [...block.querySelectorAll('.rcp-row')].map(row => ({
+    insumoId: row.querySelector('.rcp-ins').value,
+    qty: ventiRound3(Number(row.querySelector('.rcp-qty').value) || 0)
+  })).filter(r => r.insumoId && r.qty > 0);
+  document.querySelectorAll('#recipe-body .rcp-block').forEach(block => {
+    const key = block.dataset.variant;
+    const recipe = leer(block);
+    if(key){
+      const v = (item.variants || []).find(x => x.label === key);
+      if(v){ if(recipe.length) v.recipe = recipe; else delete v.recipe; }
+    } else {
+      if(recipe.length) item.recipe = recipe; else delete item.recipe;
+    }
+  });
+  // Con receta, el stock lo dan los insumos: el número propio ya no se usa
+  if(ventiHasRecipe(item)) item.stock = null;
+  ventiLog('recipe', `Se cambió la receta de "${item.name}"`);
+  $('#recipe-modal').classList.remove('active');
+  ventiRecipeItemId = null;
+  await saveMenu();
+  renderAll();
+});
+
+/* ----- Stock: pestaña de insumos ----- */
+var ventiStockTab = 'productos';
+function renderInsumosView(){
+  const body = $('#stock-table-body');
+  if(!body) return;
+  const q = ventiNorm($('#stock-search')?.value || '');
+  let list = insumos.slice().sort((a, b) => a.name.localeCompare(b.name));
+  if(q) list = list.filter(i => ventiNorm(i.name).includes(q));
+  if(ventiStockLowOnly) list = list.filter(i => ventiInsumoState(i).cls !== 'ok');
+  const unitOpts = VENTI_UNITS.map(u => `<option value="${u.id}">${u.label}</option>`).join('');
+  const form = `<form class="ins-add" id="ins-add-form">
+      <input type="text" name="name" placeholder="Nuevo insumo (ej. Pan, Carne, Gaseosa)" required>
+      <select name="unit" aria-label="Medida">${unitOpts}</select>
+      <input type="number" name="stock" placeholder="Cantidad" min="0" step="any" required>
+      <input type="number" name="min" placeholder="Avisar con (mínimo)" min="0" step="any">
+      <button type="submit" class="btn btn-primary">Agregar insumo</button>
+    </form>`;
+  const rows = list.map(ins => {
+    const st = ventiInsumoState(ins);
+    return `<div class="stock-row st-${st.cls}" data-ins-id="${escapeHtml(ins.id)}">
+        <div class="stock-info">
+          <strong>${escapeHtml(ins.name)}</strong>
+          <span>${VENTI_UNITS.find(u => u.id === ins.unit)?.label || 'Unidades'} · <em class="stock-state">${st.label}</em>${Number(ins.min) > 0 ? ` · avisa con ${ventiFmtQty(ins.min, ins.unit)}` : ''} · usado en ${menuItems.filter(m => (m.recipe || []).some(r => r.insumoId === ins.id) || (m.variants || []).some(v => (v.recipe || []).some(r => r.insumoId === ins.id))).length} producto(s)</span>
+        </div>
+        <div class="stock-stepper">
+          <button type="button" data-ins-step="-1" aria-label="Quitar uno">−</button>
+          <input type="number" class="ins-input" min="0" step="any" value="${ventiRound3(ins.stock)}" aria-label="Cantidad de ${escapeHtml(ins.name)}">
+          <button type="button" data-ins-step="1" aria-label="Agregar uno">+</button>
+        </div>
+        <label class="stock-add">
+          <span>Llegó</span>
+          <input type="number" class="ins-add-input" min="0" step="any" placeholder="+0" aria-label="Cantidad que llegó de ${escapeHtml(ins.name)}">
+        </label>
+        <button type="button" class="ins-del" title="Eliminar insumo" aria-label="Eliminar ${escapeHtml(ins.name)}"><span class="icon-svg">${ICONS.trash}</span></button>
+      </div>`;
+  }).join('');
+  body.innerHTML = form + (rows || `<div class="no-orders">${insumos.length ? 'No hay insumos que coincidan.' : 'Todavía no tienes insumos. Agrega aquí lo que usas para preparar tus productos (pan, carne, queso…) y luego, en Productos, toca "Receta" en cada producto.'}</div>`);
+  const stats = $('#stock-head-stats');
+  if(stats){
+    const bajos = insumos.filter(i => ventiInsumoState(i).cls !== 'ok').length;
+    stats.innerHTML = `<span class="imp-pill">${insumos.length} insumo(s)</span><span class="imp-pill ${bajos ? 'bad' : 'ok'}">${bajos} con poco stock</span>`;
+  }
+}
+async function ventiSetInsumo(id, value){
+  const ins = insumos.find(i => i.id === id);
+  if(!ins) return;
+  const nuevo = Math.max(0, ventiRound3(value));
+  if(ventiRound3(ins.stock) !== nuevo) ventiLog('stock', `Insumo "${ins.name}": ${ventiFmtQty(ins.stock, ins.unit)} → ${ventiFmtQty(nuevo, ins.unit)}`);
+  ins.stock = nuevo;
+  await saveInsumos();
+  renderInsumosView();
+  renderGrid();
+}
+function ventiStockTabsSync(){
+  document.querySelectorAll('#stock-tabs button[data-stock-tab]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.stockTab === ventiStockTab)));
+  const cat = $('#stock-category-filter');
+  if(cat) cat.style.display = ventiStockTab === 'insumos' ? 'none' : '';
+}
+$('#stock-tabs')?.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-stock-tab]');
+  if(!b) return;
+  ventiStockTab = b.dataset.stockTab;
+  renderStockView();
+});
+$('#stock-table-body')?.addEventListener('submit', async (e) => {
+  const form = e.target.closest('#ins-add-form');
+  if(!form) return;
+  e.preventDefault();
+  const name = form.name.value.trim();
+  if(!name) return;
+  if(insumos.some(i => ventiNorm(i.name) === ventiNorm(name))){ await appAlert(`Ya tienes un insumo llamado "${name}".`, 'Insumo repetido'); return; }
+  const ins = { id: 'i' + Date.now(), name, unit: form.unit.value, stock: Math.max(0, ventiRound3(form.stock.value)), min: Math.max(0, ventiRound3(form.min.value)) };
+  insumos.push(ins);
+  ventiLog('stock', `Se agregó el insumo "${name}" (${ventiFmtQty(ins.stock, ins.unit)})`);
+  await saveInsumos();
+  renderInsumosView();
+  $('#ins-add-form input[name="name"]')?.focus();
+});
+$('#stock-table-body')?.addEventListener('click', async (e) => {
+  const step = e.target.closest('[data-ins-step]');
+  if(step){
+    const id = step.closest('.stock-row').dataset.insId;
+    const ins = insumos.find(i => i.id === id);
+    if(ins) ventiSetInsumo(id, (Number(ins.stock) || 0) + Number(step.dataset.insStep));
+    return;
+  }
+  const del = e.target.closest('.ins-del');
+  if(del){
+    const id = del.closest('.stock-row').dataset.insId;
+    const ins = insumos.find(i => i.id === id);
+    if(!ins) return;
+    const usan = menuItems.filter(m => (m.recipe || []).some(r => r.insumoId === id) || (m.variants || []).some(v => (v.recipe || []).some(r => r.insumoId === id)));
+    const ok = await appConfirm(`¿Eliminar el insumo "${ins.name}"?${usan.length ? ` Se va a quitar de la receta de ${usan.length} producto(s).` : ''}`, 'Eliminar insumo');
+    if(!ok) return;
+    insumos = insumos.filter(i => i.id !== id);
+    menuItems.forEach(m => {
+      if(Array.isArray(m.recipe)){ m.recipe = m.recipe.filter(r => r.insumoId !== id); if(!m.recipe.length) delete m.recipe; }
+      (m.variants || []).forEach(v => { if(Array.isArray(v.recipe)){ v.recipe = v.recipe.filter(r => r.insumoId !== id); if(!v.recipe.length) delete v.recipe; } });
+    });
+    ventiLog('stock', `Se eliminó el insumo "${ins.name}"`);
+    await saveInsumos();
+    await saveMenu();
+    renderInsumosView();
+    renderGrid();
+  }
+});
+$('#stock-table-body')?.addEventListener('change', (e) => {
+  const input = e.target.closest('.ins-input');
+  if(!input) return;
+  ventiSetInsumo(input.closest('.stock-row').dataset.insId, Number(input.value) || 0);
+});
+$('#stock-table-body')?.addEventListener('keydown', (e) => {
+  const input = e.target.closest('.ins-add-input');
+  if(!input || e.key !== 'Enter') return;
+  e.preventDefault();
+  const n = ventiRound3(input.value);
+  const id = input.closest('.stock-row').dataset.insId;
+  const ins = insumos.find(i => i.id === id);
+  if(ins && n > 0) ventiSetInsumo(id, (Number(ins.stock) || 0) + n);
+  input.value = '';
+  setTimeout(() => {
+    const all = [...document.querySelectorAll('.ins-add-input')];
+    const idx = all.findIndex(x => x.closest('.stock-row')?.dataset.insId === id);
+    if(all[idx + 1]) all[idx + 1].focus();
+  }, 30);
+});
+
+
+// "La Firma (Combo)" → código de línea "m123__Combo" (para pedidos guardados solo con el nombre)
+function ventiLineIdFromName(name){
+  const base = String(name || '').replace(/\s*\((.+)\)\s*$/, '');
+  const vlabel = (String(name || '').match(/\((.+)\)\s*$/) || [])[1];
+  const m = menuItems.find(x => x.name === base);
+  return m ? (vlabel && Array.isArray(m.variants) ? m.id + '__' + vlabel : m.id) : '';
+}
 async function deductStockForCart(cartItems){
   if(!featureInventoryEnabled) return;
-  let changed = false;
+  let changed = false, changedIns = false;
   cartItems.forEach(line => {
-    const baseId = line.id.split('__')[0];
+    const [baseId, vlabel] = String(line.id).split('__');
     const menuItem = menuItems.find(i => i.id === baseId);
-    if(menuItem && menuItem.stock !== null && menuItem.stock !== undefined){
+    const recipe = ventiRecipeFor(menuItem, vlabel || null);
+    if(recipe){
+      // Con receta: se descuenta cada insumo según lo que usa
+      recipe.forEach(r => {
+        const ins = insumos.find(i => i.id === r.insumoId);
+        if(ins){ ins.stock = Math.max(0, ventiRound3((Number(ins.stock) || 0) - Number(r.qty) * line.qty)); changedIns = true; }
+      });
+    } else if(menuItem && menuItem.stock !== null && menuItem.stock !== undefined){
       menuItem.stock = Math.max(0, menuItem.stock - line.qty);
       changed = true;
     }
   });
-  if(changed){
-    await saveMenu();
-    renderGrid();
-  }
+  if(changedIns) await saveInsumos();
+  if(changed) await saveMenu();
+  if(changed || changedIns) renderGrid();
 }
 
 // Inversa de deductStockForCart — se usa cuando se cancela un pedido
 // de domicilio que ya se había descontado del inventario.
 async function restoreStockForCart(cartItems){
   if(!featureInventoryEnabled) return;
-  let changed = false;
+  let changed = false, changedIns = false;
   cartItems.forEach(line => {
-    const baseId = line.id.split('__')[0];
+    const [baseId, vlabel] = String(line.id || '').split('__');
     const menuItem = menuItems.find(i => i.id === baseId);
-    if(menuItem && menuItem.stock !== null && menuItem.stock !== undefined){
+    const recipe = ventiRecipeFor(menuItem, vlabel || null);
+    if(recipe){
+      recipe.forEach(r => {
+        const ins = insumos.find(i => i.id === r.insumoId);
+        if(ins){ ins.stock = ventiRound3((Number(ins.stock) || 0) + Number(r.qty) * line.qty); changedIns = true; }
+      });
+    } else if(menuItem && menuItem.stock !== null && menuItem.stock !== undefined){
       menuItem.stock = menuItem.stock + line.qty;
       changed = true;
     }
   });
-  if(changed){
-    await saveMenu();
-    renderGrid();
-  }
+  if(changedIns) await saveInsumos();
+  if(changed) await saveMenu();
+  if(changed || changedIns) renderGrid();
 }
 
 function addToCart(item, variant){
+  const recetaLinea = ventiRecipeFor(item, variant ? variant.label : null);
+  if(recetaLinea && ventiCanMake(recetaLinea, ventiCartInsumoUse()) < 1){
+    const falta = recetaLinea.map(r => insumos.find(i => i.id === r.insumoId)).filter(Boolean)
+      .find(ins => { const usado = ventiCartInsumoUse()[ins.id] || 0; const r = recetaLinea.find(x => x.insumoId === ins.id); return (Number(ins.stock) || 0) - usado < Number(r.qty); });
+    appAlert(`No alcanza ${falta ? '"' + falta.name + '"' : 'un insumo'} para otro ${item.name}${variant ? ' (' + variant.label + ')' : ''}. Revisa el stock de insumos.`, 'Falta un insumo');
+    return;
+  }
   const lineId = variant ? item.id + '__' + variant.label : item.id;
   const lineName = variant ? `${item.name} (${variant.label})` : item.name;
   const linePrice = variant ? variant.price : item.price;
@@ -6471,6 +6950,74 @@ function ventiOrderTypeLabel(o){
   if(o.orderType === 'aqui') return 'Para aquí';
   return '';
 }
+
+/* ---------- Canales de venta: local o domicilio (WhatsApp, Uber Eats, PedidosYa) ----------
+   Cada pedido guarda `channel`. Los pedidos viejos no lo tienen: si vinieron
+   por Domicilio cuentan como WhatsApp, y si no, como venta en el local.
+   Los montos siempre salen de o.total (las formas de pago siguen usando
+   cashAmount/transferAmount/cardAmount, no cambia nada ahí). */
+const VENTI_CHANNELS = [
+  { id: 'local', label: 'En el local', short: 'Local', color: '#60A5FA' },
+  { id: 'whatsapp', label: 'WhatsApp', short: 'WhatsApp', color: '#25D366' },
+  { id: 'rappi', label: 'Rappi', short: 'Rappi', color: '#FB923C' },
+  { id: 'uber', label: 'Uber Eats', short: 'Uber Eats', color: '#A3E635' },
+  { id: 'pedidosya', label: 'PedidosYa', short: 'PedidosYa', color: '#F43F5E' },
+];
+const VENTI_DELIVERY_CHANNELS = VENTI_CHANNELS.filter(c => c.id !== 'local');
+function ventiOrderChannel(o){
+  if(o && VENTI_CHANNELS.some(c => c.id === o.channel)) return o.channel;
+  return (o && o.viaDelivery) ? 'whatsapp' : 'local';
+}
+function ventiChannelLabel(id){ const c = VENTI_CHANNELS.find(x => x.id === id); return c ? c.label : ''; }
+function ventiChannelTotals(list){
+  const t = {};
+  VENTI_CHANNELS.forEach(c => { t[c.id] = 0; });
+  (list || []).forEach(o => { t[ventiOrderChannel(o)] += Number(o.total) || 0; });
+  return t;
+}
+// Canales de domicilio que usa este local (se eligen en el panel de administrador).
+// Locales sin el dato guardado: WhatsApp, Uber Eats y PedidosYa, como antes.
+function ventiActiveDeliveryIds(){
+  const l = tenantData && Array.isArray(tenantData.deliveryChannels) ? tenantData.deliveryChannels.filter(id => VENTI_DELIVERY_CHANNELS.some(c => c.id === id)) : [];
+  return l.length ? l : ['whatsapp', 'uber', 'pedidosya'];
+}
+function ventiActiveDeliveryChannels(){
+  const ids = ventiActiveDeliveryIds();
+  return VENTI_DELIVERY_CHANNELS.filter(c => ids.includes(c.id));
+}
+function ventiDeliveryOn(){
+  return featureDeliveryEnabled || !!(tenantData && tenantData.deliveryEnabled === true);
+}
+// Canales a mostrar en reportes: el local, los activos (si hay domicilio) y
+// cualquier otro que tenga ventas en lo que se está mostrando (para no perder historial)
+function ventiChannelsShown(t){
+  const act = ventiDeliveryOn() ? ventiActiveDeliveryIds() : [];
+  return VENTI_CHANNELS.filter(c => c.id === 'local' || act.includes(c.id) || (t && t[c.id] > 0));
+}
+// ¿Mostrar el desglose? Solo si el local hace domicilios o ya tiene ventas por algún canal de domicilio
+function ventiShowChannels(list){
+  return featureDeliveryEnabled || (list || []).some(o => ventiOrderChannel(o) !== 'local');
+}
+function ventiChannelStatsHtml(list){
+  if(!ventiShowChannels(list)) return '';
+  const t = ventiChannelTotals(list);
+  const icon = '<path d="M3 3h18v4H3z"/><path d="M5 7v13h14V7"/><path d="M10 12h4"/>';
+  return ventiChannelsShown(t).map(c => `<div class="hd-stat hd-stat-channel"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:${c.color}">${icon}</svg>${c.short}</span><strong>${money(t[c.id])}</strong></div>`).join('');
+}
+function ventiChannelReportText(list, w, line){
+  if(!ventiShowChannels(list)) return '';
+  const t = ventiChannelTotals(list);
+  let out = line + '\n' + center('VENTAS POR CANAL', w) + '\n';
+  ventiChannelsShown(t).forEach(c => { out += padLine(c.label, money(t[c.id]), w) + '\n'; });
+  return out;
+}
+function ventiChannelReportHtml(list){
+  if(!ventiShowChannels(list)) return '';
+  const t = ventiChannelTotals(list);
+  return `<h2 style="margin:34px 0 6px 0;">Ventas por canal</h2>` +
+    ventiChannelsShown(t).map(c => `<div class="row"><span class="label">${escapeHtml(c.label)}</span><span class="value">${money(t[c.id])}</span></div>`).join('');
+}
+
 document.getElementById('order-type')?.addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-type]');
   if(!btn) return;
@@ -6504,7 +7051,7 @@ function renderCart(){
     wrap.innerHTML = `<div class="cart-empty">
       <span class="cart-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg></span>
       <strong>El ticket está vacío</strong>
-      <span>Toca un producto del menú para agregarlo.</span>
+      <span>Toca un producto para agregarlo.</span>
     </div>`;
   } else {
     const ICON_MINUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>';
@@ -7006,7 +7553,7 @@ function orderCardHtml(o){
         <div style="display:flex; align-items:center; gap:6px;">
           ${ventiPayTagHtml(o.payment)}
           ${ventiOrderTypeLabel(o) ? `<span class="delivery-tag type-tag">${ventiOrderTypeLabel(o)}</span>` : ''}
-          ${o.viaDelivery ? '<span class="delivery-tag"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Domicilio</span>' : ''}
+          ${o.viaDelivery ? '<span class="delivery-tag"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Domicilio · ' + escapeHtml(ventiChannelLabel(ventiOrderChannel(o))) + '</span>' : ''}
         </div>
         <span class="total">${money(o.total)}</span>
       </div>
@@ -7092,7 +7639,8 @@ function ventiDayStatsHtml(ordersList, withdrawnTotal){
     cash: '<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
     transfer: '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
     card: '<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>',
-    withdraw: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>'
+    withdraw: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+    net: '<path d="M5 7h14"/><path d="M5 12h14"/><path d="M5 17h8"/>'
   };
   const chip = (key, label, value, strong) => `<div class="hd-stat hd-stat-${key}${strong ? ' strong' : ''}"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[key]}</svg>${label}</span><strong>${value}</strong></div>`;
   return chip('sold', 'Vendido', money(total), true) +
@@ -7100,7 +7648,9 @@ function ventiDayStatsHtml(ordersList, withdrawnTotal){
     chip('cash', withdrawnTotal > 0 ? 'Efectivo en caja' : 'Efectivo', money(cash)) +
     chip('transfer', 'Transferencia', money(transfer)) +
     chip('card', 'Tarjeta', money(card)) +
-    (withdrawnTotal > 0 ? chip('withdraw', 'Retirado', '-' + money(withdrawnTotal)) : '');
+    (withdrawnTotal > 0 ? chip('withdraw', 'Retirado', '-' + money(withdrawnTotal)) : '') +
+    (withdrawnTotal > 0 ? chip('net', 'Vendido menos retiros', money(total - withdrawnTotal), true) : '') +
+    ventiChannelStatsHtml(ordersList);
 }
 
 var ventiHistorySelectedDay = null;
@@ -7438,15 +7988,18 @@ $('#category-icon-manager').addEventListener('click', async (e) => {
 // que abrir el formulario completo de cada producto.
 var ventiStockLowOnly = false;
 function ventiStockState(item){
-  const has = item.stock !== null && item.stock !== undefined;
+  const disp = ventiHasRecipe(item) ? ventiItemAvailability(item) : item.stock;
+  const has = disp !== null && disp !== undefined;
   if(!has) return { cls:'none', label:'Sin control' };
-  if(item.stock <= 0) return { cls:'out', label:'Agotado' };
-  if(item.stock < 5) return { cls:'low', label:'Poco stock' };
+  if(disp <= 0) return { cls:'out', label:'Agotado' };
+  if(disp < 5) return { cls:'low', label:'Poco stock' };
   return { cls:'ok', label:'Disponible' };
 }
 function renderStockView(){
   const filterSelect = $('#stock-category-filter');
   if(!filterSelect) return;
+  ventiStockTabsSync();
+  if(ventiStockTab === 'insumos'){ renderInsumosView(); return; }
   const cats = [...new Set(menuItems.map(i=>i.category))];
   const prevValue = filterSelect.value || '__all__';
   filterSelect.innerHTML = '<option value="__all__">Todas las categorías</option>'
@@ -7473,6 +8026,17 @@ function renderStockView(){
   body.innerHTML = visibleItems.map(item => {
     const hasStock = item.stock !== null && item.stock !== undefined;
     const st = ventiStockState(item);
+    if(ventiHasRecipe(item)){
+      const disp = ventiItemAvailability(item);
+      return `
+      <div class="stock-row st-${st.cls}" data-item-id="${item.id}">
+        <div class="stock-info">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span>${escapeHtml(item.category || '')} · <em class="stock-state">${st.label}</em></span>
+        </div>
+        <div class="stock-recipe-note">Se descuenta con sus insumos · alcanza para <b>${disp}</b></div>
+      </div>`;
+    }
     return `
       <div class="stock-row st-${st.cls}" data-item-id="${item.id}">
         <div class="stock-info">
@@ -7623,13 +8187,14 @@ var ventiStaffList = [];
 var ventiStaffMode = null; // en el celular: { tenantId, email, name, canCharge, canDeliver }
 
 function ventiLiveCol(){ return (db && tenantId) ? collection(db, 'tenants', tenantId, 'liveOrders') : null; }
-function ventiLiveReady(){ return !!(db && tenantId && featureStaffEnabled && !ventiStaffMode); }
+function ventiLiveReady(){ return !!(db && tenantId && !ventiStaffMode && !ventiOwnerMode); }
 function ventiOrderToLive(o){
   return {
     id: o.id, orderNumber: o.orderNumber || 0, timestamp: o.timestamp,
     items: (o.items || []).map(i => ({ name: i.name, qty: i.qty, price: Number(i.price) || 0, note: i.note || '' })),
     total: Number(o.total) || 0, payment: o.payment || '', customerName: o.customerName || '',
-    orderType: o.orderType || '', viaDelivery: !!o.viaDelivery,
+    orderType: o.orderType || '', viaDelivery: !!o.viaDelivery, channel: ventiOrderChannel(o),
+    splitCash: Number(o.splitCash) || 0, splitTransfer: Number(o.splitTransfer) || 0,
     delivered: !!o.delivered, deliveredBy: o.deliveredBy || '', deliveredByEmail: o.deliveredByEmail || '',
     source: o.source || 'main', staffName: o.staffName || '', staffEmail: o.staffEmail || ''
   };
@@ -7651,8 +8216,9 @@ function ventiPublishLive(){
     try {
       const menu = menuItems.map(i => ({ id: i.id, name: i.name, category: i.category || '', desc: i.desc || '', emoji: i.emoji || '',
         price: i.variants ? null : (Number(i.price) || 0), variants: i.variants ? i.variants.map(v => ({ label: v.label || '', price: Number(v.price) || 0 })) : null,
-        stock: (i.stock === null || i.stock === undefined) ? null : i.stock }));
-      await setDoc(doc(db, 'tenants', tenantId, 'live', 'menu'), { items: menu, updatedAt: new Date().toISOString() });
+        stock: ventiHasRecipe(i) ? ventiItemAvailability(i) : ((i.stock === null || i.stock === undefined) ? null : i.stock) }));
+      const insumosLive = insumos.map(x => ({ name: x.name, unit: x.unit || 'u', stock: ventiRound3(x.stock), min: ventiRound3(x.min) }));
+      await setDoc(doc(db, 'tenants', tenantId, 'live', 'menu'), { items: menu, insumos: insumosLive, updatedAt: new Date().toISOString() });
       await setDoc(doc(db, 'tenants', tenantId, 'live', 'info'), {
         businessName: (tenantData && tenantData.businessName) || '', primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--mustard').trim(),
         themeMode: (tenantData && tenantData.themeMode) || 'dark', taxRate: Number(settings.taxRate) || 0,
@@ -7667,6 +8233,7 @@ async function ventiStartLiveSync(){
   if(ventiLiveUnsub){ ventiLiveUnsub(); ventiLiveUnsub = null; }
   if(!ventiLiveReady()) return;
   ventiPublishLive();
+  ventiPublishResumen();
   try {
     const snap = await getDocs(ventiLiveCol());
     const liveIds = new Set();
@@ -7721,18 +8288,23 @@ async function ventiHandleLiveChange(id, data){
     orders.unshift(order);
     await saveOrdersData();
     ventiLiveUpsert(order);
-    await deductStockForCart(order.items.map(i => ({ id: (menuItems.find(m => m.name === String(i.name).replace(/\s*\((.+)\)\s*$/, '')) || {}).id || '', qty: i.qty })));
+    await deductStockForCart(order.items.map(i => {
+      const base = String(i.name).replace(/\s*\((.+)\)\s*$/, '');
+      const vlabel = (String(i.name).match(/\((.+)\)\s*$/) || [])[1];
+      const m = menuItems.find(x => x.name === base);
+      return { id: m ? (vlabel && Array.isArray(m.variants) ? m.id + '__' + vlabel : m.id) : '', qty: i.qty };
+    }));
     ventiLog('staff-charge', `${data.staffName || 'Un trabajador'} cobró el pedido ${formatOrderNumber(order.orderNumber)}${order.customerName ? ' de ' + order.customerName : ''} (${order.payment})`, order.total);
     const expected = ventiExpectedTotal(order.items);
     if(Math.abs(itemsSum - order.total) > 0.009){
       ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName} dice ${money(order.total)} pero sus productos suman ${money(itemsSum)}`, order.total - itemsSum);
       ventiNotify('Revisa un cobro', `${data.staffName} cobró ${money(order.total)} y los productos suman ${money(itemsSum)}.`, true);
     } else if(expected === null){
-      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName} tiene productos que no están en tu menú`, order.total);
-      ventiNotify('Revisa un cobro', `${data.staffName} cobró productos que no están en tu menú (${money(order.total)}).`, true);
+      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName} tiene productos que no están en tu lista de productos`, order.total);
+      ventiNotify('Revisa un cobro', `${data.staffName} cobró productos que no están en tu lista de productos (${money(order.total)}).`, true);
     } else if(Math.abs(expected - order.total) > 0.009){
-      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName || 'un trabajador'} se cobró en ${money(order.total)} pero según el menú debía ser ${money(expected)}`, order.total - expected);
-      ventiNotify('Revisa un cobro', `${data.staffName || 'Un trabajador'} cobró ${money(order.total)}; según el menú eran ${money(expected)}.`, true);
+      ventiLog('staff-mismatch', `Revisar: el pedido ${formatOrderNumber(order.orderNumber)} de ${data.staffName || 'un trabajador'} se cobró en ${money(order.total)} pero según tus precios debía ser ${money(expected)}`, order.total - expected);
+      ventiNotify('Revisa un cobro', `${data.staffName || 'Un trabajador'} cobró ${money(order.total)}; según tus precios eran ${money(expected)}.`, true);
     } else {
       ventiNotify('Nuevo pedido cobrado', `${data.staffName || 'Un trabajador'} cobró ${money(order.total)}${order.customerName ? ' · ' + order.customerName : ''}`);
     }
@@ -7754,6 +8326,15 @@ async function ventiHandleLiveChange(id, data){
 }
 // Aviso en pantalla (y del sistema, si Windows lo permite)
 function ventiNotify(title, body, warn){
+  ventiToast(title, body, warn);
+  try {
+    if('Notification' in window){
+      if(Notification.permission === 'granted') new Notification(title, { body });
+      else if(Notification.permission === 'default') Notification.requestPermission();
+    }
+  } catch(e){}
+}
+function ventiToast(title, body, warn){
   let box = document.getElementById('venti-toasts');
   if(!box){ box = document.createElement('div'); box.id = 'venti-toasts'; document.body.appendChild(box); }
   const el = document.createElement('div');
@@ -7761,12 +8342,6 @@ function ventiNotify(title, body, warn){
   el.innerHTML = `<span class="vt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${warn ? '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>' : '<path d="M5 12.5l4.5 4.5L19 7.5"/>'}</svg></span><span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(body)}</small></span>`;
   box.appendChild(el);
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 260); }, warn ? 9000 : 5000);
-  try {
-    if('Notification' in window){
-      if(Notification.permission === 'granted') new Notification(title, { body });
-      else if(Notification.permission === 'default') Notification.requestPermission();
-    }
-  } catch(e){}
 }
 
 /* ---------- Mensajes que te manda VENTI (desde el panel de administrador) ---------- */
@@ -7824,6 +8399,7 @@ function renderStaffView(){
     </div>`).join('');
 }
 async function ventiSaveStaff(s){
+  if(ventiOwnerMode) return;
   // La clave se guarda en la ficha del trabajador para que el dueño pueda verla
   // (solo la leen el dueño y ese mismo trabajador, según las reglas).
   await setDoc(doc(db, 'tenants', tenantId, 'staff', s.email), {
@@ -7896,6 +8472,7 @@ $('#staff-list')?.addEventListener('click', async (e) => {
   const s = ventiStaffList.find(x => x.email === email);
   const ok = await appConfirm(`¿Quitar a ${s ? s.name : email}? Ya no podrá entrar. (Su cuenta de correo sigue existiendo en Firebase, pero sin acceso a tu local).`, 'Quitar trabajador');
   if(!ok) return;
+  if(ventiOwnerMode) return;
   try {
     await deleteDoc(doc(db, 'tenants', tenantId, 'staff', email));
     await deleteDoc(doc(db, 'staffIndex', email));
@@ -7960,12 +8537,287 @@ function ventiApplyStaffLoginLook(){
   document.title = 'VENTI Equipo';
   const box = ls.querySelector('.login-box');
   box.querySelector('h1').insertAdjacentHTML('beforebegin', '<span class="login-staff-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Acceso de trabajadores</span>');
-  box.querySelector('h1').textContent = 'Entrar como trabajador';
-  box.querySelector('.login-sub').textContent = 'Usa el correo y la clave que te dio el dueño del local.';
+  box.querySelector('h1').textContent = 'Entrar a VENTI';
+  box.querySelector('.login-sub').textContent = 'Dueños: usen el correo de su cuenta de VENTI. Trabajadores: el correo y la clave que les dio el dueño.';
   const name = ls.querySelector('.login-brand-name'); if(name) name.innerHTML = 'VENTI <span>Equipo</span>';
   const desc = ls.querySelector('.login-brand-desc'); if(desc) desc.innerHTML = '<strong>Para el equipo del local.</strong><br>Mira los pedidos del día, márcalos como entregados y cobra desde tu celular.';
 }
 ventiApplyStaffLoginLook();
+
+
+/* ---------- VENTI del dueño en el celular (solo para ver) ----------
+   La computadora del local (la única que vende y guarda los datos)
+   publica en la nube:
+     - liveOrders: los pedidos del día abierto (ya existía para Trabajadores),
+     - live/menu: productos y stock (ya existía),
+     - live/resumen: días cerrados, retiros de hoy y domicilios pendientes.
+   El dueño entra con su correo en la versión web (la del celular) y ve
+   todo eso en vivo. El celular NUNCA escribe datos del local. */
+var ventiOwnerMode = false;
+var ventiOwnerUnsubs = [];
+var ventiOwnerData = { today: [], resumen: null, menu: [] };
+var ventiResumenTimer = null;
+
+function ventiClosureSummary(c){
+  const os = orders.filter(o => o.dayId === c.id);
+  const withdrawn = withdrawals.filter(w => w.dayId === c.id).reduce((s,w)=>s+(Number(w.amount)||0),0);
+  const r = { id: c.id, label: c.label || '', dayDate: c.dayDate || '', closedAt: c.closedAt || '', total: Number(c.total) || 0, orderCount: Number(c.orderCount) || 0, withdrawn };
+  if(os.length){
+    r.cash = os.reduce((s,o)=>s+cashAmount(o),0);
+    r.transfer = os.reduce((s,o)=>s+transferAmount(o),0);
+    r.card = os.reduce((s,o)=>s+cardAmount(o),0);
+    r.ch = ventiChannelTotals(os);
+  }
+  return r;
+}
+function ventiBuildResumen(){
+  const pend = {};
+  VENTI_DELIVERY_CHANNELS.forEach(c => { pend[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length; });
+  return {
+    updatedAt: new Date().toISOString(),
+    businessName: (tenantData && tenantData.businessName) || '',
+    closures: [...closures].sort((a,b) => String(b.dayDate || b.closedAt).localeCompare(String(a.dayDate || a.closedAt))).slice(0, 400).map(ventiClosureSummary),
+    openWithdrawals: withdrawals.filter(w => !w.dayId).map(w => ({ amount: Number(w.amount) || 0, note: w.note || '', timestamp: w.timestamp || '' })),
+    deliveryPending: pend,
+    deliveryOrders: deliveryOrders.slice(0, 200).map(d => ({ id: d.id, items: (d.items || []).map(i => ({ name: i.name, qty: i.qty, price: Number(i.price) || 0, note: i.note || '' })),
+      customerName: d.customerName || '', customerPhone: d.customerPhone || '', customerAddress: d.customerAddress || '', notes: d.notes || '', channel: d.channel || '', createdAt: d.createdAt || '' }))
+  };
+}
+function ventiPublishResumen(){
+  if(!ventiLiveReady()) return;
+  clearTimeout(ventiResumenTimer);
+  ventiResumenTimer = setTimeout(async () => {
+    try { await setDoc(doc(db, 'tenants', tenantId, 'live', 'resumen'), ventiBuildResumen()); }
+    catch(e){ console.warn('No se pudo publicar el resumen en vivo', e); }
+  }, 2500);
+}
+
+// En la versión web, el dueño entra al modo celular (no a la caja completa)
+async function ventiTryOwnerPhone(user){
+  if(!ventiIsWebStaff()) return false;
+  const ok = await resolveTenant(user);
+  if(!ok){
+    $('#login-screen').style.display = 'flex';
+    await signOut(auth);
+    return true;
+  }
+  ventiEnterOwnerMode(false);
+  return true;
+}
+/* ---------- Dueño en el celular: la MISMA app, solo para ver ----------
+   1) Trae el último respaldo de la nube (historial, productos, clientes, insumos).
+   2) Encima pone lo que está pasando ahora: pedidos del día (liveOrders),
+      días cerrados y retiros después del respaldo (live/resumen) y stock (live/menu).
+   3) No guarda nada: store.set no hace nada y la nube tiene candados.
+   4) Avisa cuando un trabajador cobra o marca un pedido como entregado. */
+var ventiOwnerBase = null;
+var ventiOwnerLiveLoaded = false;
+var ventiOwnerPrev = null;
+var ventiOwnerTimer = null;
+var ventiOwnerSw = null;
+var ventiOwnerAudio = null;
+function ventiLiveToOrder(x){
+  return { id: x.id, orderNumber: x.orderNumber || 0, timestamp: x.timestamp, items: x.items || [],
+    subtotal: Number(x.total) || 0, taxRate: 0, taxAmount: 0, total: Number(x.total) || 0,
+    payment: x.payment || '', customerName: x.customerName || '', orderType: x.orderType || 'aqui',
+    viaDelivery: !!x.viaDelivery, channel: x.channel || undefined,
+    splitCash: Number(x.splitCash) || 0, splitTransfer: Number(x.splitTransfer) || 0,
+    delivered: !!x.delivered, deliveredBy: x.deliveredBy || '', dayId: null,
+    source: x.source || 'main', staffName: x.staffName || '', staffEmail: x.staffEmail || '' };
+}
+function ventiOwnerCompose(){
+  const B = ventiOwnerBase || { orders: [], closures: [], withdrawals: [], deliveryOrders: [], insumos: [], menuItems: [] };
+  const r = ventiOwnerData.resumen;
+  const known = new Set(B.closures.map(c => c.id));
+  // días cerrados después del último respaldo (solo vienen sus totales)
+  const nuevos = (r && Array.isArray(r.closures) ? r.closures : []).filter(c => !known.has(c.id))
+    .map(c => ({ id: c.id, label: c.label || '', dayDate: c.dayDate || '', closedAt: c.closedAt || '', total: Number(c.total) || 0, orderCount: Number(c.orderCount) || 0, withdrawn: Number(c.withdrawn) || 0 }))
+    .sort((a, b) => String(a.closedAt).localeCompare(String(b.closedAt)));
+  const closeFor = (ts) => nuevos.find(c => String(c.closedAt) >= String(ts || ''));
+  const closed = B.orders.filter(o => o.dayId);
+  let open;
+  if(ventiOwnerLiveLoaded){
+    const liveIds = new Set(ventiOwnerData.today.map(x => x.id));
+    const moved = [];
+    B.orders.filter(o => !o.dayId && !liveIds.has(o.id)).forEach(o => { const c = closeFor(o.timestamp); if(c) moved.push({ ...o, dayId: c.id }); });
+    open = moved.concat(ventiOwnerData.today.map(ventiLiveToOrder));
+  } else {
+    open = B.orders.filter(o => !o.dayId);
+  }
+  orders = open.concat(closed).sort((a, b) => String(b.timestamp).localeCompare(String(a.timestamp)));
+  if(r){
+    const openW = (r.openWithdrawals || []).map((w, i) => ({ id: 'lw' + i + '_' + (w.timestamp || ''), amount: Number(w.amount) || 0, note: w.note || '', timestamp: w.timestamp || '', dayId: null }));
+    const openTs = new Set(openW.map(w => w.timestamp));
+    const movedW = B.withdrawals.filter(w => !w.dayId && !openTs.has(w.timestamp)).map(w => { const c = closeFor(w.timestamp); return c ? { ...w, dayId: c.id } : null; }).filter(Boolean);
+    const extra = nuevos.map(c => {
+      const ya = movedW.filter(w => w.dayId === c.id).reduce((t, w) => t + (Number(w.amount) || 0), 0);
+      const falta = c.withdrawn - ya;
+      return falta > 0.009 ? { id: 'lw_' + c.id, amount: falta, note: 'Retiros del día', timestamp: c.closedAt, dayId: c.id } : null;
+    }).filter(Boolean);
+    withdrawals = B.withdrawals.filter(w => w.dayId).concat(movedW, extra, openW);
+  } else {
+    withdrawals = B.withdrawals.slice();
+  }
+  closures = B.closures.concat(nuevos.map(({ withdrawn, ...c }) => c));
+  deliveryOrders = (r && Array.isArray(r.deliveryOrders)) ? r.deliveryOrders : B.deliveryOrders.slice();
+  const lm = ventiOwnerData.menuLive;
+  menuItems = B.menuItems.map(i => {
+    const l = lm && lm.find(x => x.id === i.id);
+    return (l && !ventiHasRecipe(i) && l.stock !== undefined) ? { ...i, stock: l.stock } : i;
+  });
+  const li = ventiOwnerData.insumosLive;
+  insumos = B.insumos.map(x => { const l = li && li.find(y => y.name === x.name); return l ? { ...x, stock: l.stock, min: l.min } : { ...x }; });
+  if(li) li.forEach(l => { if(!insumos.some(x => x.name === l.name)) insumos.push({ id: 'li_' + l.name, name: l.name, unit: l.unit || 'u', stock: l.stock, min: l.min }); });
+}
+function ventiOwnerRefresh(){
+  clearTimeout(ventiOwnerTimer);
+  ventiOwnerTimer = setTimeout(() => {
+    ventiOwnerCompose();
+    renderAll();
+    const v = document.querySelector('.view.active')?.id;
+    if(v === 'sales-view') renderSalesView();
+    else if(v === 'analysis-view') renderAnalysisView();
+    const st = $('#owner-bar-status');
+    if(st) st.textContent = 'Solo para ver · en vivo · ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  }, 250);
+}
+async function ventiOwnerLoadBackup(){
+  const snap = await getDocs(query(backupsCol, orderBy('savedAt', 'desc'), limit(1)));
+  if(snap.empty) return null;
+  const data = snap.docs[0].data();
+  let archived = [];
+  try {
+    const a = await getDocs(collection(db, 'tenants', tenantId, 'archives'));
+    a.forEach(d => { archived = archived.concat(d.data().orders || []); });
+  } catch(e){ console.warn('No se pudieron traer los meses archivados', e); }
+  const recent = data.orders || [];
+  const seen = new Set(recent.map(o => o.id));
+  return { savedAt: data.savedAt || '', menuItems: (await loadMenuFromBackup(data)) || [],
+    orders: recent.concat(archived.filter(o => !seen.has(o.id))), closures: data.closures || [], withdrawals: data.withdrawals || [],
+    settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) }, customers: data.customers || [],
+    deliveryOrders: data.deliveryOrders || [], insumos: data.insumos || [], activityLog: data.activityLog || [] };
+}
+// Avisos de los trabajadores: en pantalla, vibración, sonido y (con permiso) del sistema
+function ventiOwnerAlert(title, body){
+  ventiToast(title, body);
+  try { if(navigator.vibrate) navigator.vibrate([120, 60, 120]); } catch(e){}
+  try {
+    if(ventiOwnerAudio){
+      const o = ventiOwnerAudio.createOscillator(), g = ventiOwnerAudio.createGain();
+      o.frequency.value = 880; g.gain.setValueAtTime(0.0001, ventiOwnerAudio.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.25, ventiOwnerAudio.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ventiOwnerAudio.currentTime + 0.35);
+      o.connect(g); g.connect(ventiOwnerAudio.destination); o.start(); o.stop(ventiOwnerAudio.currentTime + 0.36);
+    }
+  } catch(e){}
+  try {
+    if(document.visibilityState !== 'visible' && 'Notification' in window && Notification.permission === 'granted'){
+      if(ventiOwnerSw) ventiOwnerSw.showNotification(title, { body, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'venti-' + Date.now() });
+      else new Notification(title, { body });
+    }
+  } catch(e){}
+}
+function ventiOwnerWatchLive(list){
+  if(ventiOwnerPrev){
+    list.forEach(x => {
+      const p = ventiOwnerPrev.get(x.id);
+      const quien = x.customerName ? ' · ' + x.customerName : '';
+      if(!p && x.source === 'staff'){
+        ventiOwnerAlert('Cobro de ' + (x.staffName || 'un trabajador'), money(Number(x.total) || 0) + (x.payment ? ' · ' + x.payment : '') + quien);
+      } else if(p && !p.delivered && x.delivered && x.deliveredByEmail){
+        ventiOwnerAlert('Pedido entregado', (x.deliveredBy || 'Un trabajador') + ' entregó ' + (x.orderNumber ? 'el pedido ' + formatOrderNumber(x.orderNumber) : 'un pedido') + quien);
+      }
+    });
+  }
+  ventiOwnerPrev = new Map(list.map(x => [x.id, { delivered: !!x.delivered }]));
+}
+function ventiOwnerBellSync(){
+  const b = $('#owner-bell');
+  if(!b) return;
+  const on = 'Notification' in window && Notification.permission === 'granted' && !!ventiOwnerAudio;
+  b.setAttribute('aria-pressed', String(on));
+  b.title = on ? 'Avisos activados' : 'Activar avisos';
+}
+async function ventiOwnerEnableAlerts(){
+  try { if(!ventiOwnerAudio){ const AC = window.AudioContext || window.webkitAudioContext; if(AC) ventiOwnerAudio = new AC(); } if(ventiOwnerAudio && ventiOwnerAudio.state === 'suspended') await ventiOwnerAudio.resume(); } catch(e){}
+  try { if('Notification' in window && Notification.permission === 'default') await Notification.requestPermission(); } catch(e){}
+  ventiOwnerBellSync();
+  if('Notification' in window && Notification.permission === 'denied'){
+    await appAlert('El celular tiene bloqueados los avisos de esta página. Puedes activarlos en los ajustes del navegador. Mientras la app esté abierta igual verás y escucharás los avisos.', 'Avisos bloqueados');
+  } else {
+    ventiToast('Avisos activados', 'Te avisaré cuando un trabajador cobre o entregue un pedido.');
+  }
+}
+function ventiOwnerSetupUi(){
+  if($('#owner-bar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'owner-bar';
+  bar.innerHTML = `<div class="ob-text"><strong>${escapeHtml((tenantData && tenantData.businessName) || 'VENTI')}</strong><span id="owner-bar-status">Cargando datos…</span></div>
+    <button type="button" id="owner-bell" aria-pressed="false" aria-label="Activar avisos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+    <button type="button" id="owner-logout" aria-label="Cerrar sesión"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>`;
+  const mc = document.querySelector('.main-content');
+  mc.insertBefore(bar, mc.firstChild);
+  bar.querySelector('#owner-bell').onclick = ventiOwnerEnableAlerts;
+  bar.querySelector('#owner-logout').onclick = async () => {
+    if(!(await appConfirm('¿Cerrar sesión?', 'Cerrar sesión'))) return;
+    ventiOwnerUnsubs.forEach(u => u()); ventiOwnerUnsubs = [];
+    if(auth) await signOut(auth);
+    location.reload();
+  };
+  ventiOwnerBellSync();
+  // Red de seguridad: si algún botón de cambios quedó visible, no hace nada
+  document.addEventListener('click', (e) => {
+    if(!ventiOwnerMode) return;
+    const t = e.target.closest(VENTI_OWNER_BLOCKED);
+    if(t){ e.preventDefault(); e.stopImmediatePropagation(); ventiToast('Solo para ver', 'Los cambios se hacen en la caja del local.'); }
+  }, true);
+  document.addEventListener('submit', (e) => {
+    if(ventiOwnerMode){ e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
+}
+const VENTI_OWNER_BLOCKED = '.btn-paid, .btn-cancel, .delete-order-btn, .delete-day-btn, .delete-withdrawal-btn, .deliver-toggle, .print-order-btn, .print-day-btn, .edit-item-btn, .recipe-item-btn, .del, .ins-del, .stock-stepper button, #close-day-btn, #withdrawal-btn, #home-new-sale-btn, #show-import-btn';
+function ventiOwnerGo(view){
+  $$('nav.tabs button, #config-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === view));
+  if(view === 'home-view') renderHomeView();
+}
+async function ventiEnterOwnerMode(demo){
+  ventiOwnerMode = true;
+  document.body.classList.add('owner-app');
+  $('#login-screen').style.display = 'none';
+  ventiOwnerSetupUi();
+  if(demo || !db){
+    // Modo prueba: usa los datos de esta computadora como si fueran el respaldo
+    ventiOwnerBase = { orders: orders.slice(), closures: closures.slice(), withdrawals: withdrawals.slice(), deliveryOrders: deliveryOrders.slice(), insumos: insumos.map(x => ({ ...x })), menuItems: menuItems.slice() };
+    ventiOwnerCompose(); renderAll(); ventiOwnerGo('home-view');
+    $('#owner-bar-status').textContent = 'Solo para ver · prueba';
+    return;
+  }
+  ventiOwnerGo('home-view');
+  try {
+    const b = await ventiOwnerLoadBackup();
+    if(b){
+      settings = b.settings; customers = b.customers; activityLog = b.activityLog;
+      ventiOwnerBase = b;
+    }
+  } catch(e){
+    console.warn('No se pudo leer el respaldo', e);
+    ventiToast('Sin historial', 'No se pudo leer el respaldo de la nube. Se muestra solo lo de hoy.', true);
+  }
+  ventiOwnerRefresh();
+  try { if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) ventiOwnerSw = await navigator.serviceWorker.register('sw.js'); } catch(e){ console.warn('Sin avisos del sistema', e); }
+  const live = (name) => doc(db, 'tenants', tenantId, 'live', name);
+  ventiOwnerUnsubs.push(onSnapshot(collection(db, 'tenants', tenantId, 'liveOrders'), (snap) => {
+    const list = []; snap.forEach(d => list.push({ id: d.id, ...d.data() }));
+    ventiOwnerWatchLive(list);
+    ventiOwnerData.today = list; ventiOwnerLiveLoaded = true; ventiOwnerRefresh();
+  }, (err) => console.warn('No se pudieron leer los pedidos en vivo', err)));
+  ventiOwnerUnsubs.push(onSnapshot(live('resumen'), (snap) => { ventiOwnerData.resumen = snap.exists() ? snap.data() : null; ventiOwnerRefresh(); }, (err) => console.warn('No se pudo leer el resumen', err)));
+  ventiOwnerUnsubs.push(onSnapshot(live('menu'), (snap) => { ventiOwnerData.menuLive = snap.exists() ? (snap.data().items || []) : null; ventiOwnerData.insumosLive = snap.exists() ? (snap.data().insumos || []) : null; ventiOwnerRefresh(); }, (err) => console.warn('No se pudo leer el stock', err)));
+}
+window.__ventiVerComoDueno = () => ventiEnterOwnerMode(true);
+// Solo para el demo: simula lo que llega en vivo de la nube
+window.__ventiOwnerSimLive = (list, resumen) => { if(resumen !== undefined) ventiOwnerData.resumen = resumen; ventiOwnerWatchLive(list); ventiOwnerData.today = list; ventiOwnerLiveLoaded = true; ventiOwnerRefresh(); };
 
 function ventiEnterStaffMode(){
   document.body.classList.add('staff-mode');
@@ -8059,7 +8911,7 @@ function ventiRenderStaff(){
       const opts = i.variants ? i.variants : [{ label: '', price: i.price }];
       const out = i.stock !== null && i.stock !== undefined && i.stock <= 0;
       return `<div class="sa-item${out ? ' out' : ''}"><span>${i.emoji ? escapeHtml(i.emoji) + ' ' : ''}${escapeHtml(i.name)}${out ? ' · <em>Agotado</em>' : ''}</span><div>${opts.map(v => `<button type="button" ${out ? 'disabled' : ''} data-add="${i.id}" data-label="${escapeHtml(v.label)}">${v.label ? escapeHtml(v.label) + ' ' : ''}${money(v.price)}</button>`).join('')}</div></div>`;
-    }).join('')}`).join('') || '<div class="sa-empty">El menú todavía no está disponible. Pide al dueño que abra VENTI en la computadora principal.</div>'}</div>
+    }).join('')}`).join('') || '<div class="sa-empty">Los productos todavía no están disponibles. Pide al dueño que abra VENTI en la computadora principal.</div>'}</div>
     <div class="sa-cart${ventiStaffCart.length ? ' open' : ''}">
       ${ventiStaffCart.map((l, idx) => `<div class="sa-line"><span>${l.qty}× ${escapeHtml(l.name)}</span><span>${money(l.price * l.qty)}</span><button type="button" data-rm="${idx}" aria-label="Quitar">−</button></div>`).join('')}
       <input type="text" id="sa-customer" placeholder="Cliente o mesa" value="${escapeHtml(window.__saCustomer || '')}">
@@ -8222,7 +9074,10 @@ function renderMenuEditor(){
     const priceStr = item.variants && item.variants.length
       ? item.variants.map(v => `${v.label} ${money(v.price)}`).join(' · ')
       : money(item.price);
-    const stockStr = (item.stock === null || item.stock === undefined)
+    const dispTabla = ventiHasRecipe(item) ? ventiItemAvailability(item) : null;
+    const stockStr = dispTabla !== null
+      ? `<span title="Se calcula con sus insumos">Receta · ${dispTabla <= 0 ? '<span style="color:var(--brick); font-weight:700;">Agotado</span>' : dispTabla}</span>`
+      : (item.stock === null || item.stock === undefined)
       ? '<span style="color:var(--on-charcoal-2); opacity:0.5;">Sin control</span>'
       : (item.stock <= 0
           ? '<span style="color:var(--brick); font-weight:700;">Agotado</span>'
@@ -8241,11 +9096,14 @@ function renderMenuEditor(){
         <div style="display:flex; gap:12px; align-items:center;">
           <button class="edit-item-btn">Editar</button>
           <span style="color:var(--line); font-size:12px;">|</span>
+          ${featureInventoryEnabled ? '<button class="recipe-item-btn">Receta</button><span style="color:var(--line); font-size:12px;">|</span>' : ''}
           <button class="del">Eliminar</button>
         </div>
       </td>
     `;
     tr.querySelector('.edit-item-btn').onclick = () => startEditItem(item);
+    const recipeBtn = tr.querySelector('.recipe-item-btn');
+    if(recipeBtn) recipeBtn.onclick = () => ventiOpenRecipe(item);
     tr.querySelector('.del').onclick = async () => {
       menuItems = menuItems.filter(i => i.id !== item.id);
       ventiLog('product-delete', `Se eliminó el producto "${item.name}"`);
@@ -8777,7 +9635,7 @@ $('#imp-template-btn')?.addEventListener('click', () => {
     + 'Coca Cola;;Bebidas;0.70;;48;🥤;\n';
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-  a.download = 'plantilla-menu-venti.csv';
+  a.download = 'plantilla-productos-venti.csv';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 });
@@ -8809,7 +9667,7 @@ $('#import-menu-btn').addEventListener('click', async () => {
       statusEl.textContent = `El archivo trae ${list.length} productos y tu plan permite máximo ${productLimit}.`;
       return;
     }
-    const ok = await appConfirm(`Esto va a REEMPLAZAR tu menú actual (${menuItems.length} producto(s)) por ${list.length} producto(s). ¿Continuar?`, 'Reemplazar menú');
+    const ok = await appConfirm(`Esto va a REEMPLAZAR tus productos actuales (${menuItems.length} producto(s)) por ${list.length} producto(s). ¿Continuar?`, 'Reemplazar productos');
     if(!ok) return;
     menuItems = list.map(r => toItem(r, null));
   } else {
@@ -8833,8 +9691,8 @@ $('#import-menu-btn').addEventListener('click', async () => {
   $('#import-box').style.display = 'none';
   $('#import-textarea').value = '';
   statusEl.textContent = '';
-  ventiLog('import', `Se importó el menú (${count} producto(s), modo: ${ventiImportMode === 'replace' ? 'reemplazar todo' : 'agregar y actualizar'})`);
-  await appAlert(`Menú importado ✓ (${count} producto(s))`, 'Listo');
+  ventiLog('import', `Se importaron los productos (${count} producto(s), modo: ${ventiImportMode === 'replace' ? 'reemplazar todo' : 'agregar y actualizar'})`);
+  await appAlert(`Productos importados ✓ (${count} producto(s))`, 'Listo');
   renderAll();
 });
 
@@ -8885,6 +9743,20 @@ $('#add-item-form').addEventListener('submit', async (e) => {
       const prev = menuItems[idx];
       const priceOf = (it) => it.variants ? it.variants.map(v => v.label + ' ' + money(v.price)).join(' / ') : money(it.price || 0);
       if(priceOf(prev) !== priceOf(itemData)) ventiLog('price', `Precio de "${itemData.name}": ${priceOf(prev)} → ${priceOf(itemData)}`);
+      // Conservar la receta (de cada opción) al guardar cambios
+      if(Array.isArray(itemData.variants)){
+        itemData.variants.forEach(v => {
+          const pv = Array.isArray(prev.variants) ? prev.variants.find(x => x.label === v.label) : null;
+          if(pv && pv.recipe) v.recipe = pv.recipe;
+          else if(!prev.variants && prev.recipe && v.label === 'Unidad') v.recipe = prev.recipe;
+        });
+      } else if(prev.recipe){
+        itemData.recipe = prev.recipe;
+      } else if(Array.isArray(prev.variants)){
+        const pu = prev.variants.find(x => x.label === 'Unidad');
+        if(pu && pu.recipe) itemData.recipe = pu.recipe;
+      }
+      if(ventiHasRecipe(itemData)) itemData.stock = null;
       menuItems[idx] = { id: editingItemId, ...itemData };
     }
     editingItemId = null;
@@ -8924,6 +9796,7 @@ $('#change-code-btn').addEventListener('click', async () => {
     return;
   }
   try {
+    if(ventiOwnerMode) return;
     const managerCodeHash = await ventiHashCode(tenantId, newCode.trim());
     await updateDoc(doc(db, 'tenants', tenantId), { managerCodeHash, managerCode: deleteField(), managerCodeChangedByLocalAt: new Date().toISOString() });
     tenantManagerHash = managerCodeHash;
@@ -8982,7 +9855,7 @@ $('#printer-name-input').addEventListener('change', async (e) => {
 // Pestañas que piden el código de encargado antes de entrar, y el
 // nombre que se muestra en el mensaje de cada una.
 const CODE_PROTECTED_VIEWS = {
-  'products-view': 'Menú',
+  'products-view': 'Productos',
   'stock-view': 'Stock',
   'sales-view': 'Ventas',
   'analysis-view': 'Análisis',
@@ -9016,7 +9889,7 @@ async function requireManagerCodeForView(viewLabel){
 $$('nav.tabs button, #config-tab-btn').forEach(btn=>{
   btn.onclick = async () => {
     const protectedLabel = CODE_PROTECTED_VIEWS[btn.dataset.view];
-    if(protectedLabel){
+    if(protectedLabel && !ventiOwnerMode){
       const ok = await requireManagerCodeForView(protectedLabel);
       if(!ok) return;
     }
@@ -9225,13 +10098,11 @@ function renderHomeView(){
   // Productos por agotarse — solo si el negocio tiene inventario activo
   const lowStockSection = $("#home-low-stock-section");
   if(lowStockSection){
-    const lowItems = featureInventoryEnabled
-      ? menuItems.filter(i => i.stock !== null && i.stock !== undefined && i.stock < 5).sort((a,b)=>a.stock-b.stock)
-      : [];
+    const lowItems = ventiLowStockList();
     if(lowItems.length){
       lowStockSection.style.display = "block";
       $("#home-low-stock-list").innerHTML = lowItems.slice(0,6).map(i =>
-        `<div class="rank-row"><span class="rank-name">${escapeHtml(i.name)}</span><span class="stock-pill ${i.stock <= 0 ? "out" : "low"}">${i.stock <= 0 ? "Agotado" : i.stock + " quedan"}</span></div>`
+        `<div class="rank-row"><span class="rank-name">${escapeHtml(i.name)}</span><span class="stock-pill ${i.stock <= 0 ? "out" : "low"}">${i.stock <= 0 ? "Agotado" : escapeHtml(i.text)}</span></div>`
       ).join("");
     } else {
       lowStockSection.style.display = "none";
@@ -9276,6 +10147,7 @@ $("#home-new-sale-btn")?.addEventListener("click", () => {
 
 function renderSalesView(){
   renderSalesStats();
+  renderSalesCompare();
   renderTotalEarningsStats();
   checkLowStockAlert();
 }
@@ -9288,11 +10160,14 @@ const ANALYSIS_CHART_RENDERERS = {
   'best-days-panel': () => renderBestDaysChart(),
   'peak-hour-panel': () => renderPeakHourChart(),
   'top-products-panel': () => renderTopProductsChart(),
-  'top-products-revenue-panel': () => renderTopProductsByRevenueChart()
+  'top-products-revenue-panel': () => renderTopProductsByRevenueChart(),
+  'channels-panel': () => renderChannelsChart(),
+  'monthly-panel': () => renderMonthlyChart()
 };
 let activeAnalysisPanel = 'daily-sales-panel';
 
 function renderAnalysisView(){
+  renderAnalysisCompare();
   renderAnalysisKpis();
   // Tablero: se dibujan todos los gráficos (cada uno solo se re-anima si sus datos cambian)
   Object.values(ANALYSIS_CHART_RENDERERS).forEach(fn => fn());
@@ -9345,13 +10220,38 @@ $('#chart-selector').addEventListener('click', (e) => {
 });
 
 /* ---------- DOMICILIO ---------- */
+// Pestaña de Domicilio que se está viendo (WhatsApp, Uber Eats o PedidosYa)
+var ventiDeliveryTab = null;
+// Canal elegido en la ventana "Enviar a domicilio"
+var ventiDeliveryChannel = 'whatsapp';
+function ventiDeliveryOrderChannel(d){ return VENTI_DELIVERY_CHANNELS.some(c => c.id === d.channel) ? d.channel : 'whatsapp'; }
 function renderDeliveryList(){
   const list = $('#delivery-list');
   const emptyState = $('#delivery-empty-state');
   if(!list) return;
-  if(!deliveryOrders.length){
+  // Pestañas por canal, con cuántos pedidos pendientes tiene cada una
+  const counts = {};
+  VENTI_DELIVERY_CHANNELS.forEach(c => { counts[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length; });
+  const actIds = ventiActiveDeliveryIds();
+  const tabCh = VENTI_DELIVERY_CHANNELS.filter(c => actIds.includes(c.id) || counts[c.id] > 0);
+  if(!ventiDeliveryTab || !tabCh.some(c => c.id === ventiDeliveryTab)){
+    const first = tabCh.find(c => counts[c.id] > 0) || tabCh[0];
+    ventiDeliveryTab = first ? first.id : 'whatsapp';
+  }
+  const tabs = $('#delivery-tabs');
+  if(tabs){
+    tabs.style.display = tabCh.length > 1 ? '' : 'none';
+    tabs.innerHTML = tabCh.map(c =>
+      `<button type="button" data-delivery-tab="${c.id}" aria-pressed="${c.id === ventiDeliveryTab}">${escapeHtml(c.label)}${counts[c.id] ? ` · ${counts[c.id]}` : ''}</button>`
+    ).join('');
+  }
+  const visible = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === ventiDeliveryTab);
+  if(!visible.length){
     list.innerHTML = '';
-    if(emptyState) emptyState.style.display = 'block';
+    if(emptyState){
+      emptyState.textContent = `No hay pedidos de ${ventiChannelLabel(ventiDeliveryTab)} pendientes ahora mismo.`;
+      emptyState.style.display = 'block';
+    }
     return;
   }
   if(emptyState) emptyState.style.display = 'none';
@@ -9361,7 +10261,7 @@ function renderDeliveryList(){
   if(featurePaymentTransfer) paymentOptions.push('Transferencia');
   if(featurePaymentCard) paymentOptions.push('Tarjeta');
 
-  list.innerHTML = deliveryOrders.map(d => {
+  list.innerHTML = visible.map(d => {
     const total = d.items.reduce((s,it)=>s + it.price*it.qty, 0);
     const itemsText = d.items.map(it => `${it.qty}x ${it.name}`).join(', ');
     const payBtns = paymentOptions.map(m =>
@@ -9395,8 +10295,28 @@ $('#delivery-send-btn').addEventListener('click', () => {
   $('#delivery-phone').value = '';
   $('#delivery-address').value = '';
   $('#delivery-notes').value = '';
+  // Solo los canales que usa el local; si es uno solo, no se pregunta
+  const act = ventiActiveDeliveryChannels();
+  $('#delivery-channel').innerHTML = act.map(c => `<button type="button" data-channel="${c.id}" aria-pressed="false">${escapeHtml(c.label)}</button>`).join('');
+  $('#delivery-channel').style.display = act.length > 1 ? '' : 'none';
+  $('#delivery-channel-label').style.display = act.length > 1 ? '' : 'none';
+  ventiSetDeliveryChannel(act[0].id);
   $('#delivery-modal').classList.add('active');
   setTimeout(() => $('#delivery-name').focus(), 50);
+});
+function ventiSetDeliveryChannel(id){
+  ventiDeliveryChannel = id;
+  document.querySelectorAll('#delivery-channel button[data-channel]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.channel === id)));
+}
+$('#delivery-channel')?.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-channel]');
+  if(b) ventiSetDeliveryChannel(b.dataset.channel);
+});
+$('#delivery-tabs')?.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-delivery-tab]');
+  if(!b) return;
+  ventiDeliveryTab = b.dataset.deliveryTab;
+  renderDeliveryList();
 });
 $('#delivery-modal-cancel').addEventListener('click', () => {
   $('#delivery-modal').classList.remove('active');
@@ -9413,10 +10333,12 @@ $('#delivery-form').addEventListener('submit', async (e) => {
     customerPhone: $('#delivery-phone').value.trim(),
     customerAddress: $('#delivery-address').value.trim(),
     notes: $('#delivery-notes').value.trim(),
+    channel: ventiDeliveryChannel,
     createdAt: new Date().toISOString()
   };
   await deductStockForCart(cart);
   deliveryOrders.unshift(newDelivery);
+  ventiDeliveryTab = newDelivery.channel; // al entrar a Domicilio se ve la pestaña de este pedido
   await saveDeliveryOrders();
   cart = [];
   cartDiscount = null;
@@ -9442,7 +10364,8 @@ $('#delivery-list').addEventListener('click', async (e) => {
     const taxAmount = subtotal * (taxRate/100);
     const total = subtotal + taxAmount;
 
-    const ok = await appConfirm(`¿Confirmar que "${delivery.customerName}" pagó ${money(total)} en ${method}?`, 'Confirmar pago');
+    const canal = ventiDeliveryOrderChannel(delivery);
+    const ok = await appConfirm(`¿Confirmar que el pedido de "${delivery.customerName}" (${ventiChannelLabel(canal)}) se cobró ${money(total)} en ${method}?`, 'Confirmar pago');
     if(!ok) return;
 
     const order = {
@@ -9455,6 +10378,7 @@ $('#delivery-list').addEventListener('click', async (e) => {
       customerName: delivery.customerName,
       delivered: true,
       viaDelivery: true,
+      channel: canal,
       dayId: null
     };
     orders.unshift(order);
@@ -9475,7 +10399,8 @@ $('#delivery-list').addEventListener('click', async (e) => {
     if(!delivery) return;
     const ok = await appConfirm(`¿Cancelar el pedido de "${delivery.customerName}"? Los productos vuelven al inventario.`, 'Cancelar pedido');
     if(!ok) return;
-    await restoreStockForCart(delivery.items);
+    // Los pedidos de domicilio guardan el nombre ("La Firma (Combo)"), no el código del producto
+    await restoreStockForCart(delivery.items.map(it => ({ id: it.id || ventiLineIdFromName(it.name), qty: it.qty })));
     ventiLog('delivery-cancel', `Se canceló el pedido a domicilio de "${delivery.customerName}"`);
     deliveryOrders = deliveryOrders.filter(d => d.id !== id);
     await saveDeliveryOrders();
@@ -9496,12 +10421,12 @@ function checkLowStockAlert(){
     banner.style.display = 'none';
     return;
   }
-  const lowItems = menuItems.filter(i => i.stock !== null && i.stock !== undefined && i.stock > 0 && i.stock <= 5);
+  const lowItems = ventiLowStockList().filter(i => i.stock > 0);
   if(!lowItems.length){
     banner.style.display = 'none';
     return;
   }
-  const names = lowItems.map(i => `${escapeHtml(i.name)} (${i.stock})`).join(', ');
+  const names = lowItems.map(i => `${escapeHtml(i.name)} (${escapeHtml(i.text.replace(' quedan', ''))})`).join(', ');
   banner.innerHTML = `<span class="icon-svg" style="width:16px; height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span> Poco stock: ${names}`;
   banner.style.display = 'flex';
 }
@@ -9519,6 +10444,115 @@ function ventiCount(el, value, fmt){
 }
 
 // Fila con barra de proporción (formas de pago)
+/* ---------- Comparaciones: día, semana y mes con flecha verde o roja ----------
+   Cada día cerrado aporta su total (closures, que se guardan aunque los
+   pedidos viejos se archiven) y el día abierto aporta sus pedidos. */
+function ventiDailyTotals(){
+  const map = {};
+  const add = (key, total, count) => { if(!key) return; const d = map[key] || (map[key] = { total: 0, count: 0 }); d.total += total; d.count += count; };
+  closures.forEach(c => add((c.dayDate || localDateStr(new Date(c.closedAt))), Number(c.total) || 0, Number(c.orderCount) || 0));
+  orders.filter(o => !o.dayId).forEach(o => add(localDateStr(new Date(o.timestamp)), Number(o.total) || 0, 1));
+  return map;
+}
+function ventiDeltaBadge(now, before, vs){
+  if(!before) return now ? '<span class="kpi-delta neutral">Sin datos antes</span>' : '<span class="kpi-delta neutral">Sin ventas</span>';
+  const pct = Math.round(((now - before) / before) * 100);
+  if(pct === 0) return `<span class="kpi-delta neutral">Igual ${vs}</span>`;
+  const up = pct > 0;
+  const arrow = up
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>';
+  return `<span class="kpi-delta ${up ? 'up' : 'down'}">${arrow}${up ? '+' : ''}${pct}% ${vs}</span>`;
+}
+// Últimos n periodos (del más reciente al más viejo); cada uno trae el anterior para comparar
+function ventiPeriods(kind, n, dailyMap){
+  const daily = dailyMap || ventiDailyTotals();
+  const sumRange = (from, to) => {
+    let total = 0, count = 0;
+    for(const d = new Date(from); d <= to; d.setDate(d.getDate() + 1)){
+      const v = daily[localDateStr(d)];
+      if(v){ total += v.total; count += v.count; }
+    }
+    return { total, count };
+  };
+  const today = new Date(); today.setHours(0,0,0,0);
+  const out = [];
+  for(let i = 0; i <= n; i++){
+    let from, to, label, sub;
+    if(kind === 'day'){
+      from = new Date(today); from.setDate(today.getDate() - i); to = new Date(from);
+      label = i === 0 ? 'Hoy' : i === 1 ? 'Ayer' : from.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'short' });
+    } else if(kind === 'week'){
+      const monday = new Date(today); monday.setDate(today.getDate() - ((today.getDay() + 6) % 7) - 7 * i);
+      from = monday; to = new Date(monday); to.setDate(monday.getDate() + 6);
+      label = i === 0 ? 'Esta semana' : i === 1 ? 'Semana pasada' : 'Semana del ' + monday.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+      sub = monday.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) + ' – ' + to.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+    } else {
+      from = new Date(today.getFullYear(), today.getMonth() - i, 1); to = new Date(today.getFullYear(), today.getMonth() - i + 1, 0);
+      label = from.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' });
+      if(i === 0) sub = 'Este mes (hasta hoy)';
+    }
+    const r = sumRange(from, to);
+    out.push({ label: label.charAt(0).toUpperCase() + label.slice(1), sub, total: r.total, count: r.count, from });
+  }
+  // La semana y el mes en curso todavía no terminan: se comparan contra los
+  // MISMOS días del periodo anterior (ej. 1–16 de nov vs 1–16 de oct), no contra el periodo completo.
+  if(kind !== 'day' && out[1]){
+    const dias = Math.round((today - out[0].from) / 86400000);
+    const hasta = new Date(out[1].from); hasta.setDate(hasta.getDate() + dias);
+    const finPrev = kind === 'month' ? new Date(out[1].from.getFullYear(), out[1].from.getMonth() + 1, 0) : null;
+    const parcial = sumRange(out[1].from, finPrev && hasta > finPrev ? finPrev : hasta);
+    out[0].prevSame = { ...out[1], total: parcial.total, count: parcial.count };
+  }
+  return out.slice(0, n).map((p, i) => ({ ...p, prev: (i === 0 && p.prevSame) ? p.prevSame : out[i + 1] }));
+}
+function ventiCompareRowsHtml(kind, dailyMap){
+  const n = kind === 'day' ? 14 : kind === 'week' ? 8 : 12;
+  const vs = kind === 'day' ? 'vs día anterior' : kind === 'week' ? 'vs semana anterior' : 'vs mes anterior';
+  const rows = ventiPeriods(kind, n, dailyMap);
+  // Se quitan del final los periodos viejos sin ninguna venta
+  let last = rows.length - 1;
+  while(last > 0 && !rows[last].total && !rows[last].prev.total) last--;
+  return rows.slice(0, last + 1).map((p, i) => `<div class="cmp-row${i === 0 ? ' is-current' : ''}">
+      <div class="cmp-name">${escapeHtml(p.label)}<small>${escapeHtml(p.sub || '')}${p.sub ? ' · ' : ''}${p.count} pedido${p.count === 1 ? '' : 's'}</small></div>
+      <div class="cmp-total">${money(p.total)}</div>
+      ${ventiDeltaBadge(p.total, p.prev.total, (i === 0 && kind !== 'day') ? 'vs los mismos días antes' : vs)}
+    </div>`).join('');
+}
+var ventiCompareKind = 'month';
+function renderSalesCompare(){
+  const list = $('#sales-compare-list');
+  if(!list) return;
+  list.innerHTML = ventiCompareRowsHtml(ventiCompareKind);
+  document.querySelectorAll('#sales-compare-tabs button[data-cmp]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cmp === ventiCompareKind)));
+}
+document.getElementById('sales-compare-tabs')?.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-cmp]');
+  if(!b) return;
+  ventiCompareKind = b.dataset.cmp;
+  renderSalesCompare();
+});
+function renderAnalysisCompare(){
+  const el = $('#analysis-compare');
+  if(!el) return;
+  const d = ventiPeriods('day', 1)[0], w = ventiPeriods('week', 1)[0], m = ventiPeriods('month', 1)[0];
+  const has = d.total || d.prev.total || w.total || w.prev.total || m.total || m.prev.total;
+  const tile = (label, p, vs) => `<div class="kpi-tile"><div class="kpi-label">${label}</div><div class="kpi-value">${money(p.total)}</div>${ventiDeltaBadge(p.total, p.prev.total, vs)}</div>`;
+  el.innerHTML = has ? tile('Vendido hoy', d, 'vs ayer') + tile('Esta semana', w, 'vs mismos días de la semana pasada') + tile('Este mes', m, 'vs mismos días del mes pasado') : '';
+  el.style.display = has ? '' : 'none';
+}
+function renderMonthlyChart(){
+  const months = ventiPeriods('month', 12).reverse();
+  const hay = months.some(p => p.total > 0);
+  renderSvgBarChart('monthly-chart', hay ? months.map(p => p.label.split(' ')[0].slice(0, 3)) : [], hay ? months.map(p => p.total) : [], {
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    highlightMax: true,
+    dimOpacity: 0.55,
+    emptyMessage: 'Aquí vas a ver cuánto vendiste cada mes, para comparar uno con otro.'
+  });
+}
+
 function ventiShareRow(label, amount, total, extra){
   const pct = total > 0 ? Math.round(amount / total * 100) : 0;
   return `<div class="rank-row">
@@ -9608,6 +10642,19 @@ function renderSalesStats(){
     noteEl.textContent = weekWithdrawn > 0
       ? `Retiros de capital en estos 7 días: ${money(weekWithdrawn)}. Efectivo que debería quedar en caja: ${money(cash)}.`
       : 'Los pagos divididos se reparten entre efectivo y transferencia.';
+  }
+  // Ventas por canal (local y cada canal de domicilio), con el total de cada pedido
+  const chPanel = $('#sales-channel-panel');
+  if(chPanel){
+    const show = ventiShowChannels(weekOrders);
+    chPanel.style.display = show ? '' : 'none';
+    if(show){
+      const ct = ventiChannelTotals(weekOrders);
+      const chTotal = VENTI_CHANNELS.reduce((s,c)=>s+ct[c.id],0);
+      $('#sales-channel-breakdown').innerHTML = chTotal > 0
+        ? ventiChannelsShown(ct).map(c => ventiShareRow(c.label, ct[c.id], chTotal)).join('')
+        : '<div class="panel-empty">Todavía no hay ventas en los últimos 7 días.</div>';
+    }
   }
 }
 
@@ -9924,6 +10971,23 @@ function renderTopProductsByRevenueChart(){
   });
 }
 
+// Ventas por canal con todo el historial (local y cada canal de domicilio)
+function renderChannelsChart(){
+  const btn = $('#channels-chart-btn');
+  if(btn) btn.style.display = ventiShowChannels(orders) ? '' : 'none';
+  const ct = ventiChannelTotals(orders);
+  const hay = VENTI_CHANNELS.some(c => ct[c.id] > 0);
+  const shown = ventiChannelsShown(ct);
+  renderSvgBarChart('channels-chart', hay ? shown.map(c => c.label) : [], hay ? shown.map(c => ct[c.id]) : [], {
+    kind: 'hbar',
+    formatValue: v => money(v),
+    formatAxis: v => '$' + Math.round(v),
+    highlightMax: true,
+    dimOpacity: 0.45,
+    emptyMessage: 'Aquí vas a ver cuánto vendes en el local y cuánto por WhatsApp, Uber Eats y PedidosYa.'
+  });
+}
+
 function formatHourLabel(h){
   const period = h < 12 ? 'AM' : 'PM';
   let displayH = h % 12;
@@ -9956,7 +11020,9 @@ function renderPeakHourChart(){
 // Exporta un resumen día por día (pedidos, desglose de pago, total) en
 // un CSV que Excel abre directo — con acento en el nombre y todo.
 function exportSalesReportCSV(){
-  const rows = [['Fecha', 'Pedidos', 'Efectivo', 'Transferencia', 'Tarjeta', 'Total', 'Retiros de capital', 'Efectivo en caja']];
+  const exCh = ventiChannelsShown(ventiChannelTotals(orders));
+  const rows = [['Fecha', 'Pedidos', 'Efectivo', 'Transferencia', 'Tarjeta', 'Total', 'Retiros de capital', 'Total menos retiros', 'Efectivo en caja', ...exCh.map(c => 'Ventas ' + c.label)]];
+  const porCanal = (list) => { const ct = ventiChannelTotals(list); return exCh.map(c => ct[c.id].toFixed(2)); };
 
   const sortedClosures = [...closures].sort((a,b) => new Date(a.closedAt) - new Date(b.closedAt));
   sortedClosures.forEach(c => {
@@ -9966,7 +11032,7 @@ function exportSalesReportCSV(){
     const card = dayOrders.reduce((s,o)=>s+cardAmount(o),0);
     const withdrawn = withdrawals.filter(w=>w.dayId===c.id).reduce((s,w)=>s+w.amount,0);
     const cashInDrawer = Math.max(0, cash - withdrawn);
-    rows.push([c.label, c.orderCount, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), c.total.toFixed(2), withdrawn.toFixed(2), cashInDrawer.toFixed(2)]);
+    rows.push([c.label, c.orderCount, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), c.total.toFixed(2), withdrawn.toFixed(2), (c.total - withdrawn).toFixed(2), cashInDrawer.toFixed(2), ...porCanal(dayOrders)]);
   });
 
   const openOrders = orders.filter(o => !o.dayId);
@@ -9977,7 +11043,7 @@ function exportSalesReportCSV(){
     const total = openOrders.reduce((s,o)=>s+o.total,0);
     const withdrawn = withdrawals.filter(w=>!w.dayId).reduce((s,w)=>s+w.amount,0);
     const cashInDrawer = Math.max(0, cash - withdrawn);
-    rows.push(['Hoy (día sin cerrar)', openOrders.length, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), total.toFixed(2), withdrawn.toFixed(2), cashInDrawer.toFixed(2)]);
+    rows.push(['Hoy (día sin cerrar)', openOrders.length, cash.toFixed(2), transfer.toFixed(2), card.toFixed(2), total.toFixed(2), withdrawn.toFixed(2), (total - withdrawn).toFixed(2), cashInDrawer.toFixed(2), ...porCanal(openOrders)]);
   }
 
   if(rows.length === 1){
@@ -10103,6 +11169,7 @@ function buildTicketText(o){
   out += line + '\n';
   out += '§BIG§' + formatOrderNumber(o.orderNumber) + '§/BIG§\n';
   if(ventiOrderTypeLabel(o)) out += center(ventiOrderTypeLabel(o).toUpperCase(), w) + '\n';
+  if(ventiOrderChannel(o) !== 'local') out += center(('Domicilio · ' + ventiChannelLabel(ventiOrderChannel(o))).toUpperCase(), w) + '\n';
   if(o.customerName) out += wrapText(`Cliente: ${o.customerName}`, w) + '\n';
   const d = new Date(o.timestamp);
   out += `${d.toLocaleDateString('es-MX')}   ${d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'})}\n`;
@@ -10128,6 +11195,7 @@ function buildDeliveryTicketText(delivery){
   let out = '';
   out += center(settings.shopName || 'iNVIDiA', w) + '\n';
   out += center('PEDIDO A DOMICILIO', w) + '\n';
+  out += center(ventiChannelLabel(delivery.channel || 'whatsapp').toUpperCase(), w) + '\n';
   out += line + '\n';
   out += wrapText(`Cliente: ${delivery.customerName}`, w) + '\n';
   if(delivery.customerPhone) out += wrapText(`Tel: ${delivery.customerPhone}`, w) + '\n';
@@ -10236,7 +11304,7 @@ async function printText(text){
     const pageSize = { width: widthMm * 1000, height: 297000 };
     const result = await window.electronAPI.printTicket(html, settings.printerName || null, pageSize);
     if(!result || !result.success){
-      await appAlert('No se pudo imprimir. Revisa que la impresora esté encendida, conectada y elegida en Ajustes (pestaña Menú).', 'Error al imprimir');
+      await appAlert('No se pudo imprimir. Revisa que la impresora esté encendida, conectada y elegida en Configuración.', 'Error al imprimir');
     }
     return;
   }
@@ -10262,7 +11330,7 @@ async function printHtmlPage(html, pageSize){
   if(window.electronAPI){
     const result = await window.electronAPI.printTicket(html, settings.printerName || null, pageSize || null);
     if(!result || !result.success){
-      await appAlert('No se pudo imprimir. Revisa que la impresora esté encendida, conectada y elegida en Ajustes (pestaña Menú).', 'Error al imprimir');
+      await appAlert('No se pudo imprimir. Revisa que la impresora esté encendida, conectada y elegida en Configuración.', 'Error al imprimir');
     }
     return;
   }
@@ -10308,11 +11376,13 @@ function buildDayReportText(closure, dayOrders, widthSetting, dayWithdrawn){
   if(other > 0.001) out += padLine('Otro', money(other), w) + '\n';
   out += line + '\n';
   out += padLine('TOTAL VENDIDO', money(closure.total), w) + '\n';
-  if(withdrawn > 0.001){
-    out += line + '\n';
-    out += padLine('Retiros de capital', '-' + money(withdrawn), w) + '\n';
-    out += padLine('Efectivo en caja', money(cashInDrawer), w) + '\n';
-  }
+  // Siempre: lo vendido sin restar, los retiros y lo que queda después de restarlos
+  out += padLine('Retiros de capital', (withdrawn > 0.001 ? '-' : '') + money(withdrawn), w) + '\n';
+  out += padLine('TOTAL MENOS RETIROS', money(closure.total - withdrawn), w) + '\n';
+  out += line + '\n';
+  out += padLine('Efectivo cobrado', money(cash), w) + '\n';
+  out += padLine('Efectivo en caja', money(cashInDrawer), w) + '\n';
+  out += ventiChannelReportText(dayOrders, w, line);
   out += line + '\n\n\n';
   return out;
 }
@@ -10351,9 +11421,11 @@ function buildDayReportHtmlA4(closure, dayOrders, dayWithdrawn){
   <div class="row"><span class="label">Tarjeta</span><span class="value">${money(card)}</span></div>
   ${other > 0.001 ? `<div class="row"><span class="label">Otro</span><span class="value">${money(other)}</span></div>` : ''}
   <div class="total-row"><span class="label">TOTAL VENDIDO</span><span class="value">${money(closure.total)}</span></div>
-  ${withdrawn > 0.001 ? `
-  <div class="row" style="margin-top:18px;"><span class="label">Retiros de capital</span><span class="value">-${money(withdrawn)}</span></div>
-  <div class="row"><span class="label">Efectivo en caja</span><span class="value">${money(cashInDrawer)}</span></div>` : ''}
+  <div class="row" style="margin-top:18px;"><span class="label">Retiros de capital</span><span class="value">${withdrawn > 0.001 ? '-' : ''}${money(withdrawn)}</span></div>
+  <div class="row"><span class="label"><b>Total menos retiros</b></span><span class="value">${money(closure.total - withdrawn)}</span></div>
+  <div class="row"><span class="label">Efectivo cobrado</span><span class="value">${money(cash)}</span></div>
+  <div class="row"><span class="label">Efectivo en caja</span><span class="value">${money(cashInDrawer)}</span></div>
+  ${ventiChannelReportHtml(dayOrders)}
 </body></html>`;
 }
 
@@ -11170,11 +12242,13 @@ if(auth){
     $('#login-error').className = 'login-error loading';
     $('#login-error').innerHTML = '<span class="inline-spinner"></span> Verificando suscripción…';
     if(await ventiTryStaffLogin(user)) return; // es un trabajador: entra al modo celular
+    if(await ventiTryOwnerPhone(user)) return; // es el dueño en el celular: vista en vivo (solo para ver)
     const ok = await resolveTenant(user);
     if(ok){
       showSkeletonGrid();
       await loadTenantData();
-      if(featureStaffEnabled){ ventiLoadStaff(); ventiStartLiveSync(); }
+      if(featureStaffEnabled) ventiLoadStaff();
+      ventiStartLiveSync(); // pedidos de hoy y resumen en vivo (para Trabajadores y para el celular del dueño)
       ventiStartMessages();
       $('#login-screen').style.display = 'none';
       updateBackupIndicator();
