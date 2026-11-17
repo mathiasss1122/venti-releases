@@ -3734,6 +3734,68 @@ details.day-group .day-orders, .month-days{ padding:4px 12px 12px; background:va
 .login-error{ color:#FF9C8F; font-weight:600; }
 .login-error.loading{ color:var(--lg-muted); }
 .login-legal{ display:flex; flex-direction:column; gap:8px; margin:16px 0 4px; }
+/* ---- Multi-local: elegir el local al entrar ---- */
+.login-box.is-picking > h1, .login-box.is-picking > .login-sub, .login-box.is-picking > #login-form{ display:none; }
+#local-picker[hidden], #local-picker [hidden]{ display:none !important; }
+#local-picker h1{ margin:0; font-size:22px; font-weight:700; letter-spacing:-0.02em; color:var(--lg-ink); }
+.lp-list{ display:flex; flex-direction:column; gap:8px; max-height:min(52vh, 420px); overflow:auto; margin:4px -4px 0; padding:4px; }
+.lp-item{ display:flex; align-items:center; gap:12px; width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--lg-line); background:var(--lg-bg); color:var(--lg-ink); text-align:left; font-family:var(--font-ui); cursor:pointer; transition:border-color 160ms ease, transform 160ms var(--ease-out), background-color 160ms ease; }
+.lp-item:disabled{ opacity:.5; cursor:not-allowed; }
+@media (hover:hover) and (pointer:fine){ .lp-item:not(:disabled):hover{ border-color:var(--lg-blue); transform:translateY(-1px); } }
+.lp-item:focus-visible{ outline:none; border-color:var(--lg-blue); box-shadow:0 0 0 3px var(--lg-ring); }
+.lp-ico{ flex:none; display:grid; place-items:center; width:38px; height:38px; border-radius:10px; background:rgba(37,99,235,.16); color:#8DB4FF; font-weight:700; font-size:16px; }
+.lp-txt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.lp-txt b{ font-size:15px; font-weight:650; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.lp-txt small{ font-size:12.5px; color:var(--lg-muted); }
+.lp-item > svg{ flex:none; width:18px; height:18px; color:var(--lg-muted); }
+.lp-chosen{ display:flex; align-items:center; gap:10px; margin:2px 0 4px; padding:10px 12px; border-radius:11px; background:var(--lg-bg); border:1px solid var(--lg-line); color:var(--lg-ink); font-weight:650; }
+#lp-form label{ display:block; margin:14px 0 6px; font-size:13px; font-weight:600; color:var(--lg-ink); }
+#lp-form input{ width:100%; height:46px; padding:0 14px; border-radius:11px; border:1px solid var(--lg-line); background:var(--lg-bg); color:var(--lg-ink); font-size:14.5px; box-sizing:border-box; }
+#lp-form input:focus{ outline:none; border-color:var(--lg-blue); box-shadow:0 0 0 3px var(--lg-ring); }
+.lp-hint{ margin-top:6px; font-size:12px; color:var(--lg-muted); line-height:1.45; }
+.lp-primary{ width:100%; height:48px; margin-top:14px; border:0; border-radius:12px; background:var(--lg-blue); color:#fff; font-family:var(--font-ui); font-size:15px; font-weight:650; cursor:pointer; }
+.lp-primary:disabled{ opacity:.6; cursor:wait; }
+.lp-foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; margin-top:16px; padding-top:14px; border-top:1px solid var(--lg-line); }
+.lp-link{ padding:6px 2px; border:0; background:none; color:var(--lg-muted); font-family:var(--font-ui); font-size:13px; font-weight:600; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.lp-link:hover{ color:var(--lg-ink); }
+#lp-back{ display:block; margin:10px auto 0; }
+/* ---- Resumen de todos los locales (solo dueño) ---- */
+.multi-summary{ --lg-bg:#070A14; --lg-panel:#0E1322; --lg-line:#1F2740; --lg-ink:#F2F5FB; --lg-muted:#9AA6C2; --lg-blue:#2563EB; --lg-ring:rgba(37,99,235,0.35);
+  position:fixed; inset:0; z-index:300; overflow:auto; background:var(--lg-bg); color:var(--lg-ink); font-family:var(--font-ui); }
+.multi-summary[hidden]{ display:none; }
+.ms-wrap{ max-width:980px; margin:0 auto; padding:28px 20px 48px; }
+.ms-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.ms-head h1{ margin:0; font-size:24px; font-weight:700; letter-spacing:-0.02em; }
+.ms-head p{ margin:4px 0 0; color:var(--lg-muted); font-size:13.5px; }
+.ms-actions{ display:flex; gap:8px; }
+.ms-btn{ height:38px; padding:0 14px; border-radius:10px; border:1px solid var(--lg-line); background:var(--lg-panel); color:var(--lg-ink); font-family:var(--font-ui); font-size:13.5px; font-weight:600; cursor:pointer; }
+.ms-btn.primary{ background:var(--lg-blue); border-color:var(--lg-blue); color:#fff; }
+.ms-periods{ display:flex; flex-wrap:wrap; gap:6px; margin:20px 0 16px; }
+.ms-chip{ height:34px; padding:0 14px; border-radius:999px; border:1px solid var(--lg-line); background:transparent; color:var(--lg-muted); font-family:var(--font-ui); font-size:13px; font-weight:600; cursor:pointer; }
+.ms-chip[aria-pressed="true"]{ background:var(--lg-ink); border-color:var(--lg-ink); color:var(--lg-bg); }
+.ms-kpis{ display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; }
+.ms-kpi{ padding:14px 16px; border-radius:14px; background:var(--lg-panel); border:1px solid var(--lg-line); }
+.ms-kpi span{ display:block; font-size:12.5px; color:var(--lg-muted); }
+.ms-kpi strong{ display:block; margin-top:4px; font-size:24px; font-weight:700; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+.ms-kpi.main strong{ font-size:30px; }
+.ms-pay{ margin:10px 0 22px; font-size:13px; color:var(--lg-muted); font-variant-numeric:tabular-nums; }
+.ms-pay b{ color:var(--lg-ink); font-weight:600; }
+.ms-list{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; }
+.ms-card{ padding:16px; border-radius:14px; background:var(--lg-panel); border:1px solid var(--lg-line); }
+.ms-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.ms-card h3{ margin:0; font-size:16px; font-weight:650; }
+.ms-card small{ display:block; margin-top:3px; font-size:12px; color:var(--lg-muted); }
+.ms-card small.warn{ color:#FBBF24; }
+.ms-card-total{ font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.ms-bar{ height:6px; margin:12px 0; border-radius:99px; background:var(--lg-line); overflow:hidden; }
+.ms-bar span{ display:block; height:100%; border-radius:inherit; background:var(--lg-blue); }
+.ms-facts{ display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin:0; }
+.ms-facts div{ display:flex; justify-content:space-between; gap:8px; font-size:13px; }
+.ms-facts dt{ color:var(--lg-muted); }
+.ms-facts dd{ margin:0; font-weight:600; font-variant-numeric:tabular-nums; }
+.ms-note{ margin-top:18px; font-size:12px; color:var(--lg-muted); line-height:1.5; }
+.ms-loading{ padding:40px 0; text-align:center; color:var(--lg-muted); }
+@media (max-width:560px){ .ms-wrap{ padding:20px 16px 40px; } .ms-kpis{ grid-template-columns:1fr 1fr; } .ms-kpi.main{ grid-column:1 / -1; } .ms-kpi strong{ font-size:20px; } .ms-kpi.main strong{ font-size:26px; } }
 #login-form label.login-check{ display:flex; align-items:flex-start; gap:9px; margin:0; font-size:13px; font-weight:500; line-height:1.4; color:var(--lg-muted); cursor:pointer; }
 #login-form label.login-check input{ width:17px; height:17px; padding:0; margin:1px 0 0; flex:none; accent-color:var(--lg-blue); box-shadow:none; }
 #login-form label.login-check a{ color:var(--lg-ink); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
@@ -4868,6 +4930,24 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <div class="login-error" id="login-error"></div>
           <button type="submit" id="login-submit-btn">Entrar</button>
         </form>
+        <div id="local-picker" hidden>
+          <h1>Elige tu local</h1>
+          <p class="login-sub" id="lp-sub"></p>
+          <div class="lp-list" id="lp-list" role="list"></div>
+          <form id="lp-form" hidden autocomplete="off">
+            <div class="lp-chosen" id="lp-chosen"></div>
+            <label for="lp-pass" id="lp-pass-label">Contraseña del local</label>
+            <input type="password" id="lp-pass" autocomplete="off">
+            <div class="lp-hint" id="lp-hint"></div>
+            <div class="login-error" id="lp-error"></div>
+            <button type="submit" class="lp-primary" id="lp-go">Entrar al local</button>
+            <button type="button" class="lp-link" id="lp-back">Volver a la lista</button>
+          </form>
+          <div class="lp-foot">
+            <button type="button" class="lp-link" id="lp-summary">Resumen de todos los locales (dueño)</button>
+            <button type="button" class="lp-link" id="lp-logout">Cerrar sesión</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -4908,6 +4988,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <span class="clock" id="clock"></span>
       <span class="saving-indicator" id="saving-indicator" style="display:none;"><span class="saving-dot"></span>Guardando…</span>
       <button type="button" id="config-tab-btn" data-view="menu-view" class="sidebar-config-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="lbl">Configuración</span></button>
+      <button type="button" id="switch-local-btn" class="sidebar-logout-btn" style="display:none;" title="Cambiar de local"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg></span><span class="lbl">Cambiar de local</span></button>
       <button type="button" id="logout-btn" class="sidebar-logout-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></span><span class="lbl">Cerrar sesión</span></button>
       <div class="sidebar-powered-by" title="Funciona con VENTI"><span>Funciona con</span><strong>VENTI</strong></div>
     </div>
@@ -5259,6 +5340,10 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <div class="settings-box">
         <label>Código de encargado (para borrar pedidos y entrar a Productos):</label>
         <button type="button" id="change-code-btn" class="btn btn-secondary"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span> Cambiar código</button>
+      </div>
+      <div class="settings-box" id="local-pass-box" style="display:none;">
+        <label>Contraseña de este local (se pide al elegir el local al iniciar sesión):</label>
+        <button type="button" id="change-local-pass-btn" class="btn btn-secondary">Cambiar contraseña del local</button>
       </div>
       <div class="settings-box" id="printer-select-box" style="display:none;">
         <label>Impresora para tickets:</label>
@@ -6457,7 +6542,7 @@ async function restoreLatestBackup(){
 
 function renderAll(){
   $('#shop-name').textContent = (tenantData && tenantData.businessName) || settings.shopName || "VENTI";
-  $('#shop-name-readonly').textContent = (tenantData && tenantData.businessName) || settings.shopName || "—";
+  $('#shop-name-readonly').textContent = ((tenantData && tenantData.businessName) || settings.shopName || "—") + (tenantData && tenantData.localName && (ventiMyLocals || []).length > 1 ? ' · ' + tenantData.localName : '');
   if(typeof ventiTaxProfileRender === 'function') ventiTaxProfileRender();
   $('#tax-rate').value = settings.taxRate ?? 0;
   $('#print-width-input').value = settings.printWidth ?? DEFAULT_SETTINGS.printWidth;
@@ -8970,12 +9055,14 @@ function ventiOwnerSetupUi(){
   if($('#owner-bar')) return;
   const bar = document.createElement('div');
   bar.id = 'owner-bar';
-  bar.innerHTML = `<div class="ob-text"><strong>${escapeHtml((tenantData && tenantData.businessName) || 'VENTI')}</strong><span id="owner-bar-status">Cargando datos…</span></div>
+  bar.innerHTML = `<div class="ob-text"><strong>${escapeHtml(((tenantData && tenantData.businessName) || 'VENTI') + (tenantData && tenantData.localName && (ventiMyLocals || []).length > 1 ? ' · ' + tenantData.localName : ''))}</strong><span id="owner-bar-status">Cargando datos…</span></div>
     <button type="button" id="owner-bell" aria-pressed="false" aria-label="Activar avisos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+    ${(ventiMyLocals || []).length > 1 ? '<button type="button" id="owner-switch" aria-label="Cambiar de local" title="Cambiar de local"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg></button>' : ''}
     <button type="button" id="owner-logout" aria-label="Cerrar sesión"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>`;
   const mc = document.querySelector('.main-content');
   mc.insertBefore(bar, mc.firstChild);
   bar.querySelector('#owner-bell').onclick = ventiOwnerEnableAlerts;
+  { const sw = bar.querySelector('#owner-switch'); if(sw) sw.onclick = ventiSwitchLocal; }
   bar.querySelector('#owner-logout').onclick = async () => {
     if(!(await appConfirm('¿Cerrar sesión?', 'Cerrar sesión'))) return;
     ventiOwnerUnsubs.forEach(u => u()); ventiOwnerUnsubs = [];
@@ -12822,6 +12909,261 @@ $('#login-form').addEventListener('submit', async (e) => {
   }
 });
 
+/* ---------- MULTI-LOCAL ----------
+   Un dueño (un correo) puede tener varios locales: cada uno es un local
+   completo de VENTI (ventas, estadísticas, productos y facturación aparte).
+   - Con un solo local se entra directo, como siempre.
+   - Con varios, se elige el local y se escribe SU contraseña (o la clave del
+     dueño). Cada computadora recuerda su local hasta "Cambiar de local".
+   - La clave del dueño abre además el resumen de todos los locales juntos.
+   Las contraseñas se comparan por su huella (nunca se guardan en texto). */
+var ventiMyLocals = [];
+async function ventiHashOwnerKey(email, key){
+  const data = new TextEncoder().encode(`venti-owner:${String(email || '').trim().toLowerCase()}:${String(key).trim()}`);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+const ventiLocalMemKey = (user) => 'venti-local:' + String((user && user.email) || '').toLowerCase();
+function ventiForgetLocal(user){ try { localStorage.removeItem(ventiLocalMemKey(user)); } catch(e){} }
+function ventiLocalIsOn(t){ return !!t && t.status === 'active' && !!t.paidUntil && t.paidUntil.toMillis() > Date.now(); }
+function ventiLocalName(t){ return (t && (t.localName || t.businessName)) || 'Local'; }
+async function ventiCheckLocalPass(t, id, pass){
+  const p = String(pass || '').trim();
+  if(!p || !t) return false;
+  if(t.localPassHash && (await ventiHashCode(id, 'local:' + p)) === t.localPassHash) return true;
+  if(t.ownerKeyHash && (await ventiHashOwnerKey(t.ownerEmail, p)) === t.ownerKeyHash) return true;
+  return false;
+}
+// Intentos fallidos en este equipo: 5 seguidos → 5 minutos de espera
+function ventiLpLocked(){ try { const x = JSON.parse(localStorage.getItem('venti-local-fails') || '{}'); return (x.until || 0) > Date.now() ? x.until : 0; } catch(e){ return 0; } }
+function ventiLpFail(){ try { const x = JSON.parse(localStorage.getItem('venti-local-fails') || '{}'); x.n = (x.n || 0) + 1; if(x.n >= 5){ x.until = Date.now() + 5 * 60 * 1000; x.n = 0; } localStorage.setItem('venti-local-fails', JSON.stringify(x)); } catch(e){} }
+function ventiLpOk(){ try { localStorage.removeItem('venti-local-fails'); } catch(e){} }
+
+function ventiPickLocal(user, docs){
+  let remembered = null;
+  try { remembered = localStorage.getItem(ventiLocalMemKey(user)); } catch(e){}
+  const hit = remembered && docs.find(d => d.id === remembered && ventiLocalIsOn(d.data()));
+  if(hit) return Promise.resolve(hit);
+  return new Promise((resolve) => {
+    const box = document.querySelector('#login-screen .login-box');
+    const P = $('#local-picker');
+    const email = String(user.email || '').toLowerCase();
+    const sorted = [...docs].sort((a, b) => ventiLocalName(a.data()).localeCompare(ventiLocalName(b.data())));
+    const chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+    let mode = null;
+    $('#lp-sub').textContent = `Tu cuenta tiene ${docs.length} locales. Elige en cuál estás: cada local tiene su propia contraseña.`;
+    $('#lp-list').innerHTML = sorted.map(d => {
+      const t = d.data(); const on = ventiLocalIsOn(t); const name = ventiLocalName(t);
+      const sub = [t.localName ? t.businessName : '', on ? '' : 'Suscripción vencida'].filter(Boolean).join(' · ');
+      return `<button type="button" class="lp-item" role="listitem" data-id="${escapeHtml(d.id)}" ${on ? '' : 'disabled'}><span class="lp-ico">${escapeHtml(name.trim().charAt(0).toUpperCase() || '?')}</span><span class="lp-txt"><b>${escapeHtml(name)}</b>${sub ? `<small>${escapeHtml(sub)}</small>` : ''}</span>${chevron}</button>`;
+    }).join('');
+    const showList = () => {
+      mode = null;
+      $('#lp-list').hidden = false; $('#lp-form').hidden = true; $('#lp-summary').hidden = false; $('#lp-sub').hidden = false;
+      $('#lp-error').textContent = '';
+    };
+    const showForm = (m) => {
+      mode = m;
+      const owner = m.kind === 'owner';
+      $('#lp-list').hidden = true; $('#lp-form').hidden = false; $('#lp-summary').hidden = true; $('#lp-sub').hidden = true;
+      $('#lp-chosen').textContent = owner ? 'Resumen de todos tus locales' : ventiLocalName(m.d.data());
+      $('#lp-pass-label').textContent = owner ? 'Clave del dueño' : 'Contraseña del local';
+      $('#lp-hint').textContent = owner ? 'Solo el dueño la tiene. Si no la sabes, pídesela al administrador de VENTI.' : 'Si eres el dueño, también puedes usar tu clave del dueño.';
+      $('#lp-go').textContent = owner ? 'Ver resumen' : 'Entrar al local';
+      $('#lp-pass').value = ''; $('#lp-error').textContent = '';
+      setTimeout(() => $('#lp-pass').focus(), 30);
+    };
+    const finish = (val) => { box.classList.remove('is-picking'); P.hidden = true; P.onclick = null; $('#lp-form').onsubmit = null; resolve(val); };
+    P.onclick = (e) => {
+      const it = e.target.closest('.lp-item');
+      if(it){ if(!it.disabled) showForm({ kind: 'local', d: docs.find(d => d.id === it.dataset.id) }); return; }
+      if(e.target.closest('#lp-back')) return showList();
+      if(e.target.closest('#lp-summary')) return showForm({ kind: 'owner' });
+      if(e.target.closest('#lp-logout')) return finish(null);
+    };
+    $('#lp-form').onsubmit = async (e) => {
+      e.preventDefault();
+      if(!mode) return;
+      const err = $('#lp-error');
+      const lockedUntil = ventiLpLocked();
+      if(lockedUntil){ err.textContent = `Demasiados intentos. Espera ${Math.ceil((lockedUntil - Date.now()) / 60000)} min y vuelve a intentar.`; return; }
+      const pass = $('#lp-pass').value;
+      if(!pass.trim()){ err.textContent = 'Escribe la contraseña.'; return; }
+      const go = $('#lp-go'); go.disabled = true;
+      try {
+        if(mode.kind === 'owner'){
+          const withKey = docs.filter(d => d.data().ownerKeyHash);
+          if(!withKey.length){ err.textContent = 'Todavía no tienes clave del dueño. Pídesela al administrador de VENTI.'; return; }
+          const h = await ventiHashOwnerKey(email, pass);
+          if(!withKey.some(d => d.data().ownerKeyHash === h)){ ventiLpFail(); err.textContent = 'Clave del dueño incorrecta.'; $('#lp-pass').value = ''; return; }
+          ventiLpOk();
+          showList();
+          ventiOpenMultiSummary(docs);
+          return;
+        }
+        const t = mode.d.data();
+        if(!t.localPassHash && !t.ownerKeyHash){ err.textContent = 'Este local todavía no tiene contraseña. Pídele al administrador de VENTI que se la ponga.'; return; }
+        if(!(await ventiCheckLocalPass(t, mode.d.id, pass))){ ventiLpFail(); err.textContent = 'Contraseña incorrecta.'; $('#lp-pass').value = ''; return; }
+        ventiLpOk();
+        try { localStorage.setItem(ventiLocalMemKey(user), mode.d.id); } catch(e2){}
+        finish(mode.d);
+      } finally { go.disabled = false; }
+    };
+    showList();
+    box.classList.add('is-picking');
+    P.hidden = false;
+  });
+}
+
+// Botones de "Cambiar de local" (computadora y celular) y "Cambiar contraseña del local"
+function ventiApplyMultiUi(){
+  const multi = ventiMyLocals.length > 1;
+  const sw = $('#switch-local-btn');
+  if(sw){ sw.style.display = multi ? '' : 'none'; sw.title = multi ? `Local: ${ventiLocalName(tenantData)} · Cambiar de local` : ''; }
+  const box = $('#local-pass-box');
+  if(box) box.style.display = (multi && !ventiOwnerMode) ? '' : 'none';
+}
+async function ventiSwitchLocal(){
+  if(!(await appConfirm('Vas a salir de este local para elegir otro. Para entrar te pedirá la contraseña del local que elijas.', 'Cambiar de local'))) return;
+  ventiForgetLocal(auth && auth.currentUser);
+  location.reload();
+}
+$('#switch-local-btn').addEventListener('click', ventiSwitchLocal);
+$('#change-local-pass-btn').addEventListener('click', async () => {
+  if(ventiOwnerMode) return;
+  if(!db || !tenantId || !tenantData){ await appAlert('No hay conexión a la nube. No se puede cambiar ahora mismo.', 'Sin conexión'); return; }
+  const cur = await appPrompt('Escribe la contraseña actual de este local (o la clave del dueño):', 'Verificar contraseña', 'password');
+  if(cur === null) return;
+  if(!(await ventiCheckLocalPass(tenantData, tenantId, cur))){ await appAlert('Contraseña incorrecta.', 'Incorrecta'); return; }
+  const nw = await appPrompt('Nueva contraseña del local (mínimo 4 caracteres):', 'Nueva contraseña', 'password');
+  if(nw === null) return;
+  const p = nw.trim();
+  if(p.length < 4){ await appAlert('La contraseña debe tener al menos 4 caracteres.', 'Muy corta'); return; }
+  const again = await appPrompt('Repite la nueva contraseña:', 'Confirmar contraseña', 'password');
+  if(again === null || again.trim() !== p){ await appAlert('Las contraseñas no coinciden. No se cambió nada.', 'No coincide'); return; }
+  for(const d of ventiMyLocals){
+    if(d.id === tenantId) continue;
+    const h = d.data().localPassHash;
+    if(h && (await ventiHashCode(d.id, 'local:' + p)) === h){ await appAlert('Esa contraseña ya la usa otro de tus locales. Elige una distinta.', 'Repetida'); return; }
+  }
+  if(tenantData.ownerKeyHash && (await ventiHashOwnerKey(tenantData.ownerEmail, p)) === tenantData.ownerKeyHash){ await appAlert('No puede ser igual a la clave del dueño.', 'Elige otra'); return; }
+  try {
+    const localPassHash = await ventiHashCode(tenantId, 'local:' + p);
+    await updateDoc(doc(db, 'tenants', tenantId), { localPassHash, localPassChangedByLocalAt: new Date().toISOString() });
+    tenantData.localPassHash = localPassHash;
+    ventiLog('code', 'Se cambió la contraseña del local');
+    await appAlert('Contraseña del local actualizada ✓', 'Listo');
+  } catch(e){
+    console.error('No se pudo cambiar la contraseña del local', e);
+    await appAlert('No se pudo cambiar. Revisa tu conexión (o falta pegar las reglas nuevas de Firestore).', 'Error');
+  }
+});
+
+// ---- Resumen de todos los locales (solo con la clave del dueño) ----
+var ventiMS = null;
+const ventiMoney = (n) => '$' + (Number(n) || 0).toFixed(2);
+async function ventiLocalStats(d){
+  const t = d.data();
+  const r = { id: d.id, name: ventiLocalName(t), inactive: !ventiLocalIsOn(t), closures: [], today: [], updatedAt: '', err: false };
+  if(r.inactive) return r;
+  try {
+    const [res, live] = await Promise.all([getDoc(doc(db, 'tenants', d.id, 'live', 'resumen')), getDocs(collection(db, 'tenants', d.id, 'liveOrders'))]);
+    if(res.exists()){ r.closures = res.data().closures || []; r.updatedAt = res.data().updatedAt || ''; }
+    live.forEach(x => r.today.push(ventiLiveToOrder({ id: x.id, ...x.data() })));
+  } catch(e){ console.warn('No se pudo leer el local', d.id, e); r.err = true; }
+  return r;
+}
+function ventiPeriodRange(p){
+  const now = new Date(); const today = localDateStr(now);
+  if(p === '7d'){ const a = new Date(now); a.setDate(a.getDate() - 6); return [localDateStr(a), today]; }
+  if(p === 'mes') return [today.slice(0, 8) + '01', today];
+  if(p === 'mesant') return [localDateStr(new Date(now.getFullYear(), now.getMonth() - 1, 1)), localDateStr(new Date(now.getFullYear(), now.getMonth(), 0))];
+  return [today, today];
+}
+function ventiAggLocal(r, from, to, today){
+  const a = { total: 0, count: 0, cash: 0, transfer: 0, card: 0, partial: false };
+  (r.closures || []).forEach(c => {
+    const dd = String(c.dayDate || '').slice(0, 10);
+    if(!dd || dd < from || dd > to) return;
+    a.total += Number(c.total) || 0; a.count += Number(c.orderCount) || 0;
+    if(c.cash === undefined) a.partial = true;
+    else { a.cash += Number(c.cash) || 0; a.transfer += Number(c.transfer) || 0; a.card += Number(c.card) || 0; }
+  });
+  if(today >= from && today <= to){
+    (r.today || []).forEach(o => { a.total += Number(o.total) || 0; a.count++; a.cash += cashAmount(o); a.transfer += transferAmount(o); a.card += cardAmount(o); });
+  }
+  return a;
+}
+function ventiRenderMultiSummary(){
+  const el = $('#multi-summary'); if(!el || !ventiMS) return;
+  const S = ventiMS;
+  const first = S.docs[0] && S.docs[0].data();
+  const periods = [['hoy', 'Hoy'], ['7d', 'Últimos 7 días'], ['mes', 'Este mes'], ['mesant', 'Mes pasado']];
+  let body;
+  if(S.loading || !S.data){
+    body = '<div class="ms-loading">Cargando tus locales…</div>';
+  } else {
+    const [from, to] = ventiPeriodRange(S.period);
+    const today = localDateStr();
+    const rows = S.data.map(r => ({ r, a: ventiAggLocal(r, from, to, today) })).sort((x, y) => y.a.total - x.a.total);
+    const T = rows.reduce((s, x) => ({ total: s.total + x.a.total, count: s.count + x.a.count, cash: s.cash + x.a.cash, transfer: s.transfer + x.a.transfer, card: s.card + x.a.card }), { total: 0, count: 0, cash: 0, transfer: 0, card: 0 });
+    const max = Math.max(...rows.map(x => x.a.total), 0.01);
+    const when = (iso) => { try { return new Date(iso).toLocaleString('es-EC', { dateStyle: 'short', timeStyle: 'short' }); } catch(e){ return ''; } };
+    body = `
+      <div class="ms-kpis">
+        <div class="ms-kpi main"><span>Ventas de todos los locales</span><strong>${ventiMoney(T.total)}</strong></div>
+        <div class="ms-kpi"><span>Pedidos</span><strong>${T.count}</strong></div>
+        <div class="ms-kpi"><span>Ticket promedio</span><strong>${ventiMoney(T.count ? T.total / T.count : 0)}</strong></div>
+      </div>
+      <p class="ms-pay">Efectivo <b>${ventiMoney(T.cash)}</b> · Transferencia <b>${ventiMoney(T.transfer)}</b> · Tarjeta <b>${ventiMoney(T.card)}</b></p>
+      <div class="ms-list">${rows.map(({ r, a }) => {
+        const status = r.inactive ? '<small class="warn">Suscripción vencida: sin datos</small>'
+          : r.err ? '<small class="warn">No se pudo leer (revisa la conexión)</small>'
+          : `<small>${r.updatedAt ? 'Actualizado ' + escapeHtml(when(r.updatedAt)) : 'La caja aún no publica datos'}${T.total > 0 ? ' · ' + Math.round(a.total / T.total * 100) + '% del total' : ''}</small>`;
+        return `<article class="ms-card">
+          <div class="ms-card-head"><div><h3>${escapeHtml(r.name)}</h3>${status}</div><span class="ms-card-total">${ventiMoney(a.total)}</span></div>
+          <div class="ms-bar"><span style="width:${Math.max(0, Math.min(100, a.total / max * 100)).toFixed(1)}%"></span></div>
+          <dl class="ms-facts">
+            <div><dt>Pedidos</dt><dd>${a.count}</dd></div>
+            <div><dt>Ticket prom.</dt><dd>${ventiMoney(a.count ? a.total / a.count : 0)}</dd></div>
+            <div><dt>Efectivo</dt><dd>${ventiMoney(a.cash)}</dd></div>
+            <div><dt>Transferencia</dt><dd>${ventiMoney(a.transfer)}</dd></div>
+            <div><dt>Tarjeta</dt><dd>${ventiMoney(a.card)}</dd></div>
+          </dl>
+          ${a.partial ? '<small>Algunos días cerrados no tienen el detalle por forma de pago.</small>' : ''}
+        </article>`;
+      }).join('')}</div>
+      <p class="ms-note">"Hoy" suma el día abierto de cada caja (en vivo) y los días que ya cerraron hoy. Los días anteriores salen de los cierres de caja que cada local publica. Solo se puede ver, no se cambia nada.</p>`;
+  }
+  el.innerHTML = `<div class="ms-wrap">
+    <header class="ms-head">
+      <div><h1>Tus locales</h1><p>${escapeHtml((first && first.businessName) || '')} · ${S.docs.length} locales</p></div>
+      <div class="ms-actions"><button type="button" class="ms-btn" id="ms-refresh">Actualizar</button><button type="button" class="ms-btn primary" id="ms-close">Volver</button></div>
+    </header>
+    <div class="ms-periods" role="group" aria-label="Periodo">${periods.map(([k, l]) => `<button type="button" class="ms-chip" data-ms-period="${k}" aria-pressed="${S.period === k}">${l}</button>`).join('')}</div>
+    ${body}
+  </div>`;
+}
+async function ventiLoadMultiSummary(){
+  if(!ventiMS) return;
+  ventiMS.loading = true; ventiRenderMultiSummary();
+  ventiMS.data = await Promise.all(ventiMS.docs.map(ventiLocalStats));
+  ventiMS.loading = false; ventiRenderMultiSummary();
+}
+function ventiOpenMultiSummary(docs){
+  let el = $('#multi-summary');
+  if(!el){ el = document.createElement('div'); el.id = 'multi-summary'; el.className = 'multi-summary'; document.body.appendChild(el); }
+  ventiMS = { docs, period: 'hoy', data: null, loading: true };
+  el.hidden = false;
+  el.onclick = (e) => {
+    const p = e.target.closest('[data-ms-period]');
+    if(p){ ventiMS.period = p.dataset.msPeriod; ventiRenderMultiSummary(); return; }
+    if(e.target.closest('#ms-refresh')){ ventiLoadMultiSummary(); return; }
+    if(e.target.closest('#ms-close')){ el.hidden = true; el.innerHTML = ''; ventiMS = null; }
+  };
+  ventiLoadMultiSummary();
+}
+
 /* ---------- RESOLVER NEGOCIO (TENANT) Y SUSCRIPCIÓN ---------- */
 async function resolveTenant(user){
   const errEl = $('#login-error');
@@ -12836,7 +13178,10 @@ async function resolveTenant(user){
       errEl.textContent = 'Esta cuenta no está registrada como cliente. Contacta al administrador.';
       return false;
     }
-    const docSnap = snap.docs[0];
+    ventiMyLocals = snap.docs;
+    // Varios locales: se elige uno (con su contraseña); con uno solo se entra directo
+    const docSnap = snap.size > 1 ? await ventiPickLocal(user, snap.docs) : snap.docs[0];
+    if(!docSnap){ errEl.className = 'login-error'; errEl.textContent = ''; return false; }
     tenantId = docSnap.id;
     tenantData = docSnap.data();
     tenantManagerCode = tenantData.managerCode || null;
@@ -12848,7 +13193,10 @@ async function resolveTenant(user){
     const notExpired = paidUntilMs > Date.now();
 
     if(!isActive || !notExpired){
-      errEl.textContent = 'Tu suscripción está vencida o suspendida. Contacta al administrador para renovarla.';
+      if(snap.size > 1) ventiForgetLocal(user); // que la próxima vez pueda elegir otro local
+      errEl.textContent = snap.size > 1
+        ? `La suscripción del local "${ventiLocalName(tenantData)}" está vencida o suspendida. Contacta al administrador para renovarla.`
+        : 'Tu suscripción está vencida o suspendida. Contacta al administrador para renovarla.';
       return false;
     }
 
@@ -12864,6 +13212,7 @@ async function resolveTenant(user){
     startTenantWatcher(tenantId);
     ventiFiscalSetup();
     ventiFiscalInit(); // facturación electrónica: solo aparece si el local la tiene configurada
+    ventiApplyMultiUi();
     return true;
   } catch(e){
     console.error('Error verificando la suscripción', e);
@@ -12961,7 +13310,7 @@ function applyTenantBranding(data){
   // cambiar desde dentro de la app.
   const bizName = (data && data.businessName) || 'Mi Negocio';
   $('#shop-name').textContent = bizName;
-  document.title = bizName + ' · VENTI';
+  document.title = bizName + (data && data.localName && (ventiMyLocals || []).length > 1 ? ' · ' + data.localName : '') + ' · VENTI';
   settings.shopName = bizName;
 
   applyLogo(brandData && brandData.logoEmoji, brandData && brandData.logoImageBase64, brandData && brandData.logoScale);
