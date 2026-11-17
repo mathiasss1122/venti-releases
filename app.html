@@ -4995,7 +4995,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         </div>
         <button type="button" id="add-discount-btn" class="discount-link-btn">+ Aplicar descuento</button>
         <button class="checkout-btn" id="checkout-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span><span>Cobrar</span><span class="checkout-amount" id="checkout-amount"></span></button>
-        <button class="delivery-send-btn" id="delivery-send-btn" disabled style="display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Envío domicilio</button>
+        <button class="delivery-send-btn" id="delivery-send-btn" disabled style="display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span> Cobrar</button>
         <button class="preprint-btn" id="preprint-btn" disabled><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir ticket</button>
         <button class="clear-btn" id="clear-btn">Vaciar ticket</button>
       </div>
@@ -5043,7 +5043,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
     </section>
     <section id="delivery-view" class="view">
       <h2>Domicilio</h2>
-      <div class="sales-sub">Pedidos enviados que todavía no se han cobrado.</div>
+      <div class="sales-sub">Pedidos a domicilio que faltan entregar.</div>
       <div class="activity-filter delivery-tabs" id="delivery-tabs" role="group" aria-label="Canal de domicilio"></div>
       <div id="delivery-empty-state" class="no-orders" style="display:none;">No hay ningún pedido de domicilio pendiente ahora mismo.</div>
       <div id="delivery-list"></div>
@@ -5479,7 +5479,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
   <div class="modal" style="max-width:340px;">
     <h3 class="tp-title">Vista previa del ticket</h3>
     <p class="tp-sub" id="tp-sub">Así se va a imprimir.</p>
-    <div class="ticket-preview-box"><div id="ticket-preview-logo"></div><pre id="ticket-preview-text"></pre><div id="ticket-preview-qr"></div></div>
+    <div class="ticket-preview-box"><div id="ticket-preview-logo"></div><div id="ticket-preview-render"></div><pre id="ticket-preview-text" style="display:none;"></pre><div id="ticket-preview-qr"></div></div>
     <div class="modal-actions" style="margin-top:14px; display:flex; gap:10px;">
       <button class="cancel" id="ticket-preview-cancel" style="flex:1;">Cerrar</button>
       <button class="confirm" id="ticket-preview-print" style="flex:1; display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir</button>
@@ -5544,8 +5544,8 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 
 <div class="modal-backdrop" id="delivery-modal">
   <div class="modal" style="max-width:360px;">
-    <h3 style="margin-top:0;">Enviar a domicilio</h3>
-    <p style="font-size:12.5px; color:var(--ink); opacity:0.75; margin-top:-8px;">Este pedido se descuenta del inventario ahora, pero no se cuenta como vendido hasta que lo marques como pagado.</p>
+    <h3 style="margin-top:0;">Pedido a domicilio</h3>
+    <p style="font-size:12.5px; color:var(--ink); opacity:0.75; margin-top:-8px;">Después de esto se cobra como una venta normal. El pedido queda en Domicilio hasta que lo marques como entregado.</p>
     <form id="delivery-form">
       <label id="delivery-channel-label">¿Por dónde llegó el pedido?</label>
       <div class="delivery-channel-pick" id="delivery-channel" role="group" aria-label="Canal del pedido"></div>
@@ -5559,7 +5559,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <input type="text" id="delivery-notes" placeholder="Ej. sin cebolla, cambio de $200...">
       <div class="modal-actions" style="margin-top:14px; display:flex; gap:10px;">
         <button type="button" class="cancel" id="delivery-modal-cancel" style="flex:1;">Cancelar</button>
-        <button type="submit" class="confirm" style="flex:1; background:#3B9C8F;">Enviar</button>
+        <button type="submit" class="confirm" style="flex:1; background:#3B9C8F;">Continuar al cobro</button>
       </div>
     </form>
   </div>
@@ -7084,6 +7084,7 @@ function ventiOrderTypeLabel(o){
   if(!o) return '';
   if(o.orderType === 'llevar') return 'Para llevar';
   if(o.orderType === 'aqui') return 'Para aquí';
+  if(o.orderType === 'domicilio') return 'Domicilio';
   return '';
 }
 
@@ -7508,8 +7509,11 @@ document.addEventListener('keydown', (e) => {
 $('#preprint-btn').addEventListener('click', async () => {
   if(!cart.length) return;
   $('#ticket-preview-logo').innerHTML = buildTicketLogoHtml();
-  $('#ticket-preview-qr').innerHTML = buildTicketQrHtml();
+  // Sin plantilla, el QR va al final; con plantilla, va donde esté su bloque (lo dibuja la vista previa de abajo).
+  $('#ticket-preview-qr').innerHTML = (tenantData && Array.isArray(tenantData.ticketBlocks) && tenantData.ticketBlocks.length) ? '' : buildTicketQrHtml();
+  // Se muestra igual que el papel (con el número grande); el texto original queda oculto para imprimirlo.
   $('#ticket-preview-text').textContent = buildPreviewTicketText();
+  $('#ticket-preview-render').innerHTML = buildTicketPrintBody($('#ticket-preview-text').textContent).replace(buildTicketLogoHtml(), '');
   const tpSub = $('#tp-sub');
   if(tpSub) tpSub.textContent = `Así se va a imprimir · papel de ${settings.printWidth || "80mm"}`;
   // Letra ajustada para que cada línea del ticket quepa entera, como en el papel real
@@ -7517,6 +7521,7 @@ $('#preprint-btn').addEventListener('click', async () => {
     const pre = $('#ticket-preview-text');
     const chars = charsForWidth() || 42;
     pre.style.fontSize = Math.min(13, 284 / (chars * 0.61)).toFixed(2) + 'px';
+    $('#ticket-preview-render').querySelectorAll('pre').forEach(p => { p.style.fontSize = pre.style.fontSize; p.style.margin = '0'; p.style.whiteSpace = 'pre-wrap'; p.style.fontFamily = "'Courier New', monospace"; });
   } catch(e){}
   $('#ticket-preview-modal').classList.add('active');
 });
@@ -7531,6 +7536,7 @@ $('#ticket-preview-print').onclick = async () => {
 };
 $('#modal-cancel').onclick = () => {
   $('#checkout-modal').classList.remove('active');
+  ventiPendingDeliveryInfo = null;
   if(ventiInvoiceChoice){ ventiInvoiceChoice = null; renderCart(); } // el total vuelve a ser el normal
 };
 $$('.pay-btn').forEach(btn=>{
@@ -7601,7 +7607,7 @@ async function confirmCheckout(){
     subtotal, taxRate, taxAmount, total,
     payment: selectedPayMethod,
     customerName: $('#customer-name').value.trim(),
-    orderType: cartOrderType === 'llevar' ? 'llevar' : 'aqui',
+    orderType: cartOrderType === 'llevar' ? 'llevar' : (cartOrderType === 'domicilio' ? 'domicilio' : 'aqui'),
     delivered: false,
     dayId: null
   };
@@ -7610,7 +7616,15 @@ async function confirmCheckout(){
     order.discount = { type: cartDiscount.type, value: cartDiscount.value };
   }
   if(invoiceBuyer && roundingAdjustment > 0) order.roundingAdjustment = roundingAdjustment; // ajuste SRI de 1 centavo
+  if(cartOrderType === 'domicilio' && ventiPendingDeliveryInfo){
+    const di = ventiPendingDeliveryInfo;
+    Object.assign(order, { viaDelivery: true, channel: di.channel, customerName: di.customerName,
+      ...(di.customerPhone ? { customerPhone: di.customerPhone } : {}), ...(di.customerAddress ? { customerAddress: di.customerAddress } : {}), ...(di.notes ? { deliveryNotes: di.notes } : {}) });
+  }
+  ventiPendingDeliveryInfo = null;
   if(invoiceBuyer) order.invoice = { status: 'sending' };
+  // La factura se imprime sola apenas el SRI la autorice (queda guardado en el pedido por si se cierra el POS).
+  if(invoiceBuyer && featurePrintingEnabled) order.printInvoiceWhenAuthorized = true;
   if(invoiceBuyer && selectedPayMethod === 'Tarjeta') order.cardMethod = ventiInvoiceCard.inv;
   ventiInvoiceChoice = null;
   let cashReceived = null, change = null;
@@ -7633,6 +7647,7 @@ async function confirmCheckout(){
   cartOrderType = 'aqui';
   renderCart();
   renderHistory();
+  if(order.viaDelivery) renderDeliveryList();
   lastCompletedOrder = order;
 
   if(cartPrintedBeforePayment){
@@ -7997,11 +8012,7 @@ $('#history-view').addEventListener('click', async (e) => {
     toggleBtn.classList.add('just-toggled');
     await saveOrdersData();
     ventiLiveUpsert(order);
-    // Al entregar el pedido se entrega la factura: se imprime ahora (o apenas el SRI la autorice).
-    if(order.delivered && order.invoice && featurePrintingEnabled && !ventiOwnerMode){
-      if(order.invoice.status === 'authorized' && order.invoice.invoiceId) ventiInvoicePrint(order.invoice.invoiceId);
-      else if(['sending', 'processing'].includes(order.invoice.status)) ventiInvoiceAutoPrint[order.id] = true;
-    }
+    if(order.viaDelivery){ renderDeliveryList(); if(typeof ventiDeliveryBadgeSync === 'function') ventiDeliveryBadgeSync(); }
     return;
   }
 
@@ -8747,7 +8758,7 @@ function ventiClosureSummary(c){
 }
 function ventiBuildResumen(){
   const pend = {};
-  VENTI_DELIVERY_CHANNELS.forEach(c => { pend[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length; });
+  VENTI_DELIVERY_CHANNELS.forEach(c => { pend[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length + ventiPendingDeliveries().filter(o => ventiOrderChannel(o) === c.id).length; });
   return {
     updatedAt: new Date().toISOString(),
     businessName: (tenantData && tenantData.businessName) || '',
@@ -10400,13 +10411,15 @@ var ventiDeliveryTab = null;
 // Canal elegido en la ventana "Enviar a domicilio"
 var ventiDeliveryChannel = 'whatsapp';
 function ventiDeliveryOrderChannel(d){ return VENTI_DELIVERY_CHANNELS.some(c => c.id === d.channel) ? d.channel : 'whatsapp'; }
+// Domicilios ya cobrados que todavía no se entregan
+function ventiPendingDeliveries(){ return orders.filter(o => o.viaDelivery && !o.delivered); }
 function renderDeliveryList(){
   const list = $('#delivery-list');
   const emptyState = $('#delivery-empty-state');
   if(!list) return;
   // Pestañas por canal, con cuántos pedidos pendientes tiene cada una
   const counts = {};
-  VENTI_DELIVERY_CHANNELS.forEach(c => { counts[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length; });
+  VENTI_DELIVERY_CHANNELS.forEach(c => { counts[c.id] = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === c.id).length + ventiPendingDeliveries().filter(o => ventiOrderChannel(o) === c.id).length; });
   const actIds = ventiActiveDeliveryIds();
   const tabCh = VENTI_DELIVERY_CHANNELS.filter(c => actIds.includes(c.id) || counts[c.id] > 0);
   if(!ventiDeliveryTab || !tabCh.some(c => c.id === ventiDeliveryTab)){
@@ -10421,7 +10434,8 @@ function renderDeliveryList(){
     ).join('');
   }
   const visible = deliveryOrders.filter(d => ventiDeliveryOrderChannel(d) === ventiDeliveryTab);
-  if(!visible.length){
+  const paidPending = ventiPendingDeliveries().filter(o => ventiOrderChannel(o) === ventiDeliveryTab);
+  if(!visible.length && !paidPending.length){
     list.innerHTML = '';
     if(emptyState){
       emptyState.textContent = `No hay pedidos de ${ventiChannelLabel(ventiDeliveryTab)} pendientes ahora mismo.`;
@@ -10461,6 +10475,27 @@ function renderDeliveryList(){
         </div>
       </div>
     `;
+  }).join('') + paidPending.map(o => {
+    const itemsText = o.items.map(it => `${it.qty}x ${it.name}`).join(', ');
+    const contactLine = [o.customerPhone, o.customerAddress].filter(Boolean).map(escapeHtml).join(' · ');
+    return `
+      <div class="delivery-card">
+        <div class="top">
+          <div>
+            <div class="name">${escapeHtml(formatOrderNumber(o.orderNumber))} · ${escapeHtml(o.customerName || '')}</div>
+            <div class="time">${new Date(o.timestamp).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})} · Pagado en ${escapeHtml(o.payment || '')}</div>
+          </div>
+          <div class="total">${money(o.total)}</div>
+        </div>
+        ${contactLine ? `<div class="contact">${contactLine}</div>` : ''}
+        <div class="items">${escapeHtml(itemsText)}</div>
+        ${o.deliveryNotes ? `<div class="notes">${escapeHtml(o.deliveryNotes)}</div>` : ''}
+        ${typeof ventiInvoiceHistoryHtml === 'function' && o.invoice ? ventiInvoiceHistoryHtml(o) : ''}
+        <div class="actions">
+          <button class="deliver-toggle" data-toggle-id="${o.id}">Marcar como entregado</button>
+        </div>
+      </div>
+    `;
   }).join('');
 }
 
@@ -10496,7 +10531,20 @@ $('#delivery-tabs')?.addEventListener('click', (e) => {
 $('#delivery-modal-cancel').addEventListener('click', () => {
   $('#delivery-modal').classList.remove('active');
 });
+// Datos del domicilio que se está cobrando (se guardan en la venta al confirmar el cobro).
+var ventiPendingDeliveryInfo = null;
 $('#delivery-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = $('#delivery-name').value.trim();
+  if(!name || !cart.length) return;
+  ventiPendingDeliveryInfo = { channel: ventiDeliveryChannel, customerName: name, customerPhone: $('#delivery-phone').value.trim(),
+    customerAddress: $('#delivery-address').value.trim(), notes: $('#delivery-notes').value.trim() };
+  if($('#customer-name')) $('#customer-name').value = name;
+  $('#delivery-modal').classList.remove('active');
+  $('#checkout-btn').onclick(); // se cobra al momento, igual que cualquier venta
+});
+// (Antes los domicilios quedaban "sin cobrar" en la pestaña Domicilio. Se conserva solo para los que ya existían.)
+$('#delivery-form-legacy-unused')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = $('#delivery-name').value.trim();
   if(!name || !cart.length) return;
@@ -10528,6 +10576,20 @@ $('#delivery-form').addEventListener('submit', async (e) => {
 });
 
 $('#delivery-list').addEventListener('click', async (e) => {
+  // Domicilio ya cobrado → "Marcar como entregado": sale de esta lista
+  const deliverBtn = e.target.closest('.deliver-toggle[data-toggle-id]');
+  if(deliverBtn){
+    if(ventiOwnerMode) return;
+    const order = orders.find(o => o.id === deliverBtn.dataset.toggleId);
+    if(!order || order.delivered) return;
+    deliverBtn.disabled = true;
+    order.delivered = true;
+    await saveOrdersData();
+    ventiLiveUpsert(order);
+    renderDeliveryList();
+    renderHistory();
+    return;
+  }
   const payBtn = e.target.closest('button[data-mark-paid-id]');
   if(payBtn){
     const id = payBtn.dataset.markPaidId;
@@ -11309,6 +11371,7 @@ function renderCustomTicketBlocks(blocks, o){
 
   const lines = [];
   blocks.forEach(b => {
+    if(b.type === 'qr'){ lines.push('§QR§'); return; } // el QR se imprime donde esté este bloque
     let content = '';
     switch(b.type){
       case 'shopname': content = settings.shopName || 'iNVIDiA'; break;
@@ -11343,7 +11406,7 @@ function buildTicketText(o){
   if(settings.ticketHeaderMsg) out += center(settings.ticketHeaderMsg, w) + '\n';
   out += line + '\n';
   out += '§BIG§' + formatOrderNumber(o.orderNumber) + '§/BIG§\n';
-  if(ventiOrderTypeLabel(o)) out += center(ventiOrderTypeLabel(o).toUpperCase(), w) + '\n';
+  if(ventiOrderTypeLabel(o) && o.orderType !== 'domicilio') out += center(ventiOrderTypeLabel(o).toUpperCase(), w) + '\n';
   if(ventiOrderChannel(o) !== 'local') out += center(('Domicilio · ' + ventiChannelLabel(ventiOrderChannel(o))).toUpperCase(), w) + '\n';
   if(o.customerName) out += wrapText(`Cliente: ${o.customerName}`, w) + '\n';
   const d = new Date(o.timestamp);
@@ -11393,17 +11456,19 @@ function buildDeliveryTicketText(delivery){
 }
 
 function buildPreviewTicketText(){
-  if(tenantData && Array.isArray(tenantData.ticketBlocks) && tenantData.ticketBlocks.length){
-    const mockOrder = {
-      orderNumber: nextOrderNumberForToday(),
-      customerName: $('#customer-name').value.trim(),
-      orderType: cartOrderType,
-      timestamp: new Date().toISOString(),
-      items: cart,
-      total: getCartTotals().total
-    };
-    return renderCustomTicketBlocks(tenantData.ticketBlocks, mockOrder);
-  }
+  // La vista previa es la MISMA comanda que se imprime al cobrar (con el número de pedido grande).
+  const mockOrder = {
+    orderNumber: nextOrderNumberForToday(),
+    customerName: $('#customer-name').value.trim(),
+    orderType: cartOrderType,
+    timestamp: new Date().toISOString(),
+    items: cart,
+    total: getCartTotals().total
+  };
+  return buildTicketText(mockOrder);
+}
+// (formato anterior de la vista previa, ya no se usa)
+function buildPreviewTicketTextOld(){
   const w = charsForWidth();
   const line = '-'.repeat(w);
   let out = '';
@@ -11445,8 +11510,9 @@ function buildTicketLogoHtml(){
 function buildTicketQrHtml(){
   const qr = tenantData && tenantData.ticketQrImageBase64;
   if(!qr) return '';
-  const ig = tenantData.ticketInstagram ? escapeHtml(String(tenantData.ticketInstagram)) : '';
-  return `<div style="text-align:center; margin-top:6px;"><img src="${qr}" style="width:42%; max-width:150px; image-rendering:pixelated;">${ig ? `<div style="font-family:'Courier New',monospace; font-size:11px; margin-top:2px;">Síguenos en Instagram ${ig}</div>` : ''}</div>`;
+  // El panel guarda el texto ya armado según la red social (ej. "Síguenos en TikTok @milocal").
+  const label = tenantData.ticketQrLabel || (tenantData.ticketInstagram ? 'Síguenos en Instagram ' + tenantData.ticketInstagram : '');
+  return `<div style="text-align:center; margin:6px 0;"><img src="${qr}" style="width:42%; max-width:150px; image-rendering:pixelated;">${label ? `<div style="font-family:'Courier New',monospace; font-size:11px; margin-top:2px;">${escapeHtml(String(label))}</div>` : ''}</div>`;
 }
 function buildTicketPrintBody(text, opts){
   const logoHtml = buildTicketLogoHtml();
@@ -11463,7 +11529,10 @@ function buildTicketPrintBody(text, opts){
   const rest = text.slice(lastIndex).replace(/^\n/, '');
   if(rest) parts.push(`<pre>${escapeHtml(rest)}</pre>`);
   if(!parts.length) parts.push(`<pre>${escapeHtml(text)}</pre>`);
-  return logoHtml + parts.join('') + (opts && opts.qr ? buildTicketQrHtml() : '');
+  // Con plantilla de bloques, el QR va donde esté su bloque (§QR§). Sin plantilla, al final del ticket del pedido.
+  const usesBlocks = !!(tenantData && Array.isArray(tenantData.ticketBlocks) && tenantData.ticketBlocks.length);
+  const body = parts.join('').split('§QR§').join(buildTicketQrHtml());
+  return logoHtml + body + (opts && opts.qr && !usesBlocks && !text.includes('§QR§') ? buildTicketQrHtml() : '');
 }
 
 async function printText(text, opts){
@@ -11529,9 +11598,23 @@ async function printHtmlPage(html, pageSize){
   w.onload = () => { w.print(); };
 }
 
+function buildDeliveryExtraText(o){
+  const w = charsForWidth();
+  const line = '-'.repeat(w);
+  let out = line + '\n';
+  // Con plantilla de bloques el canal no sale arriba: se pone aquí
+  if(tenantData && Array.isArray(tenantData.ticketBlocks) && tenantData.ticketBlocks.length) out += center(('Domicilio · ' + ventiChannelLabel(ventiOrderChannel(o))).toUpperCase(), w) + '\n';
+  if(o.customerPhone) out += wrapText(`Tel: ${o.customerPhone}`, w) + '\n';
+  if(o.customerAddress) out += wrapText(`Dirección: ${o.customerAddress}`, w) + '\n';
+  if(o.deliveryNotes) out += wrapText(`Nota: ${o.deliveryNotes}`, w) + '\n';
+  out += center(`PAGADO · ${o.payment || ''} · ${money(o.total)}`.toUpperCase(), w) + '\n';
+  return out;
+}
 async function printOrder(order){
   if(!order) return;
-  await printText(buildTicketText(order), { qr: true });
+  let text = buildTicketText(order);
+  if(order.viaDelivery) text = text.replace(/\n+$/, '').replace(/\n-+$/, '') + '\n' + buildDeliveryExtraText(order) + '\n\n\n';
+  await printText(text, { qr: true });
 }
 
 function buildDayReportText(closure, dayOrders, widthSetting, dayWithdrawn){
@@ -11812,6 +11895,7 @@ async function ventiFiscalInit(){
     }
   } catch(_){ ventiFiscalCfg = null; } // sin permiso o sin conexión: la sección no aparece
   ventiFiscalRender();
+  ventiInvoiceResumePending();
 }
 function ventiFiscalSetup(){
   ventiInvoicesSetup();
@@ -12048,9 +12132,11 @@ async function ventiInvoiceStore(o, r){
     retryable: r.error ? !!r.error.retryable : null, updatedAt: new Date().toISOString() };
   await saveOrdersData();
   renderHistory(); // siempre: si no, al volver al Historial se vería el estado viejo
-  if(o.invoice.status === 'authorized' && ventiInvoiceAutoPrint[o.id]){
+  if(o.invoice.status === 'authorized' && (ventiInvoiceAutoPrint[o.id] || o.printInvoiceWhenAuthorized)){
     delete ventiInvoiceAutoPrint[o.id];
-    ventiInvoicePrint(o.invoice.invoiceId);
+    o.printInvoiceWhenAuthorized = false;
+    await saveOrdersData();
+    if(featurePrintingEnabled && !ventiOwnerMode) ventiInvoicePrint(o.invoice.invoiceId);
   } else if(['rejected', 'error'].includes(o.invoice.status)) delete ventiInvoiceAutoPrint[o.id];
 }
 function ventiInvoiceStatusHtml(o){
@@ -12113,13 +12199,30 @@ async function ventiInvoiceResubmit(o, buyer){
   if(o.invoice.status === 'processing') ventiInvoicePoll(o);
 }
 // Mientras está "en proceso" consulta sola unas veces (sin volver a emitir).
-function ventiInvoicePoll(o, tries = 8){
+// Consulta sola mientras siga "en proceso": cada 4 s al principio, luego cada 30 s (20 min) y cada 2 min (hasta ~2 h).
+// Nunca vuelve a emitir: solo pregunta el estado.
+function ventiInvoicePoll(o, attempt = 0){
   clearTimeout(ventiInvoicePolls[o.id]);
-  if(tries <= 0) return;
+  if(attempt > 98 || !o.invoice || !o.invoice.invoiceId) return;
+  const wait = attempt < 8 ? 4000 : (attempt < 48 ? 30000 : 120000);
   ventiInvoicePolls[o.id] = setTimeout(async () => {
     await ventiInvoiceRefresh(o, true);
-    if(o.invoice && o.invoice.status === 'processing') ventiInvoicePoll(o, tries - 1);
-  }, 4000);
+    if(o.invoice && ['processing', 'sending'].includes(o.invoice.status)) ventiInvoicePoll(o, attempt + 1);
+  }, wait);
+}
+// "Imprimir la factura apenas el SRI la autorice" (al entregar un pedido cuya factura aún no está lista).
+// Se guarda en el pedido, así no se pierde si se cierra el POS.
+async function ventiInvoiceMarkPrintOnAuth(o){
+  o.printInvoiceWhenAuthorized = true;
+  await saveOrdersData();
+  if(!ventiInvoicePolls[o.id]) ventiInvoicePoll(o);
+}
+// Al abrir el POS: se retoman las facturas que quedaron "en proceso" (de los últimos 2 días).
+function ventiInvoiceResumePending(){
+  if(!ventiFiscalCanInvoice()) return;
+  const since = Date.now() - 2 * 864e5;
+  orders.filter(o => o.invoice && o.invoice.invoiceId && ['processing', 'sending'].includes(o.invoice.status) && new Date(o.timestamp).getTime() > since)
+    .forEach(o => ventiInvoicePoll(o));
 }
 async function ventiInvoiceRefresh(o, quiet){
   if(!o.invoice || !o.invoice.invoiceId) return;
