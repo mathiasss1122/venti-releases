@@ -3733,6 +3733,10 @@ details.day-group .day-orders, .month-days{ padding:4px 12px 12px; background:va
 }
 .login-error{ color:#FF9C8F; font-weight:600; }
 .login-error.loading{ color:var(--lg-muted); }
+.login-legal{ display:flex; flex-direction:column; gap:8px; margin:16px 0 4px; }
+#login-form label.login-check{ display:flex; align-items:flex-start; gap:9px; margin:0; font-size:13px; font-weight:500; line-height:1.4; color:var(--lg-muted); cursor:pointer; }
+#login-form label.login-check input{ width:17px; height:17px; padding:0; margin:1px 0 0; flex:none; accent-color:var(--lg-blue); box-shadow:none; }
+#login-form label.login-check a{ color:var(--lg-ink); font-weight:600; text-decoration:underline; text-underline-offset:2px; }
 .inline-spinner{ border-color:rgba(141,180,255,0.25); border-top-color:#8DB4FF; }
 #login-submit-btn{
   height:48px;
@@ -4857,6 +4861,10 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <input type="email" id="login-user-field" autocomplete="username" required>
           <label for="login-pass-field">Contraseña</label>
           <input type="password" id="login-pass-field" autocomplete="current-password" required>
+          <div class="login-legal">
+            <label class="login-check"><input type="checkbox" id="login-accept-terms"><span>Acepto los <a href="https://invidia-a22c5.web.app/terminos.html" target="_blank" rel="noopener">Términos y Condiciones</a></span></label>
+            <label class="login-check"><input type="checkbox" id="login-accept-privacy"><span>Acepto la <a href="https://invidia-a22c5.web.app/privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a></span></label>
+          </div>
           <div class="login-error" id="login-error"></div>
           <button type="submit" id="login-submit-btn">Entrar</button>
         </form>
@@ -5615,7 +5623,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import {
-  getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, orderBy, limit, getDocs, onSnapshot, deleteField, deleteDoc
+  getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, orderBy, limit, getDocs, onSnapshot, deleteField, deleteDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 import {
   getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword,
@@ -12747,6 +12755,29 @@ try {
   }
 } catch(e){ /* si localStorage no está disponible, no pasa nada */ }
 
+// ---- Términos y Condiciones / Política de Privacidad ----
+// Si cambia alguno de los documentos, se sube su versión y se vuelve a pedir la aceptación.
+const VENTI_LEGAL = { terms: '1.0', privacy: '1.0' };
+const ventiLegalKey = (email) => 'venti-legal:' + String(email || '').trim().toLowerCase();
+function ventiLegalSync(){
+  let ok = false;
+  try { ok = localStorage.getItem(ventiLegalKey($('#login-user-field').value)) === VENTI_LEGAL.terms + '|' + VENTI_LEGAL.privacy; } catch(e){}
+  $('#login-accept-terms').checked = ok;
+  $('#login-accept-privacy').checked = ok;
+}
+ventiLegalSync();
+$('#login-user-field').addEventListener('change', ventiLegalSync);
+// Prueba de la aceptación en la nube: un registro por persona y versión (no se puede borrar ni cambiar)
+async function ventiLegalRecord(user){
+  try {
+    const version = 't' + VENTI_LEGAL.terms + '-p' + VENTI_LEGAL.privacy;
+    await setDoc(doc(db, 'legalAcceptances', user.uid + '_' + version), {
+      uid: user.uid, email: (user.email || '').toLowerCase(), version, termsVersion: VENTI_LEGAL.terms, privacyVersion: VENTI_LEGAL.privacy,
+      acceptedAt: serverTimestamp(), device: (navigator.userAgent || '').slice(0, 200), app: window.electronAPI ? 'caja' : 'web'
+    });
+  } catch(e){ /* ya estaba registrada, o aún no están publicadas las reglas nuevas */ }
+}
+
 $('#login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = $('#login-user-field').value.trim();
@@ -12761,11 +12792,17 @@ $('#login-form').addEventListener('submit', async (e) => {
 
   errEl.className = 'login-error';
   errEl.textContent = '';
+  if(!$('#login-accept-terms').checked || !$('#login-accept-privacy').checked){
+    errEl.textContent = 'Para entrar, marca que aceptas los Términos y Condiciones y la Política de Privacidad.';
+    return;
+  }
   btn.disabled = true;
   btn.textContent = 'Entrando…';
   try {
-    await signInWithEmailAndPassword(auth, email, pass);
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
     localStorage.setItem('venti-last-email', email);
+    try { localStorage.setItem(ventiLegalKey(email), VENTI_LEGAL.terms + '|' + VENTI_LEGAL.privacy); } catch(e){}
+    ventiLegalRecord(cred.user);
     // onAuthStateChanged se encarga de resolver el negocio y ocultar el login
   } catch(err){
     console.error('Error de inicio de sesión', err);
