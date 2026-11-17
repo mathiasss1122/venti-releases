@@ -4761,6 +4761,50 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 .sa-order-foot .pay-tag{ display:inline-flex; align-items:center; gap:6px; }
 .sa-order-foot .pay-tag svg{ width:16px; height:16px; }
 #ticket-message-box input.field{ width:100%; max-width:560px; flex:none; margin-bottom:8px; }
+#fiscal-settings-box{ flex-direction:column; align-items:stretch; }
+#fiscal-settings-box .fiscal-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px 16px; max-width:760px; }
+#fiscal-settings-box .fiscal-grid label{ display:flex; flex-direction:column; gap:6px; font-weight:600; }
+#fiscal-settings-box .fiscal-grid input.field, #fiscal-settings-box .fiscal-grid select{ width:100%; }
+#fiscal-settings-box label.fiscal-check{ flex-direction:row; align-items:center; gap:8px; }
+#fiscal-settings-box label.fiscal-check input{ width:auto; }
+#fiscal-settings-box .fiscal-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+#fiscal-settings-box .fiscal-actions input.field{ width:220px; }
+#fiscal-settings-box .fiscal-actions input[type=file]{ width:auto; border:none; background:none; padding:0; }
+#fiscal-settings-box .fiscal-sub{ margin-top:8px; }
+#fiscal-status-line{ font-size:13px; opacity:.8; }
+.invoice-choice{ margin:10px 0 4px; text-align:left; }
+.invoice-choice .ic-label{ font-size:12.5px; font-weight:700; opacity:.75; margin-bottom:6px; }
+.invoice-choice .ic-options{ display:flex; gap:6px; flex-wrap:wrap; }
+.invoice-choice .ic-btn{ flex:1; min-width:96px; padding:8px 10px; border-radius:9px; border:1px solid var(--card-line, var(--line)); background:transparent; color:inherit; font:600 12.5px Inter, system-ui, sans-serif; cursor:pointer; }
+.invoice-choice .ic-btn.selected{ border-color:var(--accent, var(--brand, currentColor)); box-shadow:inset 0 0 0 1px var(--accent, var(--brand, currentColor)); }
+.ic-form{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
+.ic-form select, .ic-form input{ width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--card-line, var(--line)); background:transparent; color:inherit; font:13px Inter, system-ui, sans-serif; box-sizing:border-box; }
+.ic-form #inv-name, .ic-form #inv-email, .ic-form #invm-name, .ic-form #invm-email{ grid-column:1 / -1; }
+.ic-note{ font-size:12px; margin-top:6px; opacity:.85; }
+.ic-card{ display:flex; align-items:center; gap:6px; margin-top:8px; }
+.ic-card .ic-label{ margin:0 4px 0 0; }
+.ic-card .ic-btn{ flex:0 1 auto; min-width:90px; padding:7px 12px; border-radius:9px; border:1px solid var(--card-line, var(--line)); background:transparent; color:inherit; font:600 12.5px Inter, system-ui, sans-serif; cursor:pointer; }
+.ic-card .ic-btn.selected{ border-color:var(--accent, var(--brand, currentColor)); box-shadow:inset 0 0 0 1px var(--accent, var(--brand, currentColor)); }
+.ic-note:empty{ display:none; }
+.inv-row{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:8px 0 2px; }
+.inv-badge{ font-size:12px; font-weight:600; padding:3px 8px; border-radius:999px; background:var(--card-hover, rgba(127,127,127,.15)); }
+.inv-badge.ok{ color:var(--green); background:color-mix(in srgb, var(--green) 16%, transparent); }
+.inv-badge.bad{ color:var(--danger); background:color-mix(in srgb, var(--danger) 14%, transparent); }
+.inv-badge.muted{ opacity:.6; font-weight:500; }
+.inv-act{ font:600 12px Inter, system-ui, sans-serif; padding:4px 10px; border-radius:8px; border:1px solid var(--card-line, var(--line)); background:transparent; color:inherit; cursor:pointer; }
+#invoice-modal .field{ width:100%; margin-top:6px; }
+#invoice-status-box{ justify-content:center; margin-top:12px; }
+.invoices-tools{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:14px 0; }
+.invoices-tools .field{ flex:1; min-width:220px; max-width:420px; }
+.inv-item{ display:flex; align-items:center; gap:14px; padding:12px 14px; border:1px solid var(--card-line, var(--line)); border-radius:12px; margin-bottom:8px; flex-wrap:wrap; }
+.inv-item .inv-main{ flex:1; min-width:220px; }
+.inv-item .inv-num{ font-weight:700; font-size:14px; }
+.inv-item .inv-sub{ font-size:12.5px; opacity:.75; margin-top:2px; }
+.inv-item .inv-sub.bad{ color:var(--danger); opacity:1; }
+.inv-item .inv-total{ font-weight:800; font-size:15px; min-width:70px; text-align:right; }
+.inv-item .inv-btns{ display:flex; gap:6px; flex-wrap:wrap; }
+#invoices-more{ margin-top:6px; }
+#invoice-status-box .inv-badge{ font-size:13.5px; padding:6px 12px; }
 #app-dialog-message{ white-space:pre-line; overflow-wrap:anywhere; }
 /* ---------- Reducir movimiento (opción de Windows) ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -4823,6 +4867,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <button data-view="home-view" class="active"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span>Inicio</span></button>
       <button data-view="pos-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span><span>Vender</span></button>
       <button data-view="history-view"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></span><span>Historial</span></button>
+      <button data-view="invoices-view" id="invoices-tab-btn" style="display:none;"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>Facturas</span></button>
       <button data-view="delivery-view" id="delivery-tab-btn" style="display:none;"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="1" y="6" rx="2"/><path d="M17 10h3l3 3v3a2 2 0 0 1-2 2h-1"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 19H8a2 2 0 0 1-2-2v-3"/></svg></span><span>Domicilio</span></button>
     </nav>
     <div class="sidebar-section-label">Secundario</div>
@@ -4985,6 +5030,17 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
     </section>
 
     <!-- DELIVERY VIEW -->
+    <section id="invoices-view" class="view">
+      <h2>Facturas</h2>
+      <div class="menu-sub">Facturas electrónicas de tu local. Las autorizadas se pueden volver a imprimir o descargar.</div>
+      <div class="invoices-tools">
+        <input type="search" id="invoices-search" class="field" placeholder="Buscar por número, cliente o pedido">
+        <button type="button" id="invoices-refresh" class="btn btn-secondary">Actualizar</button>
+        <span class="status-msg" id="invoices-status"></span>
+      </div>
+      <div id="invoices-list"></div>
+      <button type="button" id="invoices-more" class="btn btn-secondary" style="display:none;">Cargar más</button>
+    </section>
     <section id="delivery-view" class="view">
       <h2>Domicilio</h2>
       <div class="sales-sub">Pedidos enviados que todavía no se han cobrado.</div>
@@ -5165,6 +5221,11 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         <span id="shop-name-readonly" class="settings-strong"></span>
         <span class="settings-hint">(lo cambia el administrador de la plataforma)</span>
       </div>
+      <div class="settings-box" id="tax-profile-box" style="display:none; flex-direction:column; align-items:stretch;">
+        <div class="settings-title">Datos tributarios</div>
+        <div class="settings-hint" id="tax-profile-text" style="line-height:1.6;"></div>
+        <span class="settings-hint">(los registra el administrador de la plataforma; si algo está mal, avísale)</span>
+      </div>
       <div class="settings-box">
         <label>Código de encargado (para borrar pedidos y entrar a Productos):</label>
         <button type="button" id="change-code-btn" class="btn btn-secondary"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span> Cambiar código</button>
@@ -5204,6 +5265,39 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         </div>
         <button type="button" id="backup-now-btn" class="btn btn-primary"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.9A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.24"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg></span> Respaldar ahora</button>
         <button type="button" id="restore-backup-btn" class="btn btn-secondary"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.64-6.36L3 8"/><path d="M3 3v5h5"/></svg></span> Restaurar último respaldo</button>
+      </div>
+      <!-- FACTURACIÓN ELECTRÓNICA (E4): solo aparece si el local tiene facturación configurada -->
+      <div class="settings-box" id="fiscal-settings-box" style="display:none;">
+        <div class="settings-title">Facturación electrónica</div>
+        <div class="fiscal-status" id="fiscal-status-line"></div>
+        <div class="fiscal-grid">
+          <label>Nombre comercial (sale en la factura)<input type="text" id="fiscal-trade-name" class="field" maxlength="300"></label>
+          <label>Dirección del negocio<input type="text" id="fiscal-address" class="field" maxlength="300"></label>
+          <label>Teléfono<input type="text" id="fiscal-phone" class="field" maxlength="30"></label>
+          <label>Correo del negocio<input type="email" id="fiscal-email" class="field" maxlength="254"></label>
+          <label>Mensaje al pie de la factura (opcional)<input type="text" id="fiscal-footer" class="field" maxlength="160"></label>
+          <label>Tarifa de IVA
+            <select id="fiscal-iva"><option value="15">15 %</option><option value="5">5 %</option><option value="8">8 %</option></select>
+          </label>
+          <label class="fiscal-check"><input type="checkbox" id="fiscal-prices-include"> Mis precios ya incluyen IVA</label>
+          <label>Pagos con tarjeta
+            <select id="fiscal-card"><option value="">Preguntar en cada venta</option><option value="tarjeta_credito">Proponer crédito</option><option value="tarjeta_debito">Proponer débito</option></select>
+          </label>
+        </div>
+        <div class="fiscal-actions">
+          <button type="button" id="fiscal-save-btn" class="btn btn-primary">Guardar datos de facturación</button>
+          <button type="button" id="fiscal-test-btn" class="btn btn-secondary">Probar conexión</button>
+          <span class="status-msg" id="fiscal-save-status"></span>
+        </div>
+        <div class="settings-title fiscal-sub">Firma electrónica (.p12)</div>
+        <div class="settings-hint" id="fiscal-cert-line"></div>
+        <div class="settings-hint">Tu firma y su contraseña se envían directo al proveedor de facturación, que las guarda protegidas. VENTI no las guarda.</div>
+        <div class="fiscal-actions">
+          <input type="file" id="fiscal-p12-file" accept=".p12,.pfx">
+          <input type="password" id="fiscal-p12-pass" class="field" placeholder="Contraseña de la firma" autocomplete="off" maxlength="200">
+          <button type="button" id="fiscal-p12-btn" class="btn btn-secondary">Subir firma</button>
+          <span class="status-msg" id="fiscal-p12-status"></span>
+        </div>
       </div>
     </section>
 
@@ -5293,6 +5387,26 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
     <div id="modal-payment-stage">
       <h3>Confirmar cobro</h3>
       <p>Total a cobrar: <strong id="modal-total">$0.00</strong></p>
+      <div class="invoice-choice" id="invoice-choice" style="display:none;">
+        <div class="ic-label">Factura electrónica</div>
+        <div class="ic-options">
+          <button type="button" class="ic-btn selected" data-inv="none">Sin factura</button>
+          <button type="button" class="ic-btn" data-inv="cf">Consumidor final</button>
+          <button type="button" class="ic-btn" data-inv="data">Con datos</button>
+        </div>
+        <div class="ic-form" id="invoice-form" style="display:none;">
+          <select id="inv-idtype"><option value="cedula">Cédula</option><option value="ruc">RUC</option><option value="pasaporte">Pasaporte</option></select>
+          <input type="text" id="inv-idnumber" placeholder="Número de identificación" maxlength="20" autocomplete="off">
+          <input type="text" id="inv-name" placeholder="Nombre o razón social" maxlength="300" autocomplete="off">
+          <input type="email" id="inv-email" placeholder="Correo (ahí le llega la factura)" maxlength="120" autocomplete="off">
+          <input type="text" id="inv-phone" placeholder="Teléfono (opcional)" maxlength="20" autocomplete="off">
+          <input type="text" id="inv-address" placeholder="Dirección (opcional)" maxlength="300" autocomplete="off">
+        </div>
+        <div class="ic-card" id="inv-card-row" style="display:none;"><span class="ic-label">Tarjeta:</span>
+          <button type="button" class="ic-btn" data-card="tarjeta_credito">Crédito</button>
+          <button type="button" class="ic-btn" data-card="tarjeta_debito">Débito</button></div>
+        <div class="ic-note" id="invoice-note"></div>
+      </div>
       <div class="pay-options">
         <button data-method="Efectivo" class="pay-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span> Efectivo</button>
         <button data-method="Transferencia" class="pay-btn"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span> Transferencia</button>
@@ -5332,9 +5446,34 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
         <div class="r-row change" id="receipt-change-row"><span>Cambio para el cliente</span><span id="receipt-change"></span></div>
         <div class="r-row" id="receipt-split-row"><span>Efectivo + Transferencia</span><span id="receipt-split"></span></div>
       </div>
+      <div class="inv-row" id="invoice-status-box" style="display:none;"></div>
       <div class="modal-actions" style="margin-top:16px;">
         <button class="confirm" id="modal-done" style="width:100%;">Listo</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Factura electrónica desde el historial (E5) -->
+<div class="modal-backdrop" id="invoice-modal">
+  <div class="modal" style="max-width:420px;">
+    <h3>Emitir factura</h3>
+    <p><span id="invm-order"></span> · Total <strong id="invm-total"></strong></p>
+    <select id="invm-choice" class="field"><option value="cf" id="invm-cf-opt">Consumidor final</option><option value="data">Con datos del cliente</option></select>
+    <div class="ic-card" id="invm-card-row" style="display:none;"><span class="ic-label">Tarjeta:</span>
+          <button type="button" class="ic-btn" data-card="tarjeta_credito">Crédito</button>
+          <button type="button" class="ic-btn" data-card="tarjeta_debito">Débito</button></div>
+    <div class="ic-form" id="invm-form" style="display:none;">
+      <select id="invm-idtype"><option value="cedula">Cédula</option><option value="ruc">RUC</option><option value="pasaporte">Pasaporte</option></select>
+      <input type="text" id="invm-idnumber" placeholder="Número de identificación" maxlength="20" autocomplete="off">
+      <input type="text" id="invm-name" placeholder="Nombre o razón social" maxlength="300" autocomplete="off">
+      <input type="email" id="invm-email" placeholder="Correo (ahí le llega la factura)" maxlength="120" autocomplete="off">
+      <input type="text" id="invm-phone" placeholder="Teléfono (opcional)" maxlength="20" autocomplete="off">
+      <input type="text" id="invm-address" placeholder="Dirección (opcional)" maxlength="300" autocomplete="off">
+    </div>
+    <div class="modal-actions" style="margin-top:14px;">
+      <button class="cancel" id="invm-cancel">Cancelar</button>
+      <button class="confirm" id="invm-send">Emitir factura</button>
     </div>
   </div>
 </div>
@@ -6291,6 +6430,7 @@ async function restoreLatestBackup(){
 function renderAll(){
   $('#shop-name').textContent = (tenantData && tenantData.businessName) || settings.shopName || "VENTI";
   $('#shop-name-readonly').textContent = (tenantData && tenantData.businessName) || settings.shopName || "—";
+  if(typeof ventiTaxProfileRender === 'function') ventiTaxProfileRender();
   $('#tax-rate').value = settings.taxRate ?? 0;
   $('#print-width-input').value = settings.printWidth ?? DEFAULT_SETTINGS.printWidth;
   $('#report-paper-input').value = settings.reportPaperSize ?? DEFAULT_SETTINGS.reportPaperSize;
@@ -7113,17 +7253,9 @@ function renderCart(){
   const totalItems = cart.reduce((s,c)=>s+c.qty,0);
   $('#cart-count').textContent = totalItems + (totalItems === 1 ? ' artículo' : ' artículos');
 
-  const subtotal = cart.reduce((s,c)=> s + c.price*c.qty, 0);
-  let discountAmount = 0;
-  if(featureDiscountsEnabled && cartDiscount){
-    discountAmount = cartDiscount.type === 'percent' ? subtotal * (cartDiscount.value/100) : cartDiscount.value;
-    discountAmount = Math.min(Math.max(discountAmount, 0), subtotal);
-  }
-  const afterDiscount = subtotal - discountAmount;
-  const taxRate = Number($('#tax-rate').value) || 0;
+  // Mismo cálculo que el cobro (getCartTotals), así lo que se ve es lo que se guarda.
+  const { subtotal, discountAmount, taxRate, taxAmount, total } = getCartTotals();
   settings.taxRate = taxRate;
-  const taxAmount = afterDiscount * (taxRate/100);
-  const total = afterDiscount + taxAmount;
 
   $('#subtotal').textContent = money(subtotal);
   const discountRow = $('#discount-row');
@@ -7233,10 +7365,26 @@ let pendingCashReceived = null;
 
 function getCartTotals(){
   const subtotal = cart.reduce((s,c)=> s + c.price*c.qty, 0);
+  // Descuento: antes solo se mostraba y la venta se guardaba sin él.
+  let discountAmount = 0;
+  if(featureDiscountsEnabled && cartDiscount){
+    discountAmount = cartDiscount.type === 'percent' ? subtotal * (cartDiscount.value/100) : cartDiscount.value;
+    discountAmount = Math.min(Math.max(discountAmount, 0), subtotal);
+    discountAmount = Math.round(discountAmount * 100) / 100; // centavos exactos
+  }
+  const afterDiscount = subtotal - discountAmount;
   const taxRate = Number($('#tax-rate').value) || 0;
-  const taxAmount = subtotal * (taxRate/100);
-  const total = subtotal + taxAmount;
-  return { subtotal, taxRate, taxAmount, total };
+  const taxAmount = afterDiscount * (taxRate/100);
+  let total = afterDiscount + taxAmount;
+  // Factura electrónica: el total debe ser el exacto del SRI (igual al del menú o 1 centavo menos).
+  let roundingAdjustment = 0, invoiceError = null;
+  if(ventiInvoiceChoice){
+    try {
+      const ex = ventiFiscalExactTotal({ items: cart.map(c => ({ qty: c.qty, price: c.price })), discountAmount, taxRate }, ventiFiscalCfg);
+      total = ex.totalC / 100; roundingAdjustment = ex.roundingC / 100;
+    } catch(e){ invoiceError = e.message; }
+  }
+  return { subtotal, discountAmount, taxRate, taxAmount, total, roundingAdjustment, invoiceError };
 }
 
 function updateCashFeedback(){
@@ -7297,6 +7445,7 @@ $('#checkout-btn').onclick = () => {
   $$('.pay-btn').forEach(b=>b.classList.remove('selected'));
   $('#modal-confirm').disabled = true;
   $('#modal-total').textContent = $('#total').textContent;
+  ventiInvoiceChoiceReset();
   $('#cash-box').style.display = 'none';
   $('#cash-received').value = '';
   $('#cash-feedback').textContent = '';
@@ -7383,7 +7532,10 @@ $('#ticket-preview-print').onclick = async () => {
   cartPrintedBeforePayment = true;
   renderCart();
 };
-$('#modal-cancel').onclick = () => $('#checkout-modal').classList.remove('active');
+$('#modal-cancel').onclick = () => {
+  $('#checkout-modal').classList.remove('active');
+  if(ventiInvoiceChoice){ ventiInvoiceChoice = null; renderCart(); } // el total vuelve a ser el normal
+};
 $$('.pay-btn').forEach(btn=>{
   btn.onclick = () => {
     selectedPayMethod = btn.dataset.method;
@@ -7436,7 +7588,14 @@ $('#modal-confirm').onclick = async () => {
 };
 
 async function confirmCheckout(){
-  const { subtotal, taxRate, taxAmount, total } = getCartTotals();
+  const { subtotal, discountAmount, taxRate, taxAmount, total, roundingAdjustment, invoiceError } = getCartTotals();
+  // Factura electrónica: los datos se revisan ANTES de registrar la venta.
+  let invoiceBuyer = null;
+  if(ventiInvoiceChoice){
+    if(invoiceError){ await appAlert(invoiceError, 'Factura'); return; }
+    invoiceBuyer = await ventiInvoiceBuyerFrom('inv', ventiInvoiceChoice, Math.round(total * 100), selectedPayMethod);
+    if(!invoiceBuyer) return;
+  }
   const order = {
     id: 'P' + Date.now().toString().slice(-6),
     orderNumber: nextOrderNumberForToday(),
@@ -7449,6 +7608,14 @@ async function confirmCheckout(){
     delivered: false,
     dayId: null
   };
+  if(discountAmount > 0){
+    order.discountAmount = discountAmount;
+    order.discount = { type: cartDiscount.type, value: cartDiscount.value };
+  }
+  if(invoiceBuyer && roundingAdjustment > 0) order.roundingAdjustment = roundingAdjustment; // ajuste SRI de 1 centavo
+  if(invoiceBuyer) order.invoice = { status: 'sending' };
+  if(invoiceBuyer && selectedPayMethod === 'Tarjeta') order.cardMethod = ventiInvoiceCard.inv;
+  ventiInvoiceChoice = null;
   let cashReceived = null, change = null;
   if(selectedPayMethod === 'Efectivo'){
     cashReceived = Number($('#cash-received').value);
@@ -7464,6 +7631,7 @@ async function confirmCheckout(){
   ventiLiveUpsert(order);
   await deductStockForCart(cart);
   cart = [];
+  cartDiscount = null; // el descuento era de esta venta, no de la siguiente
   $('#customer-name').value = '';
   cartOrderType = 'aqui';
   renderCart();
@@ -7499,13 +7667,20 @@ async function confirmCheckout(){
   // Pantalla de éxito: todo se desenfoca y aparece el visto verde animado
   const itemsBox = $('#receipt-items');
   if(itemsBox){
-    itemsBox.innerHTML = order.items.map(it => `<div class="ri-row"><span class="ri-qty">${it.qty}×</span><span class="ri-name">${escapeHtml(it.name)}${it.note ? `<small>${escapeHtml(it.note)}</small>` : ''}</span><span class="ri-price">${money(it.qty * it.price)}</span></div>`).join('');
+    itemsBox.innerHTML = order.items.map(it => `<div class="ri-row"><span class="ri-qty">${it.qty}×</span><span class="ri-name">${escapeHtml(it.name)}${it.note ? `<small>${escapeHtml(it.note)}</small>` : ''}</span><span class="ri-price">${money(it.qty * it.price)}</span></div>`).join('')
+      + (order.roundingAdjustment ? `<div class="ri-row"><span class="ri-qty"></span><span class="ri-name">Ajuste de redondeo (factura SRI)</span><span class="ri-price">-${money(order.roundingAdjustment)}</span></div>` : '');
   }
   const successSub = $('#success-sub');
   if(successSub) successSub.textContent = [`Pedido ${formatOrderNumber(order.orderNumber)}`, order.customerName || 'sin nombre', ventiOrderTypeLabel(order), selectedPayMethod || ''].filter(Boolean).join(' · ');
   $('#checkout-modal').classList.add('is-success');
   $('#modal-receipt-stage').style.display = 'block';
   setTimeout(() => $('#modal-done')?.focus(), 400);
+  const invBox = $('#invoice-status-box');
+  if(invBox){ invBox.style.display = 'none'; invBox.innerHTML = ''; }
+  if(invoiceBuyer){
+    if(featurePrintingEnabled) ventiInvoiceAutoPrint[order.id] = true;
+    ventiInvoiceIssue(order, invoiceBuyer); // la venta ya quedó guardada; la factura sigue en segundo plano
+  }
 }
 
 $('#modal-done').onclick = () => {
@@ -7557,6 +7732,7 @@ function orderCardHtml(o){
         </div>
         <span class="total">${money(o.total)}</span>
       </div>
+      ${ventiInvoiceHistoryHtml(o)}
       <div class="order-actions">
         <button class="deliver-toggle ${o.delivered ? 'is-delivered' : ''}${o.id === ventiJustToggledId ? ' just-toggled' : ''}" data-toggle-id="${o.id}">
           ${o.delivered ? '<svg class="dt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Entregado' : 'Marcar como entregado'}
@@ -11550,6 +11726,673 @@ async function clearCodeAttempts(){
   await store.set(tenantKey('code-lockout-until'), '0', true).catch(()=>{});
 }
 
+// ===== FACTURACIÓN ELECTRÓNICA · Configuración (E4) =====
+// Solo aparece si el local ya tiene facturación configurada (tenants/{id}/fiscal/config).
+// Todo se guarda a través de las Cloud Functions; el POS nunca escribe datos tributarios
+// directamente ni guarda la firma .p12 ni su contraseña.
+let ventiFiscalCfg = null;
+async function ventiFiscalCall(name, data){
+  // Se carga solo cuando se usa: si no hay internet, el resto del POS no se ve afectado.
+  const appMod = await import('https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js');
+  const fnMod = await import('https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js');
+  const fn = fnMod.httpsCallable(fnMod.getFunctions(appMod.getApp(), 'us-central1'), name);
+  return (await fn(data)).data;
+}
+function ventiFiscalErr(e){
+  return (e && e.message) ? String(e.message).replace(/^FirebaseError:\s*/, '') : 'No se pudo completar. Intenta de nuevo.';
+}
+function ventiFiscalDate(iso){
+  const d = iso ? new Date(iso) : null;
+  return d && !isNaN(d) ? d.toLocaleDateString('es-EC', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
+}
+// Datos tributarios del local (tenants/{id}.fiscalProfile): solo lectura, los registra el administrador.
+function ventiTaxProfileRender(){
+  const box = $('#tax-profile-box');
+  if(!box) return;
+  const fp = (tenantData && tenantData.fiscalProfile) || null;
+  const has = !!(fp && (fp.ruc || fp.legalName || fp.headOfficeAddress || fp.establishmentAddress));
+  box.style.display = has ? 'flex' : 'none';
+  if(!has) return;
+  const reg = { general: 'General', rimpe_emprendedor: 'RIMPE Emprendedor', rimpe_negocio_popular: 'RIMPE Negocio Popular' };
+  const lines = [
+    fp.ruc && 'RUC: ' + fp.ruc, fp.legalName && 'Razón social: ' + fp.legalName, fp.tradeName && 'Nombre comercial: ' + fp.tradeName,
+    fp.headOfficeAddress && 'Dirección matriz: ' + fp.headOfficeAddress, fp.establishmentAddress && 'Dirección del local: ' + fp.establishmentAddress,
+    (fp.establishmentCode || fp.emissionPointCode) && 'Establecimiento ' + (fp.establishmentCode || '—') + ' · Punto de emisión ' + (fp.emissionPointCode || '—'),
+    fp.regime && 'Régimen: ' + (reg[fp.regime] || fp.regime), 'Obligado a llevar contabilidad: ' + (fp.keepsAccounting ? 'Sí' : 'No'),
+    fp.specialTaxpayer && 'Contribuyente especial: ' + fp.specialTaxpayer, fp.withholdingAgent && 'Agente de retención: ' + fp.withholdingAgent
+  ].filter(Boolean);
+  $('#tax-profile-text').innerHTML = lines.map(escapeHtml).join('<br>');
+}
+function ventiFiscalRender(){
+  const box = $('#fiscal-settings-box');
+  const c = ventiFiscalCfg;
+  ventiInvoicesTabSync();
+  if(!box) return;
+  if(!c){ box.style.display = 'none'; return; }
+  box.style.display = '';
+  const envLabel = c.environment === 'produccion' ? 'Real' : (c.environment === 'pruebas' ? 'Pruebas del SRI (sin validez tributaria)' : 'Práctica (sin validez tributaria)');
+  const biz = c.providerBusiness || {};
+  $('#fiscal-status-line').textContent = c.connected
+    ? `Conectado · ${envLabel}${biz.legalName ? ' · ' + biz.legalName : ''}${biz.ruc ? ' · RUC ' + biz.ruc : ''}${c.keyHint ? ' · clave ' + c.keyHint : ''}`
+    : 'Este local todavía no está conectado con el proveedor de facturación. Pídeselo al administrador de VENTI.';
+  const r = c.ride || {};
+  const fp = (tenantData && tenantData.fiscalProfile) || {};
+  $('#fiscal-trade-name').value = r.tradeName || biz.tradeName || fp.tradeName || '';
+  $('#fiscal-address').value = r.address || fp.headOfficeAddress || '';
+  $('#fiscal-phone').value = r.phone || fp.phone || '';
+  $('#fiscal-email').value = r.email || fp.email || '';
+  $('#fiscal-footer').value = r.footer || '';
+  $('#fiscal-iva').value = String((c.ivaRates && c.ivaRates.iva) || 15);
+  $('#fiscal-prices-include').checked = c.pricesIncludeTax !== false;
+  $('#fiscal-card').value = c.cardMethod || '';
+  const cert = c.certificate;
+  let certText = 'Todavía no has subido tu firma electrónica.';
+  if(cert && cert.uploaded){
+    const days = Math.ceil((new Date(cert.validUntil) - Date.now()) / 864e5);
+    certText = `Firma de ${cert.holder || '—'}${cert.issuerName ? ' (' + cert.issuerName + ')' : ''} · vence el ${ventiFiscalDate(cert.validUntil)}`;
+    if(days <= 0) certText += ' · VENCIDA: sube una nueva.';
+    else if(days <= 30) certText += ` · vence en ${days} días: renuévala pronto.`;
+  }
+  $('#fiscal-cert-line').textContent = certText;
+  $$('#fiscal-settings-box input, #fiscal-settings-box select, #fiscal-settings-box button').forEach(el => {
+    if(el.id !== 'fiscal-test-btn') el.disabled = !c.connected;
+  });
+}
+async function ventiFiscalInit(){
+  ventiFiscalCfg = null;
+  try {
+    if(db && tenantId && !ventiOwnerMode){
+      const snap = await getDoc(doc(db, 'tenants', tenantId, 'fiscal', 'config'));
+      if(snap.exists()) ventiFiscalCfg = snap.data();
+    }
+  } catch(_){ ventiFiscalCfg = null; } // sin permiso o sin conexión: la sección no aparece
+  ventiFiscalRender();
+}
+function ventiFiscalSetup(){
+  ventiInvoicesSetup();
+  ventiInvoiceSetupCheckout();
+  ventiInvoiceSetupHistory();
+  const save = $('#fiscal-save-btn');
+  if(!save || save.dataset.ready) return;
+  save.dataset.ready = '1';
+  save.addEventListener('click', async () => {
+    const status = $('#fiscal-save-status');
+    const cardMethod = $('#fiscal-card').value;
+    const settings = {
+      tradeName: $('#fiscal-trade-name').value.trim() || null,
+      address: $('#fiscal-address').value.trim(),
+      phone: $('#fiscal-phone').value.trim() || null,
+      email: $('#fiscal-email').value.trim() || null,
+      footer: $('#fiscal-footer').value.trim() || null,
+      ivaPercent: Number($('#fiscal-iva').value),
+      pricesIncludeTax: $('#fiscal-prices-include').checked,
+      cardMethod: cardMethod || null // vacío = preguntar en cada venta
+    };
+    if(!settings.address){ await appAlert('Escribe la dirección del negocio: es obligatoria en la factura.', 'Falta un dato'); return; }
+    if(!(await requireManagerCode('Ingresa el código de encargado para cambiar los datos de facturación:', 'Facturación'))) return;
+    save.disabled = true; status.style.color = ''; status.textContent = 'Guardando…';
+    try {
+      await ventiFiscalCall('fiscalSaveConfig', { tenantId, settings });
+      status.textContent = 'Guardado ✓';
+      await ventiFiscalInit();
+    } catch(e){
+      status.style.color = 'var(--danger)'; status.textContent = ventiFiscalErr(e);
+    } finally { save.disabled = false; }
+  });
+  $('#fiscal-test-btn').addEventListener('click', async () => {
+    const status = $('#fiscal-save-status');
+    status.style.color = ''; status.textContent = 'Probando…';
+    try {
+      const r = await ventiFiscalCall('fiscalTestConnection', { tenantId });
+      status.style.color = r.ok ? '' : 'var(--danger)'; status.textContent = r.message;
+    } catch(e){ status.style.color = 'var(--danger)'; status.textContent = ventiFiscalErr(e); }
+  });
+  $('#fiscal-p12-btn').addEventListener('click', async () => {
+    const status = $('#fiscal-p12-status');
+    const fileEl = $('#fiscal-p12-file'), passEl = $('#fiscal-p12-pass');
+    const file = fileEl.files && fileEl.files[0];
+    if(!file){ await appAlert('Elige el archivo de tu firma electrónica (.p12).', 'Falta la firma'); return; }
+    if(file.size > 64 * 1024){ await appAlert('Ese archivo es demasiado grande para ser una firma electrónica (.p12).', 'Archivo no válido'); return; }
+    if(!passEl.value){ await appAlert('Escribe la contraseña de tu firma.', 'Falta la contraseña'); return; }
+    if(!(await requireManagerCode('Ingresa el código de encargado para subir la firma electrónica:', 'Firma electrónica'))) return;
+    const btn = $('#fiscal-p12-btn');
+    btn.disabled = true; status.style.color = ''; status.textContent = 'Subiendo…';
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      let bin = ''; for(let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      const r = await ventiFiscalCall('fiscalUploadCertificate', { tenantId, p12Base64: btoa(bin), password: passEl.value });
+      bin = ''; bytes.fill(0);
+      status.textContent = `Firma guardada ✓ (vence el ${ventiFiscalDate(r.certificate && r.certificate.validUntil)})`;
+      await ventiFiscalInit();
+    } catch(e){
+      status.style.color = 'var(--danger)'; status.textContent = ventiFiscalErr(e);
+    } finally {
+      passEl.value = ''; fileEl.value = ''; // la contraseña y el archivo no quedan en la pantalla
+      btn.disabled = false;
+    }
+  });
+}
+
+// ===== FACTURACIÓN ELECTRÓNICA · Emitir (E5) =====
+// <venti-fiscal-calc> — copia del cálculo del servidor (venti-functions/src/fiscal/dto.js, computeInvoice).
+// Las pruebas de venti-functions comparan esta copia con la del servidor; si se cambia una, cambiar la otra.
+function ventiFiscalExactTotal(order, cfg){
+  const cents = (n) => Math.round((Number(n) + Number.EPSILON) * 100);
+  const taxOf = (b, r) => Math.floor((b * r + 50) / 100);
+  const err = (code, msg) => Object.assign(new Error(msg), { code });
+  const baseFor = (g, r) => { const guess = Math.round(g * 100 / (100 + r)); for(const b of [guess, guess - 1, guess + 1, guess - 2, guess + 2]){ if(b >= 0 && b + taxOf(b, r) === g) return b; } return null; };
+  const spread = (amountC, weights) => {
+    const sum = weights.reduce((s, w) => s + w, 0);
+    if(!amountC || !sum) return weights.map(() => 0);
+    const exact = weights.map(w => amountC * w / sum);
+    const out = exact.map(Math.floor);
+    let rest = amountC - out.reduce((s, x) => s + x, 0);
+    exact.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if(rest > 0){ out[i]++; rest--; } });
+    return out;
+  };
+  const posTaxRate = Number(order.taxRate) || 0;
+  const items = order.items.map(it => {
+    const code = it.ivaCode || cfg.defaultIvaCode || 'iva';
+    let rate = 0;
+    if(code === 'iva'){
+      rate = Number((cfg.ivaRates || {}).iva);
+      if(!(Number.isInteger(rate) && rate > 0 && rate < 100)) throw err('iva-rate', 'Falta configurar el porcentaje de IVA del local.');
+    }
+    return { code, rate, grossC: cents(Number(it.qty) * Number(it.price)) };
+  });
+  const discountC = cents(order.discountAmount || 0);
+  spread(discountC, items.map(x => x.grossC)).forEach((d, i) => { items[i].netC = items[i].grossC - d; });
+  const groups = {};
+  items.forEach(x => { (groups[x.code] = groups[x.code] || { rate: x.rate, netC: 0 }).netC += x.netC; });
+  let totalC = 0, menuC = 0, roundingC = 0;
+  for(const g of Object.values(groups)){
+    let baseC;
+    if(g.rate === 0){ baseC = g.netC; menuC += g.netC; }
+    else if(posTaxRate > 0){
+      if(posTaxRate !== g.rate) throw err('tax-mismatch', `El impuesto de la venta (${posTaxRate}%) no coincide con el IVA configurado (${g.rate}%).`);
+      baseC = g.netC; menuC += g.netC + taxOf(g.netC, g.rate);
+    } else {
+      if(!cfg.pricesIncludeTax) throw err('tax-config', 'La venta no cobró IVA pero el producto lo tiene. Revisa "Mis precios incluyen IVA".');
+      menuC += g.netC;
+      let adj = 0;
+      for(; adj <= 3 && adj <= g.netC; adj++){ baseC = baseFor(g.netC - adj, g.rate); if(baseC !== null) break; }
+      if(baseC === null || baseC === undefined) throw err('rounding', 'No se encontró un total exacto para la factura.');
+      roundingC += adj;
+    }
+    totalC += baseC + taxOf(baseC, g.rate);
+  }
+  return { totalC, menuC, roundingC };
+}
+// </venti-fiscal-calc>
+
+var ventiInvoiceChoice = null;   // null = sin factura · 'cf' = consumidor final · 'data' = con datos
+var ventiInvoiceBuyers = {};     // datos del comprador SOLO en memoria (no se guardan en los pedidos ni en respaldos)
+var ventiInvoicePolls = {};
+var ventiInvoiceAutoPrint = {};  // ventas recién cobradas: la factura se imprime sola apenas se autoriza
+const VENTI_CF_MAX = 50;          // consumidor final: hasta USD 50
+
+function ventiFiscalCanInvoice(){
+  const c = ventiFiscalCfg;
+  return !!(c && c.enabled === true && c.connected === true && !ventiOwnerMode && tenantId);
+}
+function ventiCedulaOk(id){
+  if(!/^\d{10}$/.test(id)) return false;
+  const prov = Number(id.slice(0, 2));
+  if(!((prov >= 1 && prov <= 24) || prov === 30) || Number(id[2]) >= 6) return false;
+  let sum = 0;
+  for(let i = 0; i < 9; i++){ let v = Number(id[i]) * (i % 2 === 0 ? 2 : 1); if(v > 9) v -= 9; sum += v; }
+  return (10 - (sum % 10)) % 10 === Number(id[9]);
+}
+// Lee y revisa los datos del comprador del formulario `prefix` ('inv' en el cobro, 'invm' en el historial).
+// Devuelve el comprador, o null y muestra el problema.
+var ventiInvoiceCard = { inv: null, invm: null }; // crédito o débito elegido en esta venta
+function ventiCardRowSync(prefix, payment){
+  const row = $('#' + prefix + '-card-row');
+  if(!row) return;
+  row.style.display = payment === 'Tarjeta' ? 'flex' : 'none';
+  $$('#' + prefix + '-card-row [data-card]').forEach(b => b.classList.toggle('selected', b.dataset.card === ventiInvoiceCard[prefix]));
+}
+function ventiCardRowSetup(prefix){
+  $$('#' + prefix + '-card-row [data-card]').forEach(b => b.addEventListener('click', () => {
+    ventiInvoiceCard[prefix] = b.dataset.card;
+    $$('#' + prefix + '-card-row [data-card]').forEach(x => x.classList.toggle('selected', x === b));
+  }));
+}
+async function ventiInvoiceBuyerFrom(prefix, choice, totalC, payment){
+  if(payment === 'Tarjeta' && !ventiInvoiceCard[prefix]){
+    await appAlert('Para la factura, elige si la tarjeta es de crédito o débito.', 'Falta un dato');
+    return null;
+  }
+  if(choice === 'cf'){
+    if(totalC > VENTI_CF_MAX * 100){ await appAlert(`Para ventas de más de $${VENTI_CF_MAX} la factura necesita los datos del cliente. Elige "Con datos".`, 'Consumidor final'); return null; }
+    return { idType: 'consumidorFinal' };
+  }
+  const v = (id) => ($('#' + prefix + '-' + id).value || '').trim();
+  const b = { idType: v('idtype'), idNumber: v('idnumber').replace(/\s+/g, ''), name: v('name'), email: v('email'), phone: v('phone') || null, address: v('address') || null };
+  let problem = '';
+  if(b.idType === 'cedula' && !ventiCedulaOk(b.idNumber)) problem = 'La cédula no es válida. Revisa los 10 números.';
+  else if(b.idType === 'ruc' && !(/^\d{13}$/.test(b.idNumber) && b.idNumber.endsWith('001'))) problem = 'El RUC debe tener 13 números y terminar en 001.';
+  else if(b.idType === 'pasaporte' && !/^[A-Za-z0-9]{3,20}$/.test(b.idNumber)) problem = 'El pasaporte solo puede tener letras y números.';
+  else if(!b.name) problem = 'Falta el nombre o la razón social del cliente.';
+  else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) problem = 'Falta el correo del cliente (ahí le llega su factura).';
+  if(problem){ await appAlert(problem, 'Datos de la factura'); return null; }
+  return b;
+}
+function ventiInvoiceOrderPayload(o){
+  return { id: o.id, orderNumber: o.orderNumber, timestamp: o.timestamp,
+    items: o.items.map(it => ({ name: it.name, qty: it.qty, price: it.price, ...(it.ivaCode ? { ivaCode: it.ivaCode } : {}) })),
+    subtotal: o.subtotal, discountAmount: o.discountAmount || 0, taxRate: o.taxRate || 0, taxAmount: o.taxAmount || 0,
+    total: o.total, payment: o.payment, splitCash: o.splitCash || 0, splitTransfer: o.splitTransfer || 0,
+    ...(o.payment === 'Tarjeta' && o.cardMethod ? { cardMethod: o.cardMethod } : {}) };
+}
+// Opciones de factura dentro de la ventana de cobro.
+function ventiInvoiceChoiceReset(){
+  ventiInvoiceChoice = null;
+  const box = $('#invoice-choice');
+  if(!box) return;
+  box.style.display = ventiFiscalCanInvoice() ? '' : 'none';
+  $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b.dataset.inv === 'none'));
+  $('#invoice-form').style.display = 'none';
+  ['idnumber', 'name', 'email', 'phone', 'address'].forEach(k => { const el = $('#inv-' + k); if(el) el.value = ''; });
+  $('#inv-idtype').value = 'cedula';
+  ventiInvoiceCard.inv = (ventiFiscalCfg && ventiFiscalCfg.cardMethod) || null;
+  ventiCardRowSync('inv', null);
+  ventiInvoiceChoiceRefresh();
+}
+function ventiInvoiceChoiceRefresh(){
+  const t = getCartTotals();
+  $('#modal-total').textContent = money(t.total);
+  const note = $('#invoice-note');
+  if(note){
+    note.textContent = '';
+    if(ventiInvoiceChoice && t.invoiceError) note.textContent = t.invoiceError;
+    else if(ventiInvoiceChoice && t.roundingAdjustment > 0) note.textContent = `Para que la factura cuadre exacto con el SRI, el total baja ${money(t.roundingAdjustment)} (el cliente paga ${money(t.total)}).`;
+    else if(ventiInvoiceChoice === 'cf' && t.total > VENTI_CF_MAX) note.textContent = `Más de $${VENTI_CF_MAX}: se necesitan los datos del cliente.`;
+  }
+  if(selectedPayMethod === 'Efectivo') updateCashFeedback();
+  else if(selectedPayMethod === 'Dividido') updateSplitFeedback();
+  ventiCardRowSync('inv', ventiInvoiceChoice ? selectedPayMethod : null);
+}
+function ventiInvoiceSetupCheckout(){
+  const box = $('#invoice-choice');
+  if(!box || box.dataset.ready) return;
+  box.dataset.ready = '1';
+  ventiCardRowSetup('inv');
+  // al cambiar la forma de pago, se muestra u oculta crédito/débito
+  $$('.pay-btn').forEach(b => b.addEventListener('click', () => ventiCardRowSync('inv', ventiInvoiceChoice ? b.dataset.method : null)));
+  $$('#invoice-choice .ic-btn[data-inv]').forEach(btn => btn.addEventListener('click', () => {
+    ventiInvoiceChoice = btn.dataset.inv === 'none' ? null : btn.dataset.inv;
+    $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b === btn));
+    $('#invoice-form').style.display = ventiInvoiceChoice === 'data' ? '' : 'none';
+    ventiInvoiceChoiceRefresh();
+    if(ventiInvoiceChoice === 'data') $('#inv-idnumber').focus();
+  }));
+}
+
+// Guarda en el pedido SOLO el estado de su factura (sin datos del comprador).
+async function ventiInvoiceStore(o, r){
+  o.invoice = { invoiceId: r.invoiceId || (o.invoice && o.invoice.invoiceId) || null, status: r.status,
+    number: r.number || null, accessKey: r.accessKey || null, authorizationNumber: r.authorizationNumber || null, authorizedAt: r.authorizedAt || null,
+    environment: r.environment || (o.invoice && o.invoice.environment) || null,
+    message: r.status === 'rejected' ? ((r.sriMessages || []).map(m => m.message).filter(Boolean).join(' · ') || 'Rechazada por el SRI') : (r.error ? r.error.friendly : null),
+    retryable: r.error ? !!r.error.retryable : null, updatedAt: new Date().toISOString() };
+  await saveOrdersData();
+  renderHistory(); // siempre: si no, al volver al Historial se vería el estado viejo
+  if(o.invoice.status === 'authorized' && ventiInvoiceAutoPrint[o.id]){
+    delete ventiInvoiceAutoPrint[o.id];
+    ventiInvoicePrint(o.invoice.invoiceId);
+  } else if(['rejected', 'error'].includes(o.invoice.status)) delete ventiInvoiceAutoPrint[o.id];
+}
+function ventiInvoiceStatusHtml(o){
+  const inv = o.invoice;
+  if(!inv) return '';
+  const act = (html) => ventiOwnerMode ? '' : html; // el celular del dueño solo mira
+  const test = inv.environment && inv.environment !== 'produccion' ? ' <small>(práctica)</small>' : '';
+  if(inv.status === 'authorized') return `<span class="inv-badge ok">Factura autorizada · ${escapeHtml(inv.number || '')}${test}</span>` + act(`<button type="button" class="inv-act" data-inv-print-order="${o.id}">Imprimir factura</button>`);
+  if(inv.status === 'processing' || inv.status === 'sending') return `<span class="inv-badge wait">Factura en proceso…${test}</span>` + act(`<button type="button" class="inv-act" data-inv-refresh="${o.id}">Consultar estado</button>`);
+  if(inv.status === 'rejected') return `<span class="inv-badge bad" title="${escapeHtml(inv.message || '')}">Factura rechazada: ${escapeHtml(inv.message || '')}</span>` + act(`<button type="button" class="inv-act" data-inv-fix="${o.id}">Corregir y reenviar</button>`);
+  if(inv.status === 'error'){
+    return `<span class="inv-badge bad">${escapeHtml(inv.message || 'No se pudo enviar la factura')}</span>` +
+      act(inv.retryable ? `<button type="button" class="inv-act" data-inv-retry="${o.id}">Reintentar</button>` : `<button type="button" class="inv-act" data-inv-new="${o.id}">Corregir datos y reenviar</button>`);
+  }
+  return '';
+}
+// Botón "Emitir factura" en el historial: solo ventas de HOY (la factura siempre lleva la fecha de hoy)
+// y cuyo total cobrado ya es el exacto de la factura.
+function ventiInvoiceHistoryHtml(o){
+  if(o.invoice) return `<div class="inv-row">${ventiInvoiceStatusHtml(o)}</div>`;
+  if(!ventiFiscalCanInvoice() || o.dayId || o.viaDelivery) return '';
+  if(new Date(o.timestamp).toDateString() !== new Date().toDateString()) return '';
+  let ok = false;
+  try { ok = ventiFiscalExactTotal(o, ventiFiscalCfg).totalC === Math.round(o.total * 100); } catch(_){}
+  return ok ? `<div class="inv-row"><button type="button" class="inv-act" data-inv-new="${o.id}">Emitir factura</button></div>`
+    : `<div class="inv-row"><span class="inv-badge muted" title="Con el IVA como lo calcula el SRI esta venta no da exacto. Para facturarla, elige Factura al cobrar.">Sin factura (el total no cuadra al centavo)</span></div>`;
+}
+function ventiInvoiceShow(o){
+  const box = $('#invoice-status-box');
+  if(!box || !lastCompletedOrder || lastCompletedOrder.id !== o.id) return;
+  const inv = o.invoice;
+  if(!inv){ box.style.display = 'none'; return; }
+  box.style.display = '';
+  box.innerHTML = inv.status === 'sending' && !inv.invoiceId ? '<span class="inv-badge wait">Enviando la factura al SRI…</span>' : ventiInvoiceStatusHtml(o);
+}
+async function ventiInvoiceIssue(o, buyer){
+  ventiInvoiceBuyers[o.id] = buyer;
+  o.invoice = Object.assign({}, o.invoice || {}, { status: 'sending' });
+  ventiInvoiceShow(o);
+  let r;
+  try {
+    r = await ventiFiscalCall('fiscalIssueInvoice', { tenantId, order: ventiInvoiceOrderPayload(o), buyer });
+  } catch(e){
+    const code = String(e && e.code || '');
+    const dataProblem = /invalid-argument|failed-precondition|permission-denied|unauthenticated/.test(code);
+    r = { status: 'error', error: { friendly: ventiFiscalErr(e), retryable: !dataProblem } };
+  }
+  await ventiInvoiceStore(o, r);
+  ventiInvoiceShow(o);
+  if(o.invoice.status === 'processing') ventiInvoicePoll(o);
+}
+// Corregir y reenviar una rechazada: mismo número y clave de acceso (el servidor lo hace con el proveedor).
+async function ventiInvoiceResubmit(o, buyer){
+  ventiInvoiceBuyers[o.id] = buyer;
+  let r;
+  try { r = await ventiFiscalCall('fiscalResubmitInvoice', { tenantId, invoiceId: o.invoice.invoiceId, buyer }); }
+  catch(e){ await appAlert(ventiFiscalErr(e), 'No se pudo reenviar'); return; }
+  await ventiInvoiceStore(o, r);
+  ventiInvoiceShow(o);
+  if(o.invoice.status === 'processing') ventiInvoicePoll(o);
+}
+// Mientras está "en proceso" consulta sola unas veces (sin volver a emitir).
+function ventiInvoicePoll(o, tries = 8){
+  clearTimeout(ventiInvoicePolls[o.id]);
+  if(tries <= 0) return;
+  ventiInvoicePolls[o.id] = setTimeout(async () => {
+    await ventiInvoiceRefresh(o, true);
+    if(o.invoice && o.invoice.status === 'processing') ventiInvoicePoll(o, tries - 1);
+  }, 4000);
+}
+async function ventiInvoiceRefresh(o, quiet){
+  if(!o.invoice || !o.invoice.invoiceId) return;
+  try {
+    const r = await ventiFiscalCall('fiscalRefreshInvoice', { tenantId, invoiceId: o.invoice.invoiceId });
+    await ventiInvoiceStore(o, r);
+    if(!quiet && r.refreshError) ventiToast('Factura', r.refreshError, true);
+  } catch(e){ if(!quiet) ventiToast('Factura', ventiFiscalErr(e), true); }
+  ventiInvoiceShow(o);
+}
+// Ventana para emitir o corregir desde el historial.
+var ventiInvoiceModalOrder = null;
+var ventiInvoiceModalMode = 'new';
+function ventiInvoiceOpenModal(o, mode){
+  ventiInvoiceModalOrder = o;
+  ventiInvoiceModalMode = mode === 'fix' ? 'fix' : 'new';
+  $('#invoice-modal h3').textContent = ventiInvoiceModalMode === 'fix' ? 'Corregir y reenviar factura' : 'Emitir factura';
+  $('#invm-send').textContent = ventiInvoiceModalMode === 'fix' ? 'Reenviar al SRI' : 'Emitir factura';
+  const prev = ventiInvoiceBuyers[o.id];
+  const cfAllowed = o.total <= VENTI_CF_MAX;
+  $('#invm-total').textContent = money(o.total);
+  $('#invm-order').textContent = `Pedido ${formatOrderNumber(o.orderNumber)}`;
+  ['idnumber', 'name', 'email', 'phone', 'address'].forEach(k => { $('#invm-' + k).value = (prev && prev[k === 'idnumber' ? 'idNumber' : k]) || ''; });
+  $('#invm-idtype').value = (prev && prev.idType !== 'consumidorFinal' && prev.idType) || 'cedula';
+  const useCf = cfAllowed && (!prev || prev.idType === 'consumidorFinal') && !(o.invoice && o.invoice.status === 'error' && o.invoice.retryable === false);
+  $('#invm-choice').value = useCf ? 'cf' : 'data';
+  $('#invm-cf-opt').disabled = !cfAllowed;
+  $('#invm-form').style.display = useCf ? 'none' : '';
+  ventiInvoiceCard.invm = o.cardMethod || (ventiFiscalCfg && ventiFiscalCfg.cardMethod) || null;
+  ventiCardRowSync('invm', o.payment);
+  $('#invoice-modal').classList.add('active');
+}
+function ventiInvoiceSetupHistory(){
+  if(document.body.dataset.invReady) return;
+  document.body.dataset.invReady = '1';
+  document.addEventListener('click', async (e) => {
+    const t = e.target.closest('[data-inv-new], [data-inv-retry], [data-inv-refresh], [data-inv-fix]');
+    if(!t || ventiOwnerMode) return;
+    const id = t.dataset.invNew || t.dataset.invRetry || t.dataset.invRefresh || t.dataset.invFix;
+    const o = orders.find(x => x.id === id);
+    if(!o) return;
+    if(t.dataset.invRefresh){ t.disabled = true; await ventiInvoiceRefresh(o); return; }
+    if(t.dataset.invRetry && ventiInvoiceBuyers[o.id]){ t.disabled = true; await ventiInvoiceIssue(o, ventiInvoiceBuyers[o.id]); return; }
+    if(t.dataset.invFix){ ventiInvoiceOpenModal(o, 'fix'); return; }
+    ventiInvoiceOpenModal(o); // sin datos en memoria (p. ej. se reinició la app) o datos a corregir
+  });
+  ventiCardRowSetup('invm');
+  $('#invm-choice').addEventListener('change', () => { $('#invm-form').style.display = $('#invm-choice').value === 'cf' ? 'none' : ''; });
+  $('#invm-cancel').onclick = () => $('#invoice-modal').classList.remove('active');
+  $('#invm-send').onclick = async () => {
+    const o = ventiInvoiceModalOrder;
+    if(!o) return;
+    const btn = $('#invm-send');
+    if(btn.disabled) return;
+    const buyer = await ventiInvoiceBuyerFrom('invm', $('#invm-choice').value, Math.round(o.total * 100), o.payment);
+    if(!buyer) return;
+    if(o.payment === 'Tarjeta' && ventiInvoiceCard.invm && o.cardMethod !== ventiInvoiceCard.invm){ o.cardMethod = ventiInvoiceCard.invm; await saveOrdersData(); }
+    btn.disabled = true;
+    try {
+      $('#invoice-modal').classList.remove('active');
+      ventiToast('Factura', 'Enviando la factura al SRI…');
+      if(ventiInvoiceModalMode === 'fix') await ventiInvoiceResubmit(o, buyer);
+      else await ventiInvoiceIssue(o, buyer);
+      const st = o.invoice && o.invoice.status;
+      if(st === 'authorized') ventiToast('Factura autorizada', o.invoice.number || '');
+      else if(st === 'processing') ventiToast('Factura en proceso', 'El SRI todavía no responde. Se consultará sola.');
+      else ventiToast('Factura', (o.invoice && o.invoice.message) || 'No se pudo emitir.', true);
+    } finally { btn.disabled = false; }
+  };
+}
+
+// ===== FACTURACIÓN ELECTRÓNICA · Imprimir y pestaña Facturas (E6) =====
+// Código de barras Code 128 (tabla estándar) para la clave de acceso de 49 dígitos:
+// 48 dígitos en el juego C (de dos en dos) + el último en el juego B.
+const VENTI_C128 = ['212222','222122','222221','121223','121322','131222','122213','122312','132212','221213','221312','231212','112232','122132','122231','113222','123122','123221','223211','221132','221231','213212','223112','312131','311222','321122','321221','312212','322112','322211','212123','212321','232121','111323','131123','131321','112313','132113','132311','211313','231113','231311','112133','112331','132131','113123','113321','133121','313121','211331','231131','213113','213311','213131','311123','311321','331121','312113','312311','332111','314111','221411','431111','111224','111422','121124','121421','141122','141221','112214','112412','122114','122411','142112','142211','241211','221114','413111','241112','134111','111242','121142','121241','114212','124112','124211','411212','421112','421211','212141','214121','412121','111143','111341','131141','114113','114311','411113','411311','113141','114131','311141','411131','211412','211214','211232','2331112'];
+function ventiCode128Values(digits){
+  const s = String(digits);
+  if(!/^\d+$/.test(s)) throw new Error('Solo números');
+  const vals = [105]; // inicio, juego C
+  const even = s.length - (s.length % 2);
+  for(let i = 0; i < even; i += 2) vals.push(Number(s.slice(i, i + 2)));
+  if(s.length % 2){ vals.push(100); vals.push(s.charCodeAt(s.length - 1) - 32); } // cambio a juego B + último dígito
+  let check = vals[0];
+  for(let i = 1; i < vals.length; i++) check += vals[i] * i;
+  vals.push(check % 103);
+  vals.push(106); // fin
+  return vals;
+}
+function ventiCode128Svg(digits, heightPx){
+  const widths = ventiCode128Values(digits).map(v => VENTI_C128[v]).join('');
+  let x = 10, bars = ''; // 10 módulos de margen a cada lado
+  for(let i = 0; i < widths.length; i++){
+    const w = Number(widths[i]);
+    if(i % 2 === 0) bars += `<rect x="${x}" y="0" width="${w}" height="${heightPx}"/>`;
+    x += w;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${x + 10} ${heightPx}" preserveAspectRatio="none" style="width:100%;height:${heightPx}px;display:block;shape-rendering:crispEdges">${bars}</svg>`;
+}
+
+// Ficha técnica 2.33, Tabla 24 (código - forma de pago)
+const VENTI_PAY_SRI = { sin_sistema_financiero: '01 - SIN UTILIZACIÓN DEL SISTEMA FINANCIERO', compensacion_deudas: '15 - COMPENSACIÓN DE DEUDAS', tarjeta_debito: '16 - TARJETA DE DÉBITO',
+  dinero_electronico: '17 - DINERO ELECTRÓNICO', tarjeta_prepago: '18 - TARJETA PREPAGO', tarjeta_credito: '19 - TARJETA DE CRÉDITO', otros_sistema_financiero: '20 - OTROS CON UTILIZACIÓN DEL SISTEMA FINANCIERO', endoso_titulos: '21 - ENDOSO DE TÍTULOS' };
+const VENTI_ID_SRI = { cedula: 'CÉDULA', ruc: 'RUC', pasaporte: 'PASAPORTE', consumidor_final: 'CONSUMIDOR FINAL', exterior: 'IDENTIFICACIÓN DEL EXTERIOR' };
+function ventiEcDate(iso, withTime){
+  if(!iso) return '';
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? new Date(iso + 'T12:00:00-05:00') : new Date(iso);
+  if(isNaN(d)) return String(iso);
+  const opt = { timeZone: 'America/Guayaquil', day: '2-digit', month: '2-digit', year: 'numeric', ...(withTime ? { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false } : {}) };
+  return d.toLocaleString('es-EC', opt).replace(',', '');
+}
+// RIDE de 80 mm (o el ancho de papel configurado). Todo sale de la factura AUTORIZADA que devuelve el proveedor.
+// Precio unitario: hasta 6 decimales (como en la factura), sin ceros de más y con mínimo 2.
+function ventiUnitPrice(v){
+  const t = Number(v).toFixed(6).replace(/0+$/, '');
+  const dec = (t.split('.')[1] || '').length;
+  return dec >= 2 ? t : (dec === 1 ? t + '0' : t + '00');
+}
+function buildRideTicketHtml(r){
+  const e = (x) => escapeHtml(x == null ? '' : String(x));
+  const widthMm = parseInt(settings.printWidth, 10) || 80;
+  const iss = r.issuer || {};
+  const envLabel = r.environment === 'produccion' ? 'PRODUCCIÓN' : (r.environment === 'pruebas' ? 'PRUEBAS' : 'PRÁCTICA (SIN VALIDEZ TRIBUTARIA)');
+  const regime = iss.regime === 'rimpe_emprendedor' ? 'CONTRIBUYENTE RÉGIMEN RIMPE' : (iss.regime === 'rimpe_negocio_popular' ? 'CONTRIBUYENTE NEGOCIO POPULAR - RÉGIMEN RIMPE' : '');
+  const rate = (code) => ({ iva_15: '15%', iva_5: '5%', iva_8: '8%', iva_12: '12%', iva_13: '13%', iva_14: '14%', iva_0: '0%' })[code];
+  const taxes = r.taxes || [];
+  const sumBase = (pred) => taxes.filter(pred).reduce((s, t) => s + Number(t.base), 0);
+  const row = (a, b, strong) => `<tr${strong ? ' class="st"' : ''}><td>${a}</td><td class="r">${b}</td></tr>`;
+  const m2 = (x) => '$' + Number(x || 0).toFixed(2);
+  let totals = '';
+  taxes.filter(t => !/^iva_0$|no_objeto|exento/.test(t.rate)).forEach(t => { totals += row('SUBTOTAL ' + rate(t.rate), m2(t.base)); });
+  totals += row('SUBTOTAL 0%', m2(sumBase(t => t.rate === 'iva_0')));
+  if(taxes.some(t => t.rate === 'no_objeto')) totals += row('SUBTOTAL NO OBJETO DE IVA', m2(sumBase(t => t.rate === 'no_objeto')));
+  if(taxes.some(t => t.rate === 'exento')) totals += row('SUBTOTAL EXENTO DE IVA', m2(sumBase(t => t.rate === 'exento')));
+  totals += row('SUBTOTAL SIN IMPUESTOS', m2(r.subtotal));
+  totals += row('TOTAL DESCUENTO', m2(r.discount));
+  taxes.filter(t => !/^iva_0$|no_objeto|exento/.test(t.rate)).forEach(t => { totals += row('IVA ' + rate(t.rate), m2(t.value)); });
+  if(Number(r.tip) > 0) totals += row('PROPINA', m2(r.tip));
+  totals += row('VALOR TOTAL', m2(r.total), true);
+  const lines = (r.lines || []).map(l => `<tr><td colspan="4">${l.code && l.code !== l.description ? `<span class="lbl">${e(l.code)}</span> ` : ''}${e(l.description)}</td></tr>
+    <tr class="ln"><td>${e(Number(l.qty))}</td><td class="r">${e(ventiUnitPrice(l.unitPrice))}</td><td class="r">${e(Number(l.discount).toFixed(2))}</td><td class="r">${e(Number(l.net).toFixed(2))}</td></tr>`).join('');
+  const pays = (r.payments || []).map(p => row(e(VENTI_PAY_SRI[p.method] || p.method), m2(p.amount))).join('');
+  const extra = [...(iss.largeTaxpayer ? [{ name: 'Gran Contribuyente', value: 'Resolución ' + iss.largeTaxpayer }] : []), ...(r.buyer && r.buyer.email && r.buyer.idType !== 'consumidor_final' ? [{ name: 'Email', value: r.buyer.email }] : []), ...(r.additionalInfo || [])].map(a => row(e(a.name), e(a.value))).join('');
+  const logo = typeof buildTicketLogoHtml === 'function' ? buildTicketLogoHtml() : '';
+  const practice = r.environment !== 'produccion' ? `<div class="warn">DOCUMENTO DE ${r.environment === 'pruebas' ? 'PRUEBAS' : 'PRÁCTICA'} · SIN VALIDEZ TRIBUTARIA</div>` : '';
+  return `<html><head><meta charset="utf-8"><style>
+    @page{ margin:0; }
+    html, body{ width:${widthMm}mm; }
+    body{ margin:0; padding:2mm 3mm; box-sizing:border-box; font-family:Arial, Helvetica, sans-serif; font-size:10.5px; line-height:1.3; color:#000; }
+    .c{ text-align:center; } .b{ font-weight:700; } .r{ text-align:right; white-space:nowrap; }
+    .big{ font-size:14px; font-weight:800; }
+    hr{ border:0; border-top:1px dashed #000; margin:5px 0; }
+    table{ width:100%; border-collapse:collapse; } td{ vertical-align:top; padding:0; }
+    tr.ln td{ padding-bottom:3px; } tr.st td{ font-weight:800; font-size:12px; padding-top:2px; }
+    .mono{ font-family:'Courier New', monospace; font-size:9.5px; word-break:break-all; }
+    .warn{ border:1px solid #000; text-align:center; font-weight:800; padding:3px; margin:5px 0; }
+    .lbl{ font-size:9.5px; font-weight:700; }
+  </style></head><body>
+    ${logo}
+    ${practice}
+    <div class="c b">${e(iss.legalName)}</div>
+    ${iss.tradeName ? `<div class="c">${e(iss.tradeName)}</div>` : ''}
+    <div class="c">R.U.C.: ${e(iss.ruc)}</div>
+    <div class="c">Dirección Matriz: ${e(iss.address)}</div>
+    ${iss.establishmentAddress && iss.establishmentAddress !== iss.address ? `<div class="c">Dirección Sucursal: ${e(iss.establishmentAddress)}</div>` : ''}
+    ${iss.specialTaxpayer ? `<div class="c">Contribuyente Especial Nro: ${e(iss.specialTaxpayer)}</div>` : ''}
+    <div class="c">OBLIGADO A LLEVAR CONTABILIDAD: ${iss.keepsAccounting ? 'SI' : 'NO'}</div>
+    ${iss.withholdingAgent ? `<div class="c">Agente de Retención Resolución No. ${e(iss.withholdingAgent)}</div>` : ''}
+    ${regime ? `<div class="c b">${regime}</div>` : ''}
+    <hr>
+    <div class="c big">FACTURA</div>
+    <div class="c b">No. ${e(r.number)}</div>
+    <div class="lbl">NÚMERO DE AUTORIZACIÓN</div><div class="mono">${e(r.authorizationNumber)}</div>
+    <div><span class="lbl">FECHA Y HORA DE AUTORIZACIÓN:</span> ${e(ventiEcDate(r.authorizedAt, true))}</div>
+    <div><span class="lbl">AMBIENTE:</span> ${envLabel}</div>
+    <div><span class="lbl">EMISIÓN:</span> NORMAL</div>
+    <div class="lbl">CLAVE DE ACCESO</div>
+    ${ventiCode128Svg(r.accessKey, 42)}
+    <div class="mono c">${e(r.accessKey)}</div>
+    <hr>
+    <div><span class="lbl">Razón Social / Nombres y Apellidos:</span> ${e(r.buyer && r.buyer.name)}</div>
+    <div><span class="lbl">Identificación (${e(VENTI_ID_SRI[r.buyer && r.buyer.idType] || '')}):</span> ${e(r.buyer && r.buyer.id)}</div>
+    ${r.buyer && r.buyer.address ? `<div><span class="lbl">Dirección:</span> ${e(r.buyer.address)}</div>` : ''}
+    <div><span class="lbl">Fecha Emisión:</span> ${e(ventiEcDate(r.issueDate))}</div>
+    <hr>
+    <table><tr class="lbl"><td>Cant.</td><td class="r">P. Unit.</td><td class="r">Desc.</td><td class="r">Total</td></tr>${lines}</table>
+    <hr>
+    <table>${totals}</table>
+    <hr>
+    <div class="lbl">FORMA DE PAGO</div><table>${pays}</table>
+    ${extra ? `<hr><div class="lbl">INFORMACIÓN ADICIONAL</div><table>${extra}</table>` : ''}
+    ${iss.footer ? `<hr><div class="c">${e(iss.footer)}</div>` : ''}
+    ${practice}
+  </body></html>`;
+}
+async function ventiInvoicePrint(invoiceId){
+  try {
+    const r = await ventiFiscalCall('fiscalGetRide', { tenantId, invoiceId });
+    const widthMm = parseInt(settings.printWidth, 10) || 80;
+    await printHtmlPage(buildRideTicketHtml(r), { width: widthMm * 1000, height: 297000 });
+  } catch(e){ await appAlert(ventiFiscalErr(e), 'No se pudo imprimir la factura'); }
+}
+async function ventiInvoiceDownload(invoiceId, kind){
+  try {
+    const d = await ventiFiscalCall('fiscalGetDocument', { tenantId, invoiceId, kind });
+    const bin = atob(d.base64); const bytes = new Uint8Array(bin.length);
+    for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([bytes], { type: d.contentType }));
+    const a = document.createElement('a'); a.href = url; a.download = d.filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  } catch(e){ await appAlert(ventiFiscalErr(e), 'No se pudo descargar'); }
+}
+
+// ---- Pestaña "Facturas" ----
+var ventiInvoicesList = [], ventiInvoicesMore = false, ventiInvoicesLoading = false;
+function ventiInvoicesTabSync(){
+  const btn = $('#invoices-tab-btn');
+  if(btn) btn.style.display = (ventiFiscalCfg && ventiFiscalCfg.connected && !ventiOwnerMode) ? 'flex' : 'none';
+}
+async function ventiInvoicesLoad(more){
+  if(ventiInvoicesLoading) return;
+  ventiInvoicesLoading = true;
+  const status = $('#invoices-status');
+  status.textContent = 'Cargando…';
+  try {
+    const last = more && ventiInvoicesList.length ? ventiInvoicesList[ventiInvoicesList.length - 1].invoiceId : undefined;
+    const r = await ventiFiscalCall('fiscalListInvoices', { tenantId, limit: 50, ...(last ? { after: last } : {}) });
+    ventiInvoicesList = more ? ventiInvoicesList.concat(r.items) : r.items;
+    ventiInvoicesMore = r.more;
+    status.textContent = '';
+  } catch(e){ status.textContent = ventiFiscalErr(e); }
+  ventiInvoicesLoading = false;
+  ventiInvoicesRender();
+}
+function ventiInvoicesRender(){
+  const q = ($('#invoices-search').value || '').trim().toLowerCase();
+  const list = ventiInvoicesList.filter(i => !q || [i.number, i.buyerName, i.total, i.orderNumber].some(x => String(x || '').toLowerCase().includes(q)));
+  const label = { authorized: 'Autorizada', processing: 'En proceso', sending: 'Enviando', rejected: 'Rechazada', error: 'No enviada', annulled: 'Anulada' };
+  const cls = { authorized: 'ok', rejected: 'bad', error: 'bad', processing: 'wait', sending: 'wait' };
+  $('#invoices-list').innerHTML = list.length ? list.map(i => `
+    <div class="inv-item">
+      <div class="inv-main">
+        <div class="inv-num">${i.number ? escapeHtml(i.number) : '—'} <span class="inv-badge ${cls[i.status] || ''}">${label[i.status] || escapeHtml(i.status)}</span>${i.environment !== 'produccion' ? ' <small>(práctica)</small>' : ''}</div>
+        <div class="inv-sub">${escapeHtml(ventiEcDate(i.authorizedAt || i.createdAt, true))} · ${escapeHtml(i.buyerName || '')} · Pedido ${escapeHtml(formatOrderNumber(i.orderNumber))}</div>
+        ${i.message ? `<div class="inv-sub bad">${escapeHtml(i.message)}</div>` : ''}
+      </div>
+      <div class="inv-total">${i.total ? money(Number(i.total)) : ''}</div>
+      <div class="inv-btns">
+        ${i.status === 'authorized' ? `<button type="button" class="inv-act" data-inv-print="${i.invoiceId}">Imprimir</button><button type="button" class="inv-act" data-inv-pdf="${i.invoiceId}">PDF</button><button type="button" class="inv-act" data-inv-xml="${i.invoiceId}">XML</button>` : ''}
+        ${i.status === 'processing' || i.status === 'sending' ? `<button type="button" class="inv-act" data-inv-check="${i.invoiceId}">Consultar estado</button>` : ''}
+      </div>
+    </div>`).join('') : `<div class="no-orders">${ventiInvoicesList.length ? 'Ninguna factura coincide con la búsqueda.' : 'Todavía no hay facturas. Al cobrar, elige "Factura".'}</div>`;
+  $('#invoices-more').style.display = ventiInvoicesMore ? '' : 'none';
+}
+function ventiInvoicesSetup(){
+  const btn = $('#invoices-tab-btn');
+  if(!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
+  btn.addEventListener('click', () => ventiInvoicesLoad(false));
+  $('#invoices-search').addEventListener('input', ventiInvoicesRender);
+  $('#invoices-more').addEventListener('click', () => ventiInvoicesLoad(true));
+  $('#invoices-refresh').addEventListener('click', () => ventiInvoicesLoad(false));
+  document.addEventListener('click', async (e) => {
+    const t = e.target.closest('[data-inv-print], [data-inv-pdf], [data-inv-xml], [data-inv-check], [data-inv-print-order]');
+    if(!t || ventiOwnerMode) return;
+    t.disabled = true;
+    try {
+      if(t.dataset.invPrint) await ventiInvoicePrint(t.dataset.invPrint);
+      else if(t.dataset.invPdf) await ventiInvoiceDownload(t.dataset.invPdf, 'pdf');
+      else if(t.dataset.invXml) await ventiInvoiceDownload(t.dataset.invXml, 'xml');
+      else if(t.dataset.invPrintOrder){
+        const o = orders.find(x => x.id === t.dataset.invPrintOrder);
+        if(o && o.invoice && o.invoice.invoiceId) await ventiInvoicePrint(o.invoice.invoiceId);
+      } else if(t.dataset.invCheck){
+        const r = await ventiFiscalCall('fiscalRefreshInvoice', { tenantId, invoiceId: t.dataset.invCheck });
+        const o = orders.find(x => x.invoice && x.invoice.invoiceId === t.dataset.invCheck);
+        if(o) await ventiInvoiceStore(o, r);
+        await ventiInvoicesLoad(false);
+      }
+    } catch(err){ await appAlert(ventiFiscalErr(err), 'Factura'); }
+    finally { t.disabled = false; }
+  });
+}
+
 // Helper reutilizable: pide el código de encargado (con el mismo bloqueo
 // de 3 intentos que ya usan otras partes de la app) y devuelve true/false.
 async function requireManagerCode(promptMsg, promptTitle){
@@ -11704,6 +12547,8 @@ async function resolveTenant(user){
 
     applyTenantBranding(tenantData);
     startTenantWatcher(tenantId);
+    ventiFiscalSetup();
+    ventiFiscalInit(); // facturación electrónica: solo aparece si el local la tiene configurada
     return true;
   } catch(e){
     console.error('Error verificando la suscripción', e);
@@ -12237,6 +13082,7 @@ if(auth){
       tenantManagerCode = null;
       tenantManagerHash = null;
       backupsCol = null;
+      ventiFiscalCfg = null; ventiFiscalRender();
       return;
     }
     $('#login-error').className = 'login-error loading';
