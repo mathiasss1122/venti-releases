@@ -5280,9 +5280,6 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
             <select id="fiscal-iva"><option value="15">15 %</option><option value="5">5 %</option><option value="8">8 %</option></select>
           </label>
           <label class="fiscal-check"><input type="checkbox" id="fiscal-prices-include"> Mis precios ya incluyen IVA</label>
-          <label>Pagos con tarjeta
-            <select id="fiscal-card"><option value="">Preguntar en cada venta</option><option value="tarjeta_credito">Proponer crédito</option><option value="tarjeta_debito">Proponer débito</option></select>
-          </label>
         </div>
         <div class="fiscal-actions">
           <button type="button" id="fiscal-save-btn" class="btn btn-primary">Guardar datos de facturación</button>
@@ -5390,8 +5387,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <div class="invoice-choice" id="invoice-choice" style="display:none;">
         <div class="ic-label">Factura electrónica</div>
         <div class="ic-options">
-          <button type="button" class="ic-btn selected" data-inv="none">Sin factura</button>
-          <button type="button" class="ic-btn" data-inv="cf">Consumidor final</button>
+          <button type="button" class="ic-btn selected" data-inv="cf">Consumidor final</button>
           <button type="button" class="ic-btn" data-inv="data">Con datos</button>
         </div>
         <div class="ic-form" id="invoice-form" style="display:none;">
@@ -5483,7 +5479,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
   <div class="modal" style="max-width:340px;">
     <h3 class="tp-title">Vista previa del ticket</h3>
     <p class="tp-sub" id="tp-sub">Así se va a imprimir.</p>
-    <div class="ticket-preview-box"><div id="ticket-preview-logo"></div><pre id="ticket-preview-text"></pre></div>
+    <div class="ticket-preview-box"><div id="ticket-preview-logo"></div><pre id="ticket-preview-text"></pre><div id="ticket-preview-qr"></div></div>
     <div class="modal-actions" style="margin-top:14px; display:flex; gap:10px;">
       <button class="cancel" id="ticket-preview-cancel" style="flex:1;">Cerrar</button>
       <button class="confirm" id="ticket-preview-print" style="flex:1; display:none;"><span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></span> Imprimir</button>
@@ -7512,6 +7508,7 @@ document.addEventListener('keydown', (e) => {
 $('#preprint-btn').addEventListener('click', async () => {
   if(!cart.length) return;
   $('#ticket-preview-logo').innerHTML = buildTicketLogoHtml();
+  $('#ticket-preview-qr').innerHTML = buildTicketQrHtml();
   $('#ticket-preview-text').textContent = buildPreviewTicketText();
   const tpSub = $('#tp-sub');
   if(tpSub) tpSub.textContent = `Así se va a imprimir · papel de ${settings.printWidth || "80mm"}`;
@@ -7528,7 +7525,7 @@ $('#ticket-preview-cancel').onclick = () => {
 };
 $('#ticket-preview-print').onclick = async () => {
   $('#ticket-preview-modal').classList.remove('active');
-  await printText($('#ticket-preview-text').textContent);
+  await printText($('#ticket-preview-text').textContent, { qr: true });
   cartPrintedBeforePayment = true;
   renderCart();
 };
@@ -7677,10 +7674,7 @@ async function confirmCheckout(){
   setTimeout(() => $('#modal-done')?.focus(), 400);
   const invBox = $('#invoice-status-box');
   if(invBox){ invBox.style.display = 'none'; invBox.innerHTML = ''; }
-  if(invoiceBuyer){
-    if(featurePrintingEnabled) ventiInvoiceAutoPrint[order.id] = true;
-    ventiInvoiceIssue(order, invoiceBuyer); // la venta ya quedó guardada; la factura sigue en segundo plano
-  }
+  if(invoiceBuyer) ventiInvoiceIssue(order, invoiceBuyer); // la venta ya quedó guardada; la factura se imprime al entregar el pedido
 }
 
 $('#modal-done').onclick = () => {
@@ -8003,6 +7997,11 @@ $('#history-view').addEventListener('click', async (e) => {
     toggleBtn.classList.add('just-toggled');
     await saveOrdersData();
     ventiLiveUpsert(order);
+    // Al entregar el pedido se entrega la factura: se imprime ahora (o apenas el SRI la autorice).
+    if(order.delivered && order.invoice && featurePrintingEnabled && !ventiOwnerMode){
+      if(order.invoice.status === 'authorized' && order.invoice.invoiceId) ventiInvoicePrint(order.invoice.invoiceId);
+      else if(['sending', 'processing'].includes(order.invoice.status)) ventiInvoiceAutoPrint[order.id] = true;
+    }
     return;
   }
 
@@ -11442,7 +11441,14 @@ function buildTicketLogoHtml(){
   return `<div style="text-align:center; margin-bottom:4px;"><img src="${logo}" style="max-width:${maxWidthPct}%; max-height:${maxHeightPx}px; filter:grayscale(1) contrast(1.5); -webkit-filter:grayscale(1) contrast(1.5);"></div>`;
 }
 
-function buildTicketPrintBody(text){
+// QR al Instagram del local (imagen generada en el panel de administrador). Solo en el ticket del pedido.
+function buildTicketQrHtml(){
+  const qr = tenantData && tenantData.ticketQrImageBase64;
+  if(!qr) return '';
+  const ig = tenantData.ticketInstagram ? escapeHtml(String(tenantData.ticketInstagram)) : '';
+  return `<div style="text-align:center; margin-top:6px;"><img src="${qr}" style="width:42%; max-width:150px; image-rendering:pixelated;">${ig ? `<div style="font-family:'Courier New',monospace; font-size:11px; margin-top:2px;">Síguenos en Instagram ${ig}</div>` : ''}</div>`;
+}
+function buildTicketPrintBody(text, opts){
   const logoHtml = buildTicketLogoHtml();
   const parts = [];
   let lastIndex = 0;
@@ -11457,10 +11463,10 @@ function buildTicketPrintBody(text){
   const rest = text.slice(lastIndex).replace(/^\n/, '');
   if(rest) parts.push(`<pre>${escapeHtml(rest)}</pre>`);
   if(!parts.length) parts.push(`<pre>${escapeHtml(text)}</pre>`);
-  return logoHtml + parts.join('');
+  return logoHtml + parts.join('') + (opts && opts.qr ? buildTicketQrHtml() : '');
 }
 
-async function printText(text){
+async function printText(text, opts){
   const widthMm = parseInt(settings.printWidth, 10) || 80;
   // App de escritorio (Electron): imprime directo, sin diálogo, en la
   // impresora guardada en Ajustes.
@@ -11472,7 +11478,7 @@ async function printText(text){
         body{ margin:0; padding:2mm; box-sizing:border-box; overflow-x:hidden; }
         pre{ font-family:'Courier New', monospace; font-size:12px; line-height:1.35; white-space:pre-wrap; word-break:break-word; margin:0; max-width:100%; }
         img{ max-width:100%; }
-      </style></head><body>${buildTicketPrintBody(text)}</body></html>`;
+      </style></head><body>${buildTicketPrintBody(text, opts)}</body></html>`;
     // Electron necesita el tamaño de página en micrones, no en "mm"
     // como texto — si no se le dice nada, usa el tamaño por defecto
     // de la impresora (a veces A4), y ahí es cuando el logo o el
@@ -11488,7 +11494,7 @@ async function printText(text){
   // Navegador / celular: no se puede elegir e imprimir en silencio por
   // seguridad del navegador, así que se abre el diálogo normal de impresión.
   const ticketEl = $('#print-ticket');
-  ticketEl.innerHTML = buildTicketPrintBody(text);
+  ticketEl.innerHTML = buildTicketPrintBody(text, opts);
 
   let pageStyle = $('#print-page-style');
   if(!pageStyle){
@@ -11525,7 +11531,7 @@ async function printHtmlPage(html, pageSize){
 
 async function printOrder(order){
   if(!order) return;
-  await printText(buildTicketText(order));
+  await printText(buildTicketText(order), { qr: true });
 }
 
 function buildDayReportText(closure, dayOrders, widthSetting, dayWithdrawn){
@@ -11784,7 +11790,6 @@ function ventiFiscalRender(){
   $('#fiscal-footer').value = r.footer || '';
   $('#fiscal-iva').value = String((c.ivaRates && c.ivaRates.iva) || 15);
   $('#fiscal-prices-include').checked = c.pricesIncludeTax !== false;
-  $('#fiscal-card').value = c.cardMethod || '';
   const cert = c.certificate;
   let certText = 'Todavía no has subido tu firma electrónica.';
   if(cert && cert.uploaded){
@@ -11817,7 +11822,6 @@ function ventiFiscalSetup(){
   save.dataset.ready = '1';
   save.addEventListener('click', async () => {
     const status = $('#fiscal-save-status');
-    const cardMethod = $('#fiscal-card').value;
     const settings = {
       tradeName: $('#fiscal-trade-name').value.trim() || null,
       address: $('#fiscal-address').value.trim(),
@@ -11825,8 +11829,7 @@ function ventiFiscalSetup(){
       email: $('#fiscal-email').value.trim() || null,
       footer: $('#fiscal-footer').value.trim() || null,
       ivaPercent: Number($('#fiscal-iva').value),
-      pricesIncludeTax: $('#fiscal-prices-include').checked,
-      cardMethod: cardMethod || null // vacío = preguntar en cada venta
+      pricesIncludeTax: $('#fiscal-prices-include').checked
     };
     if(!settings.address){ await appAlert('Escribe la dirección del negocio: es obligatoria en la factura.', 'Falta un dato'); return; }
     if(!(await requireManagerCode('Ingresa el código de encargado para cambiar los datos de facturación:', 'Facturación'))) return;
@@ -11990,12 +11993,19 @@ function ventiInvoiceChoiceReset(){
   ventiInvoiceChoice = null;
   const box = $('#invoice-choice');
   if(!box) return;
-  box.style.display = ventiFiscalCanInvoice() ? '' : 'none';
-  $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b.dataset.inv === 'none'));
-  $('#invoice-form').style.display = 'none';
+  // Sin facturación activada desde el panel: el cobro es igual que siempre (no se muestra nada).
+  const can = ventiFiscalCanInvoice();
+  box.style.display = can ? '' : 'none';
+  if(can){
+    // Con facturación: toda venta lleva factura. Hasta $50 se propone consumidor final; más, con datos.
+    const menuTotal = getCartTotals().total;
+    ventiInvoiceChoice = menuTotal > VENTI_CF_MAX ? 'data' : 'cf';
+  }
+  $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b.dataset.inv === ventiInvoiceChoice));
+  $('#invoice-form').style.display = ventiInvoiceChoice === 'data' ? '' : 'none';
   ['idnumber', 'name', 'email', 'phone', 'address'].forEach(k => { const el = $('#inv-' + k); if(el) el.value = ''; });
   $('#inv-idtype').value = 'cedula';
-  ventiInvoiceCard.inv = (ventiFiscalCfg && ventiFiscalCfg.cardMethod) || null;
+  ventiInvoiceCard.inv = null; // se elige en cada venta
   ventiCardRowSync('inv', null);
   ventiInvoiceChoiceRefresh();
 }
@@ -12021,7 +12031,7 @@ function ventiInvoiceSetupCheckout(){
   // al cambiar la forma de pago, se muestra u oculta crédito/débito
   $$('.pay-btn').forEach(b => b.addEventListener('click', () => ventiCardRowSync('inv', ventiInvoiceChoice ? b.dataset.method : null)));
   $$('#invoice-choice .ic-btn[data-inv]').forEach(btn => btn.addEventListener('click', () => {
-    ventiInvoiceChoice = btn.dataset.inv === 'none' ? null : btn.dataset.inv;
+    ventiInvoiceChoice = btn.dataset.inv;
     $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b === btn));
     $('#invoice-form').style.display = ventiInvoiceChoice === 'data' ? '' : 'none';
     ventiInvoiceChoiceRefresh();
@@ -12138,7 +12148,7 @@ function ventiInvoiceOpenModal(o, mode){
   $('#invm-choice').value = useCf ? 'cf' : 'data';
   $('#invm-cf-opt').disabled = !cfAllowed;
   $('#invm-form').style.display = useCf ? 'none' : '';
-  ventiInvoiceCard.invm = o.cardMethod || (ventiFiscalCfg && ventiFiscalCfg.cardMethod) || null;
+  ventiInvoiceCard.invm = o.cardMethod || null;
   ventiCardRowSync('invm', o.payment);
   $('#invoice-modal').classList.add('active');
 }
