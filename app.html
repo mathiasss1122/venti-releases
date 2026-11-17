@@ -4804,6 +4804,23 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
 .inv-item .inv-total{ font-weight:800; font-size:15px; min-width:70px; text-align:right; }
 .inv-item .inv-btns{ display:flex; gap:6px; flex-wrap:wrap; }
 #invoices-more{ margin-top:6px; }
+.invoices-tools select.field, .invoices-tools input[type=date]{ width:auto; min-width:0; flex:none; }
+.inv-summary{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin:0 0 14px; }
+.inv-summary:empty{ display:none; }
+.inv-sum-card{ border:1px solid var(--card-line, var(--line)); border-radius:12px; padding:10px 12px; display:flex; flex-direction:column; gap:2px; }
+.inv-sum-card span{ font-size:12px; opacity:.7; }
+.inv-sum-card strong{ font-size:19px; }
+.inv-sum-card small{ font-size:11.5px; opacity:.65; }
+.inv-detail{ flex-basis:100%; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; padding:10px 2px 2px; border-top:1px dashed var(--card-line, var(--line)); margin-top:4px; font-size:13px; }
+.inv-detail.bad{ color:var(--danger); display:block; }
+.inv-dt{ font-size:11.5px; font-weight:700; opacity:.65; margin:8px 0 3px; text-transform:uppercase; letter-spacing:.03em; }
+.inv-dt:first-child{ margin-top:0; }
+.inv-dl{ display:flex; justify-content:space-between; gap:12px; padding:2px 0; }
+.inv-dl.strong{ font-weight:800; font-size:14px; }
+.inv-dsep{ border-top:1px solid var(--card-line, var(--line)); margin:6px 0; }
+.inv-mono{ font-family:'Courier New', monospace; font-size:11.5px; word-break:break-all; }
+.ic-hint{ grid-column:1 / -1; font-size:12px; opacity:.8; min-height:0; }
+.ic-hint:empty{ display:none; }
 #invoice-status-box .inv-badge{ font-size:13.5px; padding:6px 12px; }
 #app-dialog-message{ white-space:pre-line; overflow-wrap:anywhere; }
 /* ---------- Reducir movimiento (opción de Windows) ---------- */
@@ -5034,10 +5051,15 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <h2>Facturas</h2>
       <div class="menu-sub">Facturas electrónicas de tu local. Las autorizadas se pueden volver a imprimir o descargar.</div>
       <div class="invoices-tools">
-        <input type="search" id="invoices-search" class="field" placeholder="Buscar por número, cliente o pedido">
+        <select id="invoices-period" class="field"><option value="today">Hoy</option><option value="month" selected>Este mes</option><option value="prev">Mes anterior</option><option value="custom">Elegir fechas…</option></select>
+        <span id="invoices-custom" style="display:none; gap:6px; align-items:center;"><input type="date" id="invoices-from" class="field"> a <input type="date" id="invoices-to" class="field"></span>
+        <select id="invoices-state" class="field"><option value="">Todos los estados</option><option value="authorized">Autorizadas</option><option value="processing">En proceso</option><option value="rejected">Rechazadas / no enviadas</option></select>
+        <input type="search" id="invoices-search" class="field" placeholder="Buscar por número, cliente, cédula o pedido">
         <button type="button" id="invoices-refresh" class="btn btn-secondary">Actualizar</button>
+        <button type="button" id="invoices-export" class="btn btn-secondary">Exportar para el contador</button>
         <span class="status-msg" id="invoices-status"></span>
       </div>
+      <div id="invoices-summary" class="inv-summary"></div>
       <div id="invoices-list"></div>
       <button type="button" id="invoices-more" class="btn btn-secondary" style="display:none;">Cargar más</button>
     </section>
@@ -5397,6 +5419,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
           <input type="email" id="inv-email" placeholder="Correo (ahí le llega la factura)" maxlength="120" autocomplete="off">
           <input type="text" id="inv-phone" placeholder="Teléfono (opcional)" maxlength="20" autocomplete="off">
           <input type="text" id="inv-address" placeholder="Dirección (opcional)" maxlength="300" autocomplete="off">
+          <div class="ic-hint" id="inv-lookup"></div>
         </div>
         <div class="ic-card" id="inv-card-row" style="display:none;"><span class="ic-label">Tarjeta:</span>
           <button type="button" class="ic-btn" data-card="tarjeta_credito">Crédito</button>
@@ -5466,6 +5489,7 @@ body.staff-mode #checkout-modal.is-success .modal{ width:auto; max-width:calc(10
       <input type="email" id="invm-email" placeholder="Correo (ahí le llega la factura)" maxlength="120" autocomplete="off">
       <input type="text" id="invm-phone" placeholder="Teléfono (opcional)" maxlength="20" autocomplete="off">
       <input type="text" id="invm-address" placeholder="Dirección (opcional)" maxlength="300" autocomplete="off">
+      <div class="ic-hint" id="invm-lookup"></div>
     </div>
     <div class="modal-actions" style="margin-top:14px;">
       <button class="cancel" id="invm-cancel">Cancelar</button>
@@ -11899,6 +11923,8 @@ async function ventiFiscalInit(){
 }
 function ventiFiscalSetup(){
   ventiInvoicesSetup();
+  ventiLookupSetup('inv');
+  ventiLookupSetup('invm');
   ventiInvoiceSetupCheckout();
   ventiInvoiceSetupHistory();
   const save = $('#fiscal-save-btn');
@@ -12087,7 +12113,8 @@ function ventiInvoiceChoiceReset(){
   }
   $$('#invoice-choice .ic-btn[data-inv]').forEach(b => b.classList.toggle('selected', b.dataset.inv === ventiInvoiceChoice));
   $('#invoice-form').style.display = ventiInvoiceChoice === 'data' ? '' : 'none';
-  ['idnumber', 'name', 'email', 'phone', 'address'].forEach(k => { const el = $('#inv-' + k); if(el) el.value = ''; });
+  ['idnumber', 'name', 'email', 'phone', 'address'].forEach(k => { const el = $('#inv-' + k); if(el){ el.value = ''; el.dataset.auto = ''; } });
+  if($('#inv-lookup')) $('#inv-lookup').textContent = '';
   $('#inv-idtype').value = 'cedula';
   ventiInvoiceCard.inv = null; // se elige en cada venta
   ventiCardRowSync('inv', null);
@@ -12437,56 +12464,162 @@ async function ventiInvoiceDownload(invoiceId, kind){
 
 // ---- Pestaña "Facturas" ----
 var ventiInvoicesList = [], ventiInvoicesMore = false, ventiInvoicesLoading = false;
+var ventiInvoiceDetails = {}, ventiInvoiceOpen = {}; // detalle de cada factura (se carga solo al pulsar "Ver detalle")
 function ventiInvoicesTabSync(){
   const btn = $('#invoices-tab-btn');
   if(btn) btn.style.display = (ventiFiscalCfg && ventiFiscalCfg.connected && !ventiOwnerMode) ? 'flex' : 'none';
 }
-async function ventiInvoicesLoad(more){
+// Día de Ecuador 'AAAA-MM-DD'
+const ventiEcYmd = (d) => new Date(d.getTime() - 5 * 3600e3).toISOString().slice(0, 10);
+function ventiInvoicesRange(){
+  const now = new Date(), today = ventiEcYmd(now);
+  const per = $('#invoices-period').value;
+  if(per === 'today') return { from: today, to: today, label: 'Hoy' };
+  if(per === 'month') return { from: today.slice(0, 8) + '01', to: today, label: 'Este mes' };
+  if(per === 'prev'){
+    const y = Number(today.slice(0, 4)), m = Number(today.slice(5, 7));
+    const py = m === 1 ? y - 1 : y, pm = m === 1 ? 12 : m - 1;
+    const last = new Date(Date.UTC(py, pm, 0)).getUTCDate();
+    const mm = String(pm).padStart(2, '0');
+    return { from: `${py}-${mm}-01`, to: `${py}-${mm}-${last}`, label: 'Mes anterior' };
+  }
+  const f = $('#invoices-from').value || today, t = $('#invoices-to').value || today;
+  return f <= t ? { from: f, to: t, label: 'Del ' + f + ' al ' + t } : { from: t, to: f, label: 'Del ' + t + ' al ' + f };
+}
+async function ventiInvoicesLoad(){
   if(ventiInvoicesLoading) return;
   ventiInvoicesLoading = true;
   const status = $('#invoices-status');
   status.textContent = 'Cargando…';
   try {
-    const last = more && ventiInvoicesList.length ? ventiInvoicesList[ventiInvoicesList.length - 1].invoiceId : undefined;
-    const r = await ventiFiscalCall('fiscalListInvoices', { tenantId, limit: 50, ...(last ? { after: last } : {}) });
-    ventiInvoicesList = more ? ventiInvoicesList.concat(r.items) : r.items;
+    const rg = ventiInvoicesRange();
+    const r = await ventiFiscalCall('fiscalListInvoices', { tenantId, from: rg.from, to: rg.to });
+    ventiInvoicesList = r.items;
     ventiInvoicesMore = r.more;
-    status.textContent = '';
+    status.textContent = r.more ? 'Hay más de 1000 facturas en este periodo: elige un rango más corto.' : '';
   } catch(e){ status.textContent = ventiFiscalErr(e); }
   ventiInvoicesLoading = false;
   ventiInvoicesRender();
 }
-function ventiInvoicesRender(){
+function ventiInvoicesFiltered(){
   const q = ($('#invoices-search').value || '').trim().toLowerCase();
-  const list = ventiInvoicesList.filter(i => !q || [i.number, i.buyerName, i.total, i.orderNumber].some(x => String(x || '').toLowerCase().includes(q)));
+  const st = $('#invoices-state').value;
+  return ventiInvoicesList.filter(i => (!st || (st === 'processing' ? ['processing', 'sending'].includes(i.status) : (st === 'rejected' ? ['rejected', 'error'].includes(i.status) : i.status === st)))
+    && (!q || [i.number, i.buyerName, i.buyerId, i.total, i.orderNumber].some(x => String(x || '').toLowerCase().includes(q))));
+}
+function ventiInvoicesSummary(){
+  const ok = ventiInvoicesList.filter(i => i.status === 'authorized');
+  const c = (v) => Math.round(Number(v || 0) * 100);
+  const sum = (k) => ok.reduce((s, i) => s + c(i[k]), 0) / 100;
+  const pend = ventiInvoicesList.filter(i => ['processing', 'sending'].includes(i.status)).length;
+  const bad = ventiInvoicesList.filter(i => ['rejected', 'error'].includes(i.status)).length;
+  const card = (label, value, sub) => `<div class="inv-sum-card"><span>${label}</span><strong>${value}</strong>${sub ? `<small>${sub}</small>` : ''}</div>`;
+  $('#invoices-summary').innerHTML =
+    card('Facturas autorizadas', String(ok.length), ventiInvoicesRange().label) +
+    card('Subtotal (sin IVA)', money(sum('subtotal'))) +
+    card('IVA cobrado', money(sum('tax'))) +
+    card('Total facturado', money(sum('total'))) +
+    (pend || bad ? card('Por revisar', String(pend + bad), `${pend} en proceso · ${bad} rechazadas`) : '');
+}
+function ventiInvoiceDetailHtml(id){
+  const d = ventiInvoiceDetails[id];
+  if(!d) return '<div class="inv-detail">Cargando detalle…</div>';
+  if(d.error) return `<div class="inv-detail bad">${escapeHtml(d.error)}</div>`;
+  const ID = { cedula: 'Cédula', ruc: 'RUC', pasaporte: 'Pasaporte', consumidorFinal: 'Consumidor final' };
+  const PAY = { cash: 'Efectivo', transfer: 'Transferencia', card: 'Tarjeta' };
+  const t = d.totals || {};
+  const rates = Object.values(t.byRate || {}).map(r => `<div class="inv-dl"><span>Subtotal ${r.rate}%</span><span>${money(Number(r.base))}</span></div>` + (r.rate ? `<div class="inv-dl"><span>IVA ${r.rate}%</span><span>${money(Number(r.tax))}</span></div>` : '')).join('');
+  return `<div class="inv-detail">
+    <div class="inv-dcol">
+      <div class="inv-dt">Cliente</div>
+      <div>${escapeHtml(d.buyer.name || '')}${d.buyer.idNumber ? ` · ${escapeHtml(ID[d.buyer.idType] || d.buyer.idType || '')} ${escapeHtml(d.buyer.idNumber)}` : ''}</div>
+      ${d.buyer.email ? `<div class="inv-sub">${escapeHtml(d.buyer.email)}</div>` : ''}
+      ${d.accessKey ? `<div class="inv-dt">Clave de acceso</div><div class="inv-mono">${escapeHtml(d.accessKey)}</div>` : ''}
+      <div class="inv-dt">Historial</div>
+      ${(d.history || []).map(h => `<div class="inv-sub">${escapeHtml(ventiEcDate(h.at, true))} · ${escapeHtml(h.text)}</div>`).join('') || '<div class="inv-sub">—</div>'}
+      ${(d.sriMessages || []).length && d.status !== 'authorized' ? `<div class="inv-dt">Mensajes del SRI</div>${d.sriMessages.map(m => `<div class="inv-sub bad">${escapeHtml(m.message || '')}${m.remedy ? ' — ' + escapeHtml(m.remedy) : ''}</div>`).join('')}` : ''}
+    </div>
+    <div class="inv-dcol">
+      <div class="inv-dt">Productos</div>
+      ${(d.lines || []).map(l => `<div class="inv-dl"><span>${escapeHtml(String(l.qty))} × ${escapeHtml(l.description)}${Number(l.discount) > 0 ? ` <small>(desc. ${money(Number(l.discount))})</small>` : ''}</span><span>${money(Number(l.net))}</span></div>`).join('')}
+      <div class="inv-dsep"></div>
+      ${rates}
+      ${Number(t.discount) > 0 ? `<div class="inv-dl"><span>Descuento</span><span>${money(Number(t.discount))}</span></div>` : ''}
+      <div class="inv-dl strong"><span>Total</span><span>${money(Number(t.total || 0))}</span></div>
+      <div class="inv-sub">Pago: ${(d.payments || []).map(p => escapeHtml(PAY[p.method] || p.method) + ' ' + money(Number(p.amount))).join(' + ')}</div>
+    </div>
+  </div>`;
+}
+function ventiInvoicesRender(){
+  ventiInvoicesSummary();
+  const list = ventiInvoicesFiltered();
   const label = { authorized: 'Autorizada', processing: 'En proceso', sending: 'Enviando', rejected: 'Rechazada', error: 'No enviada', annulled: 'Anulada' };
   const cls = { authorized: 'ok', rejected: 'bad', error: 'bad', processing: 'wait', sending: 'wait' };
   $('#invoices-list').innerHTML = list.length ? list.map(i => `
     <div class="inv-item">
       <div class="inv-main">
-        <div class="inv-num">${i.number ? escapeHtml(i.number) : '—'} <span class="inv-badge ${cls[i.status] || ''}">${label[i.status] || escapeHtml(i.status)}</span>${i.environment !== 'produccion' ? ' <small>(práctica)</small>' : ''}</div>
+        <div class="inv-num">${i.number ? escapeHtml(i.number) : '—'} <span class="inv-badge ${cls[i.status] || ''}">${label[i.status] || escapeHtml(i.status)}</span>${i.environment !== 'produccion' ? ' <small>(práctica)</small>' : ''}${i.needsReview ? ' <span class="inv-badge bad">Revisar</span>' : ''}</div>
         <div class="inv-sub">${escapeHtml(ventiEcDate(i.authorizedAt || i.createdAt, true))} · ${escapeHtml(i.buyerName || '')} · Pedido ${escapeHtml(formatOrderNumber(i.orderNumber))}</div>
         ${i.message ? `<div class="inv-sub bad">${escapeHtml(i.message)}</div>` : ''}
       </div>
       <div class="inv-total">${i.total ? money(Number(i.total)) : ''}</div>
       <div class="inv-btns">
+        <button type="button" class="inv-act" data-inv-detail="${i.invoiceId}">${ventiInvoiceOpen[i.invoiceId] ? 'Ocultar detalle' : 'Ver detalle'}</button>
         ${i.status === 'authorized' ? `<button type="button" class="inv-act" data-inv-print="${i.invoiceId}">Imprimir</button><button type="button" class="inv-act" data-inv-pdf="${i.invoiceId}">PDF</button><button type="button" class="inv-act" data-inv-xml="${i.invoiceId}">XML</button>` : ''}
         ${i.status === 'processing' || i.status === 'sending' ? `<button type="button" class="inv-act" data-inv-check="${i.invoiceId}">Consultar estado</button>` : ''}
       </div>
-    </div>`).join('') : `<div class="no-orders">${ventiInvoicesList.length ? 'Ninguna factura coincide con la búsqueda.' : 'Todavía no hay facturas. Al cobrar, elige "Factura".'}</div>`;
-  $('#invoices-more').style.display = ventiInvoicesMore ? '' : 'none';
+      ${ventiInvoiceOpen[i.invoiceId] ? ventiInvoiceDetailHtml(i.invoiceId) : ''}
+    </div>`).join('') : `<div class="no-orders">${ventiInvoicesList.length ? 'Ninguna factura coincide con los filtros.' : 'No hay facturas en este periodo.'}</div>`;
+}
+// Reporte para el contador (Excel/CSV): una fila por factura del periodo.
+function ventiInvoicesExport(){
+  const list = ventiInvoicesFiltered();
+  if(!list.length){ appAlert('No hay facturas para exportar con estos filtros.', 'Sin datos'); return; }
+  const rates = [...new Set(list.flatMap(i => Object.values(i.byRate || {}).map(r => Number(r.rate))))].sort((a, b) => b - a);
+  const ID = { cedula: 'Cédula', ruc: 'RUC', pasaporte: 'Pasaporte', consumidorFinal: 'Consumidor final' };
+  const ST = { authorized: 'Autorizada', processing: 'En proceso', sending: 'Enviando', rejected: 'Rechazada', error: 'No enviada', annulled: 'Anulada' };
+  const head = ['Fecha', 'Número', 'Estado', 'Cliente', 'Tipo de identificación', 'Identificación', ...rates.map(r => 'Subtotal ' + r + '%'), 'Descuento', 'IVA', 'Total', 'Número de autorización', 'Pedido VENTI'];
+  const rows = [head, ...list.map(i => {
+    const byR = {}; Object.values(i.byRate || {}).forEach(r => { byR[Number(r.rate)] = r.base; });
+    return [ventiEcDate(i.authorizedAt || i.createdAt, true), i.number || '', ST[i.status] || i.status, i.buyerName || '', ID[i.buyerIdType] || i.buyerIdType || '', i.buyerId || '',
+      ...rates.map(r => byR[r] || '0.00'), i.discount || '0.00', i.tax || '0.00', i.total || '', i.authorizationNumber || '', formatOrderNumber(i.orderNumber)];
+  })];
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' }));
+  const rg = ventiInvoicesRange();
+  const a = document.createElement('a'); a.href = url; a.download = `facturas-${rg.from}-a-${rg.to}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
 function ventiInvoicesSetup(){
   const btn = $('#invoices-tab-btn');
   if(!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
-  btn.addEventListener('click', () => ventiInvoicesLoad(false));
+  btn.addEventListener('click', () => ventiInvoicesLoad());
   $('#invoices-search').addEventListener('input', ventiInvoicesRender);
-  $('#invoices-more').addEventListener('click', () => ventiInvoicesLoad(true));
-  $('#invoices-refresh').addEventListener('click', () => ventiInvoicesLoad(false));
+  $('#invoices-state').addEventListener('change', ventiInvoicesRender);
+  $('#invoices-period').addEventListener('change', () => {
+    $('#invoices-custom').style.display = $('#invoices-period').value === 'custom' ? 'flex' : 'none';
+    if($('#invoices-period').value !== 'custom') ventiInvoicesLoad();
+  });
+  $('#invoices-from').addEventListener('change', () => ventiInvoicesLoad());
+  $('#invoices-to').addEventListener('change', () => ventiInvoicesLoad());
+  $('#invoices-refresh').addEventListener('click', () => ventiInvoicesLoad());
+  $('#invoices-export').addEventListener('click', ventiInvoicesExport);
   document.addEventListener('click', async (e) => {
-    const t = e.target.closest('[data-inv-print], [data-inv-pdf], [data-inv-xml], [data-inv-check], [data-inv-print-order]');
+    const t = e.target.closest('[data-inv-print], [data-inv-pdf], [data-inv-xml], [data-inv-check], [data-inv-print-order], [data-inv-detail]');
     if(!t || ventiOwnerMode) return;
+    if(t.dataset.invDetail){
+      const id = t.dataset.invDetail;
+      ventiInvoiceOpen[id] = !ventiInvoiceOpen[id];
+      ventiInvoicesRender();
+      if(ventiInvoiceOpen[id] && !ventiInvoiceDetails[id]){
+        try { ventiInvoiceDetails[id] = await ventiFiscalCall('fiscalGetInvoiceDetail', { tenantId, invoiceId: id }); }
+        catch(err){ ventiInvoiceDetails[id] = { error: ventiFiscalErr(err) }; }
+        ventiInvoicesRender();
+      }
+      return;
+    }
     t.disabled = true;
     try {
       if(t.dataset.invPrint) await ventiInvoicePrint(t.dataset.invPrint);
@@ -12499,11 +12632,43 @@ function ventiInvoicesSetup(){
         const r = await ventiFiscalCall('fiscalRefreshInvoice', { tenantId, invoiceId: t.dataset.invCheck });
         const o = orders.find(x => x.invoice && x.invoice.invoiceId === t.dataset.invCheck);
         if(o) await ventiInvoiceStore(o, r);
-        await ventiInvoicesLoad(false);
+        delete ventiInvoiceDetails[t.dataset.invCheck];
+        await ventiInvoicesLoad();
       }
     } catch(err){ await appAlert(ventiFiscalErr(err), 'Factura'); }
     finally { t.disabled = false; }
   });
+}
+
+// ---- Autocompletar el cliente al escribir su cédula o RUC (SRI / clientes a los que ya se facturó) ----
+var ventiLookupTimers = {}, ventiLookupSeq = {};
+function ventiLookupSetup(prefix){
+  const idEl = $('#' + prefix + '-idnumber');
+  if(!idEl || idEl.dataset.lookup) return;
+  idEl.dataset.lookup = '1';
+  idEl.addEventListener('input', () => {
+    const v = idEl.value.replace(/\D/g, '');
+    const typeEl = $('#' + prefix + '-idtype');
+    if(v.length === 13 && typeEl.value === 'cedula') typeEl.value = 'ruc';
+    else if(v.length === 10 && typeEl.value === 'ruc') typeEl.value = 'cedula';
+    clearTimeout(ventiLookupTimers[prefix]);
+    const hint = $('#' + prefix + '-lookup');
+    const ok = (typeEl.value === 'cedula' && ventiCedulaOk(v)) || (typeEl.value === 'ruc' && /^\d{13}$/.test(v) && v.endsWith('001'));
+    if(!ok){ if(hint) hint.textContent = ''; return; }
+    ventiLookupTimers[prefix] = setTimeout(async () => {
+      const seq = (ventiLookupSeq[prefix] || 0) + 1; ventiLookupSeq[prefix] = seq;
+      if(hint) hint.textContent = 'Buscando en el SRI…';
+      let r = null;
+      try { r = await ventiFiscalCall('fiscalLookupBuyer', { tenantId, idNumber: v }); } catch(_){}
+      if(ventiLookupSeq[prefix] !== seq) return; // ya se escribió otra identificación
+      if(!r || !r.found){ if(hint) hint.textContent = 'No se encontraron datos: escríbelos a mano.'; return; }
+      const fill = (k, val) => { const el = $('#' + prefix + '-' + k); if(el && val && (!el.value.trim() || el.dataset.auto === '1')){ el.value = val; el.dataset.auto = '1'; } };
+      fill('name', r.name); fill('email', r.email); fill('phone', r.phone);
+      if(hint) hint.textContent = r.source === 'clientes' ? '✓ Cliente frecuente: datos completados' : '✓ Nombre del registro del SRI' + (r.email ? '' : ' · escribe el correo');
+    }, 350);
+  });
+  // Si el cajero corrige a mano un dato completado, ya no se reemplaza
+  ['name', 'email', 'phone'].forEach(k => { const el = $('#' + prefix + '-' + k); if(el) el.addEventListener('input', () => { el.dataset.auto = ''; }); });
 }
 
 // Helper reutilizable: pide el código de encargado (con el mismo bloqueo
